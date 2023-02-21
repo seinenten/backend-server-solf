@@ -58,7 +58,41 @@ const ActualizarJugador = (req, res = response) => {
     })
 }
 
-const eliminarJugador = (req, res = response) => {
+const eliminarJugador = async (req, res = response) => {
+    const id = req.params.id;
+
+    try {
+
+        //Si se encunetra existe un usuario con ese id
+        const jugadorDB = await Jugador.findById( id );
+        
+        // Si no existe
+        if( !jugadorDB ){
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un jugador con ese id'
+            });
+        }
+
+        await Jugador.findOneAndDelete( id );
+        
+        res.json({
+            ok: true,
+            msg: 'Jugador eliminado'
+        });
+        
+    } catch (error) {
+        
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+
+    }
+
+
+
 
     res.status(200).json({
         ok: true,

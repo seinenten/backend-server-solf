@@ -1,5 +1,6 @@
 const { response } = require("express");
 
+
 const Liga = require('../models/liga');
 
 
@@ -45,18 +46,51 @@ const CrearLiga = async(req, res = response) => {
 
 const ActualizarLiga = (req, res = response) => {
 
+
+
+
     res.status(200).json({
         ok: true,
         msg: 'Actualizar Liga'
     });
 }
 
-const eliminarLiga = (req, res = response) => {
+const eliminarLiga = async (req, res = response) => {
 
-    res.status(200).json({
-        ok: true,
-        msg: 'borrar Liga'
-    });
+const id = req.params.id;
+
+    try {
+
+        //Si se encunetra existe un usuario con ese id
+        const ligaDB = await Liga.findById( id );
+        
+        // Si no existe
+        if( !ligaDB ){
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe una liga con ese id'
+            });
+        }
+
+        await Liga.findOneAndDelete( id );
+        
+        res.json({
+            ok: true,
+            msg: 'Liga  eliminada'
+        });
+        
+    } catch (error) {
+        
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+
+    }
+
+
+   
 }
 
 

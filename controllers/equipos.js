@@ -57,12 +57,43 @@ const ActualizarEquipo = (req, res = response) => {
     })
 }
 
-const eliminarEquipo = (req, res = response) => {
+const eliminarEquipo = async (req, res = response) => {
 
-    res.status(200).json({
-        ok: true,
-        msg: 'borrar Equipo'
-    })
+    const id = req.params.id;
+
+    try {
+
+        //Si se encunetra existe un usuario con ese id
+        const equipoDB = await Equipo.findById( id );
+        
+        // Si no existe
+        if( !equipoDB ){
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un equipo con ese id'
+            });
+        }
+
+        await Equipo.findOneAndDelete( id );
+        
+        res.json({
+            ok: true,
+            msg: 'Equipo eliminado'
+        });
+        
+    } catch (error) {
+        
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+
+    }
+
+
+
+    
 }
 
 
