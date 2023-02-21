@@ -43,6 +43,15 @@ const fileUpload = (req, res = response) => {
         });
     }
 
+    //Validar tamaño
+    if( !file.size >= 3000000 ){
+        return res.status(400).json({
+            ok: false,
+            msg: 'El archivo debe de tener un peso maximo de 3 mb'
+        });
+    }
+    //Se termino de validar el tamaño
+
     // Generar el nombre del archivo 
     const nombreArchivo = `${ uuidv4()}.${ extensionArchivo }`;
 
