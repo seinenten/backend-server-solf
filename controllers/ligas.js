@@ -44,20 +44,49 @@ const CrearLiga = async(req, res = response) => {
 
 }
 
-const ActualizarLiga = (req, res = response) => {
+const ActualizarLiga = async(req, res = response) => {
+
+    const id = req.params.id
+    //tenemos el uid por que pasamos por la verificacion de jwt
+    const uid = req.uid;
+
+    try {
+
+        const liga = await Liga.findById( id );
+
+        if( !liga ){
+            return res.status(404).json({
+                ok: true,
+                msg: 'Liga no encontrado por id'
+            });
+        }
+
+        const cambiosLiga = {
+            ...req.body,
+            usuario: uid
+        }
+
+        const ligaActualizado = await Liga.findOneAndUpdate( id, cambiosLiga, { new: true } );
+
+        res.json({
+            ok: true,
+            liga: ligaActualizado
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
 
 
-
-
-    res.status(200).json({
-        ok: true,
-        msg: 'Actualizar Liga'
-    });
 }
 
 const eliminarLiga = async (req, res = response) => {
 
-const id = req.params.id;
+    const id = req.params.id;
 
     try {
 
@@ -72,7 +101,7 @@ const id = req.params.id;
             });
         }
 
-        await Liga.findOneAndDelete( id );
+        await Liga.findByIdAndDelete(id);
         
         res.json({
             ok: true,
@@ -89,8 +118,6 @@ const id = req.params.id;
 
     }
 
-
-   
 }
 
 

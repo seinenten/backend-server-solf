@@ -34,7 +34,14 @@ router.post( '/',
 
 router.put( '/:id', 
     [
-
+        validarJWT,
+        check('nombre', 'el Nombre es necesario').not().isEmpty(),
+        check('apellidoP', 'el Apellido Paterno es necesario').not().isEmpty(),
+        check('apellidoM', 'el Apellido Materno es necesario').not().isEmpty(),
+        check('curp', 'la curp es necesaria').not().isEmpty(),
+        check('liga','El id de la Liga debe de ser valido').isMongoId(),
+        check('equipo','El id del equipo debe de ser valido').isMongoId(),
+        validarCampos
     ], 
     ActualizarJugador
 );

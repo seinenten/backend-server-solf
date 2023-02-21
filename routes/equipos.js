@@ -31,7 +31,11 @@ router.post( '/',
 
 router.put( '/:id', 
     [
-
+        validarJWT,
+        check('nombre', 'el Nombre del equipo es necesario').not().isEmpty(),
+        check('descripcion', 'la Descripcion del equipo es necesaria').not().isEmpty(),
+        check('liga','El id de la Liga debe de ser valido').isMongoId(),
+        validarCampos
     ], 
     ActualizarEquipo 
 );

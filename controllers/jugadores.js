@@ -50,12 +50,42 @@ const CrearJugador = async(req, res = response) => {
     
 }
 
-const ActualizarJugador = (req, res = response) => {
+const ActualizarJugador = async(req, res = response) => {
 
-    res.status(200).json({
-        ok: true,
-        msg: 'Actualizar Jugador'
-    })
+    const id = req.params.id
+    //tenemos el uid por que pasamos por la verificacion de jwt
+    const uid = req.uid;
+
+    try {
+        const jugador = await Jugador.findById( id );
+
+        if( !jugador ){
+            return res.status(404).json({
+                ok: true,
+                msg: 'Jugador no encontrado por id'
+            });
+        }
+
+        const cambiosJugador = {
+            ...req.body,
+            usuario: uid
+        }
+
+        const jugadorActualizado = await Jugador.findOneAndUpdate( id, cambiosJugador, { new: true } );
+
+        res.json({
+            ok: true,
+            jugador: jugadorActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+
+    }
 }
 
 const eliminarJugador = async (req, res = response) => {
@@ -74,7 +104,7 @@ const eliminarJugador = async (req, res = response) => {
             });
         }
 
-        await Jugador.findOneAndDelete( id );
+        await Jugador.findByIdAndDelete( id );
         
         res.json({
             ok: true,

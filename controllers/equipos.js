@@ -49,12 +49,42 @@ const CrearEquipo = async(req, res = response) => {
     
 }
 
-const ActualizarEquipo = (req, res = response) => {
+const ActualizarEquipo = async(req, res = response) => {
 
-    res.status(200).json({
-        ok: true,
-        msg: 'Actualizar Equipo'
-    })
+    const id = req.params.id
+    //tenemos el uid por que pasamos por la verificacion de jwt
+    const uid = req.uid;
+
+    try {
+        const equipo = await Equipo.findById( id );
+
+        if( !equipo ){
+            return res.status(404).json({
+                ok: true,
+                msg: 'Equipo no encontrado por id'
+            });
+        }
+
+        const cambiosEquipo = {
+            ...req.body,
+            usuario: uid
+        }
+
+        const equipoActualizado = await Equipo.findOneAndUpdate( id, cambiosEquipo, { new: true } );
+
+        res.json({
+            ok: true,
+            equipo: equipoActualizado
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+
+    }
 }
 
 const eliminarEquipo = async (req, res = response) => {
@@ -74,7 +104,7 @@ const eliminarEquipo = async (req, res = response) => {
             });
         }
 
-        await Equipo.findOneAndDelete( id );
+        await Equipo.findByIdAndDelete( id );
         
         res.json({
             ok: true,
@@ -90,8 +120,6 @@ const eliminarEquipo = async (req, res = response) => {
         })
 
     }
-
-
 
     
 }

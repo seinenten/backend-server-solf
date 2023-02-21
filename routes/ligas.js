@@ -32,7 +32,12 @@ router.post( '/',
 
 router.put( '/:id', 
     [
-
+        validarJWT,
+        check('nombre', 'el nombre de la liga es necesario').not().isEmpty(),
+        check('descripcion', 'la descripcion de la liga es necesario').not().isEmpty(),
+        check('tipoCategoria', 'la categoria de la liga es necesario').not().isEmpty(),
+        check('tipoJuego', 'el tipo de juego de la liga es necesario').not().isEmpty(),
+        validarCampos
     ], 
     ActualizarLiga 
 );
