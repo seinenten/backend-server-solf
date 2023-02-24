@@ -40,7 +40,11 @@ router.put( '/:id',
     ActualizarEquipo 
 );
 
-router.delete( '/:id' , eliminarEquipo );
+router.delete( '/:id' , [
+    validarJWT,
+    check('status' , 'El status es obligatorio').not().isEmpty(),
+    validarCampos
+], eliminarEquipo );
 
 
 

@@ -18,6 +18,11 @@ const EquipoSchema = Schema({
         ref: 'Usuario',
         required: true
     },
+    status:{
+        type: Boolean,
+        required: true,
+        default: true
+    },
     liga: {
         type: Schema.Types.ObjectId,
         ref: 'Liga',

@@ -18,6 +18,11 @@ const LigaSchema = Schema({
         type: String,
         required: true,
     },
+    status:{
+        type: Boolean,
+        required: true,
+        default: true
+    },
     img: {
         type: String
     },

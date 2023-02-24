@@ -66,7 +66,7 @@ const ActualizarLiga = async(req, res = response) => {
             usuario: uid
         }
 
-        const ligaActualizado = await Liga.findOneAndUpdate( id, cambiosLiga, { new: true } );
+        const ligaActualizado = await Liga.findByIdAndUpdate( id, cambiosLiga, { new: true } );
 
         res.json({
             ok: true,
@@ -101,7 +101,12 @@ const eliminarLiga = async (req, res = response) => {
             });
         }
 
-        await Liga.findByIdAndDelete(id);
+        const cambiosLiga = {
+            ...req.body,
+            usuario: uid
+        }
+
+        await Liga.findByIdAndUpdate( id, cambiosLiga, { new: true } );
         
         res.json({
             ok: true,

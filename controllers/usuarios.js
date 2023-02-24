@@ -151,7 +151,11 @@ const eliminarUsuario = async( req, res = response ) => {
             });
         }
 
-        await Usuario.findOneAndDelete( uid );
+        const cambioStatus = {
+            ...req.body
+        }
+
+        await Usuario.findByIdAndUpdate( uid, cambioStatus, { new: true }  );
         
         res.json({
             ok: true,

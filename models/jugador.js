@@ -21,6 +21,11 @@ const jugadorSchema = Schema({
     img: {
         type: String
     },
+    status:{
+        type: Boolean,
+        required: true,
+        default: true
+    },
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario',

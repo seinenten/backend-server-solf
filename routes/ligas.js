@@ -42,7 +42,13 @@ router.put( '/:id',
     ActualizarLiga 
 );
 
-router.delete( '/:id' , eliminarLiga );
+router.delete( '/:id' , 
+    [
+        validarJWT,
+        check('status' , 'El status es obligatorio').not().isEmpty(),
+        validarCampos
+    ]
+,eliminarLiga );
 
 
 

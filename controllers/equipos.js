@@ -70,7 +70,7 @@ const ActualizarEquipo = async(req, res = response) => {
             usuario: uid
         }
 
-        const equipoActualizado = await Equipo.findOneAndUpdate( id, cambiosEquipo, { new: true } );
+        const equipoActualizado = await Equipo.findByIdAndUpdate( id, cambiosEquipo, { new: true } );
 
         res.json({
             ok: true,
@@ -104,7 +104,12 @@ const eliminarEquipo = async (req, res = response) => {
             });
         }
 
-        await Equipo.findByIdAndDelete( id );
+        const cambiosEquipo = {
+            ...req.body,
+            usuario: uid
+        }
+
+        await Equipo.findByIdAndUpdate( id, cambiosEquipo, { new: true } );
         
         res.json({
             ok: true,
