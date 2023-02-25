@@ -71,10 +71,11 @@ const renovarToken= async(req,res= response) => {
 
 //login google
 const googleSingIn = async( req , res = response) => {
-
+         
     try {
         const { email, name, picture, given_name, family_name  } = await googleverify( req.body.token );
-
+        
+        const apellidos = family_name.split(' ')
         const usuarioDB = await Usuario.findOne({ email });
         let usuario;
 
@@ -83,8 +84,8 @@ const googleSingIn = async( req , res = response) => {
                 // Arreglar nombre usar alguna funcion en el (familyname) para separar sus valores con el espacio
                 nombre: given_name,
                 //
-                apellidoP: given_name ,
-                apellidoM: family_name ,
+                apellidoP: apellidos[0] ,
+                apellidoM: apellidos[1] ,
                 
                 email,
                 password: '@@@',
