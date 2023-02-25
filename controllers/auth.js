@@ -17,7 +17,7 @@ const login = async( req , res = response) => {
         if( !usuarioDB ){
             return res.status(404).json({
                 ok: false,
-                msg: 'Email no valido'
+                msg: 'Email no encontrado'
             })
         }
 
@@ -51,33 +51,41 @@ const login = async( req , res = response) => {
 
 
 }
-const renovarToken= async(req,res= response)=>{
-    const {uid }= req;
+
+const renovarToken= async(req,res= response) => {
+    const uid = req.uid;
+
+    //Generar el token - JWT
     const token = await generarJWT(uid);  
 
-return res.json({
-    ok: true,
-    token
-    
-});
+    //Obtener el usuario por UID
+    const usuario = await Usuario.findById( uid );
+
+    return res.json({
+        ok: true,
+        token,
+        usuario
+    });
+
 }
 
 //login google
 const googleSingIn = async( req , res = response) => {
-     
+
     try {
-        const { email, name, picture } = await googleverify( req.body.token );
+        const { email, name, picture, given_name, family_name  } = await googleverify( req.body.token );
 
         const usuarioDB = await Usuario.findOne({ email });
         let usuario;
 
         if ( !usuarioDB ) {
             usuario = new Usuario({ 
-                nombre: name,
-                apellidoP:"Trejo",
-                apellidoM:"Cruz",
-                role:"USER_ROLE",
-                status: true,
+                // Arreglar nombre usar alguna funcion en el (familyname) para separar sus valores con el espacio
+                nombre: given_name,
+                //
+                apellidoP: given_name ,
+                apellidoM: family_name ,
+                
                 email,
                 password: '@@@',
                 img: picture,
@@ -98,7 +106,7 @@ const googleSingIn = async( req , res = response) => {
 
         res.json({
             ok: true,
-            email, name, picture,
+            email, name, picture, given_name, family_name ,
             token
         });
         

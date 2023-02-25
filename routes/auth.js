@@ -25,7 +25,6 @@ router.get('/renew',validarJWT,renovarToken);
 
 router.post( '/google',
     [
-       
         check('token', 'El token de google es obligatorio').not().isEmpty(),
         validarCampos
     ],
