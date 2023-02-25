@@ -73,7 +73,7 @@ const renovarToken= async(req,res= response) => {
 const googleSingIn = async( req , res = response) => {
          
     try {
-        const { email, name, picture, given_name, family_name  } = await googleverify( req.body.token );
+        const { email, picture, given_name, family_name  } = await googleverify( req.body.token );
         
         const apellidos = family_name.split(' ')
         const usuarioDB = await Usuario.findOne({ email });
@@ -107,7 +107,10 @@ const googleSingIn = async( req , res = response) => {
 
         res.json({
             ok: true,
-            email, name, picture, given_name, family_name ,
+            name: given_name,
+            apellidoP: apellidos[0],
+            apellidoM:  apellidos[1],
+            email, picture, 
             token
         });
         
