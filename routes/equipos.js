@@ -40,7 +40,7 @@ router.put( '/:id',
     ActualizarEquipo 
 );
 
-router.delete( '/:id' , [
+router.delete( '/desactivar/:id' , [
     validarJWT,
     check('status' , 'El status es obligatorio').not().isEmpty(),
     validarCampos

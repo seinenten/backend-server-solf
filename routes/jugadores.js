@@ -46,7 +46,7 @@ router.put( '/:id',
     ActualizarJugador
 );
 
-router.delete( '/:id' ,[
+router.put( '/desactivar/:id' ,[
     validarJWT,
     check('status' , 'El status es obligatorio').not().isEmpty(),
     validarCampos
