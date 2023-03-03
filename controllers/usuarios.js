@@ -8,7 +8,7 @@ const getUsuarios = async(req, res) => {
 
     ///usuarios?desde=10&limite=3
     
-    const desde = Number(req.query.desde)  || 0;
+    const desde =  Number(req.query.desde)  || 0;
     const limite = Number(req.query.limite) || 0;
 
     // const usuarios = await Usuario.find({}, 'nombre email role google')

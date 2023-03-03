@@ -71,27 +71,52 @@ const renovarToken= async(req,res= response) => {
 
 //login google
 const googleSingIn = async( req , res = response) => {
-         
-    try {
+// funcion para generar contraseña aleatoria
+    const generatePassword =() => {
+
+        let base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let password = "";
+        for (let x = 0; x < 8; x++) {
+            let random = Math.floor(Math.random() * base.length);
+            password += base.charAt(random);
+        }
+        // encriptar contraseña generada
+        const salt = bcrypt.genSaltSync();
+        password = bcrypt.hashSync( password, salt );
+
+        return password;
+    };
+
+
+     try {
         const { email, picture, given_name, family_name  } = await googleverify( req.body.token );
         
+        const password=generatePassword();
+
+    
+       
         const apellidos = family_name.split(' ')
+
         const usuarioDB = await Usuario.findOne({ email });
+
         let usuario;
 
         if ( !usuarioDB ) {
+
+            
             usuario = new Usuario({ 
+
+       
                 // Arreglar nombre usar alguna funcion en el (familyname) para separar sus valores con el espacio
                 nombre: given_name,
-                //
                 apellidoP: apellidos[0] ,
                 apellidoM: apellidos[1] ,
-                
                 email,
-                password: '@@@',
+                password: password,
                 img: picture,
                 google: true
             })
+
         } else {
             usuario = usuarioDB;
             usuario.google = true;
