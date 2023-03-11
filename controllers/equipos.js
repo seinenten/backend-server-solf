@@ -11,9 +11,9 @@ const getEquipos = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const equipos = await Equipo.find()
-                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
+                    //obtener el nombre del usuario que creo el equipo, y sus otras propiedades
                     .populate('usuario', 'nombre apellidoP apellidoM img')
-                    .populate('liga', 'nombre img')
+                    .populate('liga', 'nombre img descripcion tipoCategoria tipoJuego')
                     .skip( desde )
                     .limit( limite );
                                 
@@ -33,7 +33,6 @@ const getEquiposPorStatusTrue = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const equipos = await Equipo.find({"status":true})
-                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
                     
                     .skip( desde )
                     .limit( limite );
@@ -54,7 +53,6 @@ const getEquiposPorStatusFalse = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const equipos = await Equipo.find({"status":false})
-                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
                     
                     .skip( desde )
                     .limit( limite );
@@ -73,7 +71,7 @@ const getEquiposPorId = async(req, res = response) => {
 
     try {
         const equipo = await Equipo.findById(id)
-                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
+                    //obtener el nombre del usuario que creo el equipo, y sus otras propiedades
                     .populate('usuario', 'nombre apellidoP apellidoM img')
                     .populate('liga', 'nombre img');
 
@@ -139,12 +137,11 @@ const ActualizarEquipo = async(req, res = response) => {
             });
         }
 
-        const cambiosEquipo = {
-            ...req.body,
-            usuario: uid
+        const cambioStatus = {
+            ...req.body
         }
 
-        const equipoActualizado = await Equipo.findByIdAndUpdate( id, cambiosEquipo, { new: true } );
+        const equipoActualizado = await Equipo.findByIdAndUpdate( id, cambioStatus, { new: true } );
 
         res.json({
             ok: true,

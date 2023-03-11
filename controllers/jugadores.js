@@ -13,8 +13,8 @@ const getJugadores = async(req, res = response) => {
     const jugadores = await Jugador.find()
                     //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
                     .populate('usuario', 'nombre apellidoP apellidoM img')
-                    .populate('liga', 'nombre img')
-                    .populate('equipo', 'nombre img')
+                    .populate('liga', 'nombre img descripcion tipoCategoria tipoJuego')
+                    .populate('equipo', 'nombre img descripcion')
                     .skip( desde )
                     .limit( limite );
                                 
@@ -183,12 +183,11 @@ const eliminarJugador = async (req, res = response) => {
             });
         }
 
-        const cambiosJugador = {
-            ...req.body,
-            usuario: uid
+        const cambioStatus = {
+            ...req.body
         }
 
-        await Jugador.findByIdAndUpdate( id, cambiosJugador, { new: true } );
+        await Jugador.findByIdAndUpdate( id, cambioStatus, { new: true } );
         
         res.json({
             ok: true,

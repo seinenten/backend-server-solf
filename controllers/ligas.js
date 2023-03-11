@@ -99,7 +99,7 @@ const CrearLiga = async(req, res = response) => {
         
         res.status(200).json({
             ok: true,
-            hospital: ligaDB
+            liga: ligaDB
         });
         
     } catch (error) {
@@ -170,12 +170,11 @@ const eliminarLiga = async (req, res = response) => {
             });
         }
 
-        const cambiosLiga = {
-            ...req.body,
-            usuario: uid
+        const cambioStatus = {
+            ...req.body
         }
 
-        await Liga.findByIdAndUpdate( id, cambiosLiga, { new: true } );
+        await Liga.findByIdAndUpdate( id, cambioStatus, { new: true } );
         
         res.json({
             ok: true,
