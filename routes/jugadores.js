@@ -11,13 +11,20 @@ const {
     CrearJugador,
     eliminarJugador,
     getJugadores,    
-    getJugadoresPorId
+    getJugadoresPorId,
+    getJugadoresPorStatusFalse,
+    getJugadoresPorStatusTrue
 } = require('../controllers/jugadores')
 
 const router = Router();
 
 
 router.get( '/'  ,getJugadores );
+
+
+router.get( '/statusFalse'  ,getJugadoresPorStatusFalse );
+
+router.get( '/statusTrue'  ,getJugadoresPorStatusTrue );
 
 router.get( '/:id'  , getJugadoresPorId );
 

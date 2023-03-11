@@ -21,7 +21,7 @@ const getUsuarios = async(req, res) => {
 
     const [ usuarios, total ] = await Promise.all([
         Usuario
-            .find({}, 'nombre apellidoP apellidoM email role google img')
+            .find({}, ' nombre apellidoP apellidoM email role google img')
             .skip( desde )
             .limit( limite ),
 
@@ -33,6 +33,70 @@ const getUsuarios = async(req, res) => {
         usuarios,
         uid: req.uid,
         total
+    });
+}
+
+const getUsuariosporStatusTrue = async(req, res) => {
+
+    ///usuarios?desde=10&limite=3
+    
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    // const usuarios = await Usuario.find({}, 'nombre email role google')
+    //                             .skip( desde )
+    //                             .limit( limite );
+
+    // const total = await Usuario.count();
+    
+    //Segunda version del codigo mas eficiente, se desestruturan los resultados
+
+    const [ usuarios, total ] = await Promise.all([
+        Usuario
+            .find({"status":true}, 'status nombre apellidoP apellidoM email role google img')
+            .skip( desde )
+            .limit( limite ),
+
+        Usuario.countDocuments()
+    ]);
+
+    res.json( {
+        ok: true,
+        usuarios,
+        uid: req.uid,
+        
+    });
+}
+
+const getUsuariosporStatusFalse = async(req, res) => {
+
+    ///usuarios?desde=10&limite=3
+    
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    // const usuarios = await Usuario.find({}, 'nombre email role google')
+    //                             .skip( desde )
+    //                             .limit( limite );
+
+    // const total = await Usuario.count();
+    
+    //Segunda version del codigo mas eficiente, se desestruturan los resultados
+
+    const [ usuarios, total ] = await Promise.all([
+        Usuario
+            .find({"status":false}, 'status nombre apellidoP apellidoM email role google img')
+            .skip( desde )
+            .limit( limite ),
+
+        Usuario.countDocuments()
+    ]);
+
+    res.json( {
+        ok: true,
+        usuarios,
+        uid: req.uid,
+      
     });
 }
 
@@ -190,5 +254,7 @@ module.exports = {
     getUsuarios,
     crearUsuario,
     actualizarUsuario,
-    eliminarUsuario
+    eliminarUsuario,
+    getUsuariosporStatusFalse,
+    getUsuariosporStatusTrue
 }

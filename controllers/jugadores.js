@@ -26,6 +26,52 @@ const getJugadores = async(req, res = response) => {
     })
 }
 
+const getJugadoresPorStatusTrue = async(req, res = response) => {
+
+    //jugadores?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const jugadores = await Jugador.find({"status":true})
+                    //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
+                    // .populate('usuario', 'nombre apellidoP apellidoM img')
+                    // .populate('liga', 'nombre img')
+                    // .populate('equipo', 'nombre img')
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        jugadores: jugadores
+    })
+}
+
+const getJugadoresPorStatusFalse = async(req, res = response) => {
+
+    //jugadores?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const jugadores = await Jugador.find({"status":false})
+                    //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
+                    // .populate('usuario', 'nombre apellidoP apellidoM img')
+                    // .populate('liga', 'nombre img')
+                    // .populate('equipo', 'nombre img')
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        jugadores: jugadores
+    })
+}
+
 const getJugadoresPorId = async(req, res = response) => {
 
     const id = req.params.id;
@@ -175,5 +221,7 @@ module.exports = {
     getJugadoresPorId,
     CrearJugador,
     ActualizarJugador,
-    eliminarJugador
+    eliminarJugador,
+    getJugadoresPorStatusFalse,
+    getJugadoresPorStatusTrue
 }

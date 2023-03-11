@@ -22,6 +22,42 @@ const getLigas = async(req, res = response) => {
         ligas: ligas
     });
 }
+const getLigasPorStatusTrue = async(req, res = response) => {
+
+    //ligas?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const ligas = await Liga.find({"status":true})
+                                //obtener el nombre del usuario que creo la liga, y sus otras propiedades
+                                // .populate('usuario', 'nombre apellidoP apellidoM img')
+                                    .skip( desde )
+                                    .limit( limite );
+
+    res.status(200).json({
+        ok: true,
+        ligas: ligas
+    });
+}
+const getLigasPorStatusFalse = async(req, res = response) => {
+
+    //ligas?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const ligas = await Liga.find({"status":false})
+                                //obtener el nombre del usuario que creo la liga, y sus otras propiedades
+                                // .populate('usuario', 'nombre apellidoP apellidoM img')
+                                    .skip( desde )
+                                    .limit( limite );
+
+    res.status(200).json({
+        ok: true,
+        ligas: ligas
+    });
+}
 
 const getLigasPorId = async(req, res = response) => {
 
@@ -165,5 +201,7 @@ module.exports = {
     CrearLiga,
     ActualizarLiga,
     eliminarLiga,
-    getLigasPorId
+    getLigasPorId,
+    getLigasPorStatusTrue,
+    getLigasPorStatusFalse
 }
