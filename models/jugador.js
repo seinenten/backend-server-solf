@@ -31,11 +31,6 @@ const jugadorSchema = Schema({
         ref: 'Usuario',
         required: true
     },
-    liga: {
-        type: Schema.Types.ObjectId,
-        ref: 'Liga',
-        required: true
-    },
     equipo: {
         type: Schema.Types.ObjectId,
         ref: 'Equipo',

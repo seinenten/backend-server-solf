@@ -31,7 +31,7 @@ const getLigasPorStatusTrue = async(req, res = response) => {
 
     const ligas = await Liga.find({"status":true})
                                 //obtener el nombre del usuario que creo la liga, y sus otras propiedades
-                                // .populate('usuario', 'nombre apellidoP apellidoM img')
+                                .populate('usuario', 'nombre apellidoP apellidoM img')
                                     .skip( desde )
                                     .limit( limite );
 
@@ -49,7 +49,7 @@ const getLigasPorStatusFalse = async(req, res = response) => {
 
     const ligas = await Liga.find({"status":false})
                                 //obtener el nombre del usuario que creo la liga, y sus otras propiedades
-                                // .populate('usuario', 'nombre apellidoP apellidoM img')
+                                .populate('usuario', 'nombre apellidoP apellidoM img')
                                     .skip( desde )
                                     .limit( limite );
 
@@ -178,7 +178,7 @@ const eliminarLiga = async (req, res = response) => {
         
         res.json({
             ok: true,
-            msg: 'Liga  eliminada'
+            msg: 'Liga eliminada'
         });
         
     } catch (error) {
@@ -187,7 +187,7 @@ const eliminarLiga = async (req, res = response) => {
         res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
-        })
+        });
 
     }
 

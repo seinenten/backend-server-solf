@@ -13,8 +13,7 @@ const getJugadores = async(req, res = response) => {
     const jugadores = await Jugador.find()
                     //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
                     .populate('usuario', 'nombre apellidoP apellidoM img')
-                    .populate('liga', 'nombre img descripcion tipoCategoria tipoJuego')
-                    .populate('equipo', 'nombre img descripcion')
+                    .populate('equipo', 'nombre img descripcion liga')
                     .skip( desde )
                     .limit( limite );
                                 
@@ -34,10 +33,8 @@ const getJugadoresPorStatusTrue = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const jugadores = await Jugador.find({"status":true})
-                    //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
-                    // .populate('usuario', 'nombre apellidoP apellidoM img')
-                    // .populate('liga', 'nombre img')
-                    // .populate('equipo', 'nombre img')
+                    .populate('usuario', 'nombre apellidoP apellidoM img')
+                    .populate('equipo', 'nombre img liga')
                     .skip( desde )
                     .limit( limite );
                                 
@@ -57,10 +54,8 @@ const getJugadoresPorStatusFalse = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const jugadores = await Jugador.find({"status":false})
-                    //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
-                    // .populate('usuario', 'nombre apellidoP apellidoM img')
-                    // .populate('liga', 'nombre img')
-                    // .populate('equipo', 'nombre img')
+                    .populate('usuario', 'nombre apellidoP apellidoM img')
+                    .populate('equipo', 'nombre img liga')
                     .skip( desde )
                     .limit( limite );
                                 
@@ -81,8 +76,7 @@ const getJugadoresPorId = async(req, res = response) => {
         const jugador = await Jugador.findById( id )
                         //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
                         .populate('usuario', 'nombre apellidoP apellidoM img')
-                        .populate('liga', 'nombre img')
-                        .populate('equipo', 'nombre img');
+                        .populate('equipo', 'nombre img descripcion liga')
 
         res.status(200).json({
             ok: true,
@@ -200,17 +194,10 @@ const eliminarJugador = async (req, res = response) => {
         res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
-        })
+        });
 
     }
 
-
-
-
-    res.status(200).json({
-        ok: true,
-        msg: 'borrar Jugador'
-    })
 }
 
 
