@@ -6,9 +6,16 @@ const Liga = require('../models/liga');
 
 const getLigas = async(req, res = response) => {
 
+    //ligas?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
     const ligas = await Liga.find()
                                 //obtener el nombre del usuario que creo la liga, y sus otras propiedades
-                                .populate('usuario', 'nombre apellidoP apellidoM img');
+                                .populate('usuario', 'nombre apellidoP apellidoM img')
+                                    .skip( desde )
+                                    .limit( limite );
 
     res.status(200).json({
         ok: true,

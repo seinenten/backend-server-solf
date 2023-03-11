@@ -5,11 +5,18 @@ const Jugador = require('../models/jugador');
 
 const getJugadores = async(req, res = response) => {
 
+    //jugadores?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
     const jugadores = await Jugador.find()
                     //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
                     .populate('usuario', 'nombre apellidoP apellidoM img')
                     .populate('liga', 'nombre img')
-                    .populate('equipo', 'nombre img');
+                    .populate('equipo', 'nombre img')
+                    .skip( desde )
+                    .limit( limite );
                                 
                                 
 
