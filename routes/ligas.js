@@ -11,13 +11,20 @@ const {
     ActualizarLiga,
     eliminarLiga,
     getLigas,
-    getLigasPorId
+    getLigasPorId,
+    getLigasPorStatusTrue
+    ,
+    getLigasPorStatusFalse
 } = require('../controllers/ligas')
 
 const router = Router();
 
 
 router.get( '/'  ,getLigas );
+
+router.get( '/statusTrue'  ,getLigasPorStatusTrue );
+
+router.get( '/statusFalse'  ,getLigasPorStatusFalse );
 
 router.get( '/:id'  , getLigasPorId );
 

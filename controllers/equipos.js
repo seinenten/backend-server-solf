@@ -25,6 +25,48 @@ const getEquipos = async(req, res = response) => {
     })
 }
 
+const getEquiposPorStatusTrue = async(req, res = response) => {
+
+    //equipos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const equipos = await Equipo.find({"status":true})
+                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
+                    
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        equipos: equipos
+    })
+}
+
+const getEquiposPorStatusFalse = async(req, res = response) => {
+
+    //equipos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const equipos = await Equipo.find({"status":false})
+                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
+                    
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        equipos: equipos
+    })
+}
+
 const getEquiposPorId = async(req, res = response) => {
 
     const id = req.params.id;
@@ -168,5 +210,7 @@ module.exports = {
     getEquiposPorId,
     CrearEquipo,
     ActualizarEquipo,
-    eliminarEquipo
+    eliminarEquipo,
+    getEquiposPorStatusFalse,
+    getEquiposPorStatusTrue
 }

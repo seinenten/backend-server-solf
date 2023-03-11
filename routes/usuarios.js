@@ -6,13 +6,18 @@ const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 
-const { getUsuarios, crearUsuario, actualizarUsuario, eliminarUsuario } = require('../controllers/usuarios');
+const { getUsuarios,getUsuariosporStatusFalse, getUsuariosporStatusTrue,crearUsuario, actualizarUsuario, eliminarUsuario,  } = require('../controllers/usuarios');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
 
 router.get( '/', validarJWT  , getUsuarios );
+
+
+router.get( '/statusfalse', validarJWT  , getUsuariosporStatusFalse );
+
+router.get( '/statustrue', validarJWT  , getUsuariosporStatusTrue );
 
 
 

@@ -11,13 +11,19 @@ const {
     CrearEquipo,
     eliminarEquipo,
     getEquipos,
-    getEquiposPorId
+    getEquiposPorId,
+    getEquiposPorStatusFalse,
+    getEquiposPorStatusTrue
 } = require('../controllers/equipos')
 
 const router = Router();
 
 
 router.get( '/'  ,getEquipos );
+
+router.get( '/statusFalse',getEquiposPorStatusFalse );
+
+router.get( '/statusTrue',getEquiposPorStatusTrue );
 
 router.get( '/:id'  , getEquiposPorId );
 
