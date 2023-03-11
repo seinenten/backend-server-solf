@@ -1,4 +1,4 @@
-// ruta: /routes/equipos
+// ruta: /routes/jugadores
 
 const { Router } = require('express');
 const { check } = require('express-validator');
@@ -10,13 +10,16 @@ const {
     ActualizarEquipo,
     CrearEquipo,
     eliminarEquipo,
-    getEquipos
+    getEquipos,
+    getEquiposPorId
 } = require('../controllers/equipos')
 
 const router = Router();
 
 
 router.get( '/'  ,getEquipos );
+
+router.get( '/:id'  , getEquiposPorId );
 
 router.post( '/', 
     [  

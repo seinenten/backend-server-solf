@@ -16,6 +16,32 @@ const getLigas = async(req, res = response) => {
     });
 }
 
+const getLigasPorId = async(req, res = response) => {
+
+    const id = req.params.id
+    try {
+
+        const liga = await Liga.findById(id)
+                                    //obtener el nombre del usuario que creo la liga, y sus otras propiedades
+                                    .populate('usuario', 'nombre apellidoP apellidoM img');
+    
+        res.status(200).json({
+            ok: true,
+            liga: liga
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: true,
+            msg: 'Hable con el administrador'
+        });
+        
+        
+    }
+
+}
+
 const CrearLiga = async(req, res = response) => {
 
     const uid = req.uid;
@@ -131,5 +157,6 @@ module.exports = {
     getLigas,
     CrearLiga,
     ActualizarLiga,
-    eliminarLiga
+    eliminarLiga,
+    getLigasPorId
 }

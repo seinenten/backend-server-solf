@@ -18,6 +18,31 @@ const getEquipos = async(req, res = response) => {
     })
 }
 
+const getEquiposPorId = async(req, res = response) => {
+
+    const id = req.params.id;
+
+    try {
+        const equipo = await Equipo.findById(id)
+                    //obtener el nombre del usuario que creo el hospital, y sus otras propiedades
+                    .populate('usuario', 'nombre apellidoP apellidoM img')
+                    .populate('liga', 'nombre img');
+
+        res.status(200).json({
+            ok: true,
+            equipo: equipo
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+        
+    }
+}
+
 const CrearEquipo = async(req, res = response) => {
 
     const uid = req.uid;
@@ -133,6 +158,7 @@ const eliminarEquipo = async (req, res = response) => {
 
 module.exports = {
     getEquipos,
+    getEquiposPorId,
     CrearEquipo,
     ActualizarEquipo,
     eliminarEquipo

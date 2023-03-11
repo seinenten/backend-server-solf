@@ -5,7 +5,7 @@ const Jugador = require('../models/jugador');
 
 const getJugadores = async(req, res = response) => {
 
-    const Jugadores = await Jugador.find()
+    const jugadores = await Jugador.find()
                     //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
                     .populate('usuario', 'nombre apellidoP apellidoM img')
                     .populate('liga', 'nombre img')
@@ -15,8 +15,34 @@ const getJugadores = async(req, res = response) => {
 
     res.status(200).json({
         ok: true,
-        jugadores: Jugadores
+        jugadores: jugadores
     })
+}
+
+const getJugadoresPorId = async(req, res = response) => {
+
+    const id = req.params.id;
+    
+    try {
+        
+        const jugador = await Jugador.findById( id )
+                        //obtener el nombre del usuario que creo al jugador, y sus otras propiedades
+                        .populate('usuario', 'nombre apellidoP apellidoM img')
+                        .populate('liga', 'nombre img')
+                        .populate('equipo', 'nombre img');
+
+        res.status(200).json({
+            ok: true,
+            jugador: jugador
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: true,
+            msg: 'Hable con el administrador'
+        })
+        
+    }
 }
 
 const CrearJugador = async(req, res = response) => {
@@ -139,6 +165,7 @@ const eliminarJugador = async (req, res = response) => {
 
 module.exports = {
     getJugadores,
+    getJugadoresPorId,
     CrearJugador,
     ActualizarJugador,
     eliminarJugador

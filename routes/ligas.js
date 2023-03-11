@@ -10,13 +10,16 @@ const {
     CrearLiga,
     ActualizarLiga,
     eliminarLiga,
-    getLigas
+    getLigas,
+    getLigasPorId
 } = require('../controllers/ligas')
 
 const router = Router();
 
 
 router.get( '/'  ,getLigas );
+
+router.get( '/:id'  , getLigasPorId );
 
 router.post( '/', 
     [  
