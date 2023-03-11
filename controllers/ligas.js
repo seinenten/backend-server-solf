@@ -15,7 +15,7 @@ const getLigas = async(req, res = response) => {
                                 //obtener el nombre del usuario que creo la liga, y sus otras propiedades
                                 .populate('usuario', 'nombre apellidoP apellidoM img')
                                     .skip( desde )
-                                    .limit( limite );
+                                    .limit( limite )
 
     res.status(200).json({
         ok: true,
