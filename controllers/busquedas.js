@@ -6,6 +6,7 @@ const Equipo = require('../models/equipo');
 const Jugador = require('../models/jugador');
 
 
+
 const busquedaTotal = async(req, res = response) => {
 
     const busqueda = req.params.busqueda;
@@ -29,6 +30,25 @@ const busquedaTotal = async(req, res = response) => {
     });
 
 }
+
+// FULL TEXT SEARCH 
+const busquedaQ=async (req, res, next)=> {
+	var q = req.query.q;
+   
+
+	
+
+	await Equipo.find({
+	 	$text: {
+	 		$search: q
+	 	}
+	 }, {
+		_id: 0,
+	 	__v: 0
+	}, function (err, data) {
+	 	res.json(data);
+	 });
+    }
 
 const getDocumentosColeccion = async(req, res = response) => {
 
@@ -80,7 +100,12 @@ const getDocumentosColeccion = async(req, res = response) => {
 }
 
 
+
+
+
+
 module.exports = {
     busquedaTotal,
-    getDocumentosColeccion
+    getDocumentosColeccion,
+    busquedaQ
 }
