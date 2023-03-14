@@ -4,6 +4,9 @@ const Usuario = require('../models/usuario');
 const { generarJWT } = require("../helpers/jwt");
 const { googleverify }= require("../helpers/google-verify")
 
+//Menu
+const { getMenuFronEnd } = require("../helpers/menu-frontend");
+
 const login = async( req , res = response) => {
 
     const { email, password  } = req.body;
@@ -35,7 +38,8 @@ const login = async( req , res = response) => {
 
         res.json({
             ok: true,
-            token
+            token,
+            menu: getMenuFronEnd( usuarioDB.role )
         })
         
     } catch (error) {
@@ -64,7 +68,8 @@ const renovarToken= async(req,res= response) => {
     return res.json({
         ok: true,
         token,
-        usuario
+        usuario,
+        menu: getMenuFronEnd( usuario.role )
     });
 
 }
@@ -136,7 +141,8 @@ const googleSingIn = async( req , res = response) => {
             apellidoP: apellidos[0],
             apellidoM:  apellidos[1],
             email, picture, 
-            token
+            token,
+            menu: getMenuFronEnd( usuario.role )
         });
         
     } catch (error) {

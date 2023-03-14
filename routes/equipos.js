@@ -4,7 +4,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const { validarCampos } = require('../middlewares/validar-campos');
 
-const { validarJWT } = require('../middlewares/validar-jwt');
+const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 
 const {
     ActualizarEquipo,
@@ -51,6 +51,7 @@ router.put( '/:id',
 
 router.delete( '/desactivar/:id' , [
     validarJWT,
+    validarADMIN_ROLE,
     check('status' , 'El status es obligatorio').not().isEmpty(),
     validarCampos
 ], eliminarEquipo );
