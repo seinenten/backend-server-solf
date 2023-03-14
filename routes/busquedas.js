@@ -3,15 +3,17 @@
 const { Router } = require('express');
 
 
-const { busquedaTotal, getDocumentosColeccion } = require('../controllers/busquedas');
+const { busquedaTotal, getDocumentosColeccion,busquedaQ } = require('../controllers/busquedas');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
 
-router.get( '/:busqueda', validarJWT  ,  busquedaTotal );
+ router.get( '/:busqueda'  ,  busquedaTotal );
 
-router.get( '/coleccion/:tabla/:busqueda', validarJWT  ,  getDocumentosColeccion );
+router.get( '/:q'  ,  busquedaQ );
+
+ router.get( '/coleccion/:tabla/:busqueda', validarJWT  ,  getDocumentosColeccion );
 
 
 module.exports = router;
