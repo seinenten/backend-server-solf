@@ -8,12 +8,14 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarADMIN_ROLE, validarADMIN_ROLE_o_MismoUsuario } = require('../middlewares/validar-jwt');
 
 
-const { getUsuarios,getUsuariosporStatusFalse, getUsuariosporStatusTrue,crearUsuario, actualizarUsuario, eliminarUsuario,  } = require('../controllers/usuarios');
+const { getUsuarios,getUsuariosporStatusFalse, getUsuariosporStatusTrue,crearUsuario, actualizarUsuario, eliminarUsuario, getEmails } = require('../controllers/usuarios');
 
 const router = Router();
 
 
-router.get( '/', validarJWT  , getUsuarios );
+router.get( '/' , validarJWT , getUsuarios );
+
+router.get( '/:email'  , getEmails );
 
 
 router.get( '/statusfalse', validarJWT  , getUsuariosporStatusFalse );

@@ -31,29 +31,9 @@ const busquedaTotal = async(req, res = response) => {
 
 }
 
-// FULL TEXT SEARCH 
-const busquedaQ=async (req, res, next)=> {
-	var q = req.query.q;
-   
-
-	
-
-	await Equipo.find({
-	 	$text: {
-	 		$search: q
-	 	}
-	 }, {
-		_id: 0,
-	 	__v: 0
-	}, function (err, data) {
-	 	res.json(data);
-	 });
-    }
-
 const getDocumentosColeccion = async(req, res = response) => {
 
     const tabla = req.params.tabla;
-    console.log(tabla);
     const busqueda = req.params.busqueda;
     const regex = new RegExp( busqueda, 'i' );
 
@@ -106,6 +86,5 @@ const getDocumentosColeccion = async(req, res = response) => {
 
 module.exports = {
     busquedaTotal,
-    getDocumentosColeccion,
-    busquedaQ
+    getDocumentosColeccion
 }

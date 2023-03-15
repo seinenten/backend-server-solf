@@ -7,7 +7,6 @@ const { generarJWT } = require("../helpers/jwt");
 const getUsuarios = async(req, res) => {
 
     ///usuarios?desde=10&limite=3
-    
     const desde =  Number(req.query.desde)  || 0;
     const limite = Number(req.query.limite) || 0;
 
@@ -18,7 +17,6 @@ const getUsuarios = async(req, res) => {
     // const total = await Usuario.count();
     
     //Segunda version del codigo mas eficiente, se desestruturan los resultados
-
     const [ usuarios, total ] = await Promise.all([
         Usuario
             .find({}, ' nombre apellidoP apellidoM email role google img')
@@ -28,12 +26,28 @@ const getUsuarios = async(req, res) => {
         Usuario.countDocuments()
     ]);
 
+
     res.json( {
         ok: true,
         usuarios,
         uid: req.uid,
         total
     });
+}
+
+const getEmails = async(req, res) => {
+    const busqueda = req.params.email;
+    const regex = new RegExp( busqueda, 'i' );
+
+        const  emails= await Usuario.find( { email: regex }, 'email' )
+
+
+    res.json( {
+        ok: true,
+        emails
+    })
+
+
 }
 
 const getUsuariosporStatusTrue = async(req, res) => {
@@ -256,5 +270,6 @@ module.exports = {
     actualizarUsuario,
     eliminarUsuario,
     getUsuariosporStatusFalse,
-    getUsuariosporStatusTrue
+    getUsuariosporStatusTrue,
+    getEmails
 }
