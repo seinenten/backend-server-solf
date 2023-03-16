@@ -93,8 +93,8 @@ const googleSingIn = async( req , res = response) => {
     };
 
 
-     try {
-        const { email, picture, given_name, family_name  } = await googleverify( req.body.token );
+    try {
+        const { email, picture, given_name, family_name, aud  } = await googleverify( req.body.token );
         
         const password=generatePassword();
 
@@ -111,7 +111,6 @@ const googleSingIn = async( req , res = response) => {
             
             usuario = new Usuario({ 
 
-       
                 // Arreglar nombre usar alguna funcion en el (familyname) para separar sus valores con el espacio
                 nombre: given_name,
                 apellidoP: apellidos[0] ,
@@ -142,7 +141,8 @@ const googleSingIn = async( req , res = response) => {
             apellidoM:  apellidos[1],
             email, picture, 
             token,
-            menu: getMenuFronEnd( usuario.role )
+            menu: getMenuFronEnd( usuario.role ),
+            aud
         });
         
     } catch (error) {
@@ -153,9 +153,6 @@ const googleSingIn = async( req , res = response) => {
         });
     }
 
-    
-    
-    
 }
 
 
