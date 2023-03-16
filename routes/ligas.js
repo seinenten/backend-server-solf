@@ -14,7 +14,8 @@ const {
     getLigasPorId,
     getLigasPorStatusTrue
     ,
-    getLigasPorStatusFalse
+    getLigasPorStatusFalse,
+    getLigasPorNombre
 } = require('../controllers/ligas')
 
 const router = Router();
@@ -27,6 +28,8 @@ router.get( '/statusTrue'  ,getLigasPorStatusTrue );
 router.get( '/statusFalse'  ,getLigasPorStatusFalse );
 
 router.get( '/:id'  , getLigasPorId );
+
+router.get( '/nombre/:liga'  , getLigasPorNombre );
 
 router.post( '/', 
     [  

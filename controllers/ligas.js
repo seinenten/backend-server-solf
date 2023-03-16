@@ -76,7 +76,7 @@ const getLigasPorId = async(req, res = response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            ok: true,
+            ok: false,
             msg: 'Hable con el administrador'
         });
         
@@ -84,6 +84,43 @@ const getLigasPorId = async(req, res = response) => {
     }
 
 }
+
+const getLigasPorNombre = async(req, res) => {
+    const busqueda = req.params.liga;
+    const regex = new RegExp( busqueda, 'i' );
+    const limite = Number(req.query.limite) || 0;
+    const tipocategoria = req.query.tipocategoria || '';
+    const tipojuego = req.query.tipojuego || '';
+
+    // tipoCategoria: 'libre'
+        let ligas;
+        if(tipocategoria === '' && tipojuego === ''){
+            ligas= await Liga.find( { nombre: regex } , 'nombre tipoCategoria tipoJuego' )
+                                                .limit( limite );
+
+        }else if(tipocategoria !== '' && tipojuego === ''){
+            ligas= await Liga.find( { nombre: regex, tipoCategoria: tipocategoria } , 'nombre tipoCategoria tipoJuego' )
+                                                .limit( limite );
+
+        }else if(tipocategoria === '' && tipojuego !== ''){
+            ligas= await Liga.find( { nombre: regex, tipoJuego: tipojuego } , 'nombre tipoCategoria tipoJuego' )
+                                                .limit( limite );
+        }else if(tipocategoria !== '' && tipojuego !== ''){
+            ligas= await Liga.find( { nombre: regex, tipoJuego: tipojuego, tipoCategoria: tipocategoria } , 'nombre tipoCategoria tipoJuego' )
+                                                .limit( limite );
+        }
+
+        
+
+
+
+    res.json( {
+        ok: true,
+        ligas
+    })
+
+}
+
 
 const CrearLiga = async(req, res = response) => {
 
@@ -202,5 +239,6 @@ module.exports = {
     eliminarLiga,
     getLigasPorId,
     getLigasPorStatusTrue,
-    getLigasPorStatusFalse
+    getLigasPorStatusFalse,
+    getLigasPorNombre
 }
