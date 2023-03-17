@@ -16,7 +16,7 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
     ];
 
     if (role === 'ADMIN_ROLE') {
-        menu.unshift(
+        menu.push(
             {
             titulo: 'Mantenimientos',
             icono: 'settings',
