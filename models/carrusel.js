@@ -13,7 +13,7 @@ const CarruselSchema = Schema({
 
 }, { collection: 'carruseles' });
 
-LigaSchema.method('toJSON', function () {
+CarruselSchema.method('toJSON', function () {
     const { __v , ...object } = this.toObject();
 
     return object;
