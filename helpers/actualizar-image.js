@@ -1,22 +1,22 @@
 const fs = require('fs');
 
+const cloudinary = require('cloudinary').v2
+cloudinary.config(process.env.CLOUDINARY_URL);
+
 const Usuario = require('../models/usuario');
 const Equipo = require('../models/equipo');
 const Liga = require('../models/liga');
 const Jugador = require('../models/jugador');
 
-const borrarImagen = ( path ) => {
+const borrarImagen = ( ) => {
     
-    if( fs.existsSync( path ) ){
-        //borrar la imagen anterior
-        fs.unlinkSync( path );
-    }
+    
 }
 
-const actualizarImagen = async( tipo, id, nombreArchivo ) => {
+const actualizarImagen = async( tipo, id,nombreArchivo) => {
     
-    let pathViejo = '';
-
+   
+    
     switch ( tipo ) {
         case 'equipos':
 
@@ -26,11 +26,11 @@ const actualizarImagen = async( tipo, id, nombreArchivo ) => {
                 return false;
             }    
 
-            pathViejo = `./uploads/equipos/${ equipo.img }`;
-            borrarImagen(pathViejo);
+            
 
 
-            equipo.img = nombreArchivo;
+            
+            
             await equipo.save();
             return true;
 
@@ -39,17 +39,31 @@ const actualizarImagen = async( tipo, id, nombreArchivo ) => {
         case 'ligas':
 
             const liga = await Liga.findById(id);
+            if (liga.img ) {
+                const nombreArr = liga.img.split('/');
+                const nombre    = nombreArr[ nombreArr.length - 1 ];
+                const [ public_id ] = nombre.split('.');
+            
+                    cloudinary.uploader.destroy( public_id );
+                console.log(public_id)
+               
+            }
+           
             if( !liga ){
                 console.log('No es una liga por id');
                 return false;
             }    
 
-            pathViejo = `./uploads/ligas/${ liga.img }`;
-            borrarImagen(pathViejo);
+          
 
 
+           
             liga.img = nombreArchivo;
+           
+             
+            
             await liga.save();
+           
             return true;
         
         break;
@@ -62,8 +76,7 @@ const actualizarImagen = async( tipo, id, nombreArchivo ) => {
                 return false;
             }    
 
-            pathViejo = `./uploads/usuarios/${ usuario.img }`;
-            borrarImagen(pathViejo);
+            
 
 
             usuario.img = nombreArchivo;
@@ -80,9 +93,7 @@ const actualizarImagen = async( tipo, id, nombreArchivo ) => {
                 return false;
             }    
 
-            pathViejo = `./uploads/jugadores/${ jugador.img }`;
-            borrarImagen(pathViejo);
-
+           
 
             jugador.img = nombreArchivo;
             await jugador.save();
@@ -93,7 +104,7 @@ const actualizarImagen = async( tipo, id, nombreArchivo ) => {
         default:
 
     }
-
+  
 
 }
 

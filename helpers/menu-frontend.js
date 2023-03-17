@@ -32,6 +32,9 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                     },
                     {
                         titulo: 'Jugadores', url: '/gestor/jugadores'
+                    },
+                    {
+                        titulo: 'Carrusel', url: '/gestor/currusel'
                     }
                 ]
             },

@@ -5,13 +5,13 @@ const expressFileUpload = require('express-fileupload');
 
 
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { fileUpload, retornaImagen } = require('../controllers/uploads');
+const {  retornaImagen, fileUploadCloudinary } = require('../controllers/uploads');
 
 const router = Router();
 
 router.use(expressFileUpload());
 
-router.put( '/:tipo/:id', validarJWT  , fileUpload  );
+router.put( '/:tipo/:id', validarJWT  , fileUploadCloudinary  );
 
 router.get( '/:tipo/:foto',   retornaImagen  );
 
