@@ -21,6 +21,16 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
         case 'equipos':
 
             const equipo = await Equipo.findById(id);
+            if(equipo.img){
+                const nombreArr = equipo.img.split('/');
+                const nombre    = nombreArr[ nombreArr.length - 1 ];
+                const [ public_id ] = nombre.split('.');
+                cloudinary.uploader.destroy(public_id);
+                
+                console.log(public_id)
+               
+           }
+           
             if( !equipo ){
                 console.log('No es un equipo por id');
                 return false;
@@ -39,15 +49,15 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
         case 'ligas':
 
             const liga = await Liga.findById(id);
-            if (liga.img ) {
+           if(liga.img){
                 const nombreArr = liga.img.split('/');
                 const nombre    = nombreArr[ nombreArr.length - 1 ];
                 const [ public_id ] = nombre.split('.');
-            
-                    cloudinary.uploader.destroy( public_id );
+                cloudinary.uploader.destroy(public_id);
+                
                 console.log(public_id)
                
-            }
+           }
            
             if( !liga ){
                 console.log('No es una liga por id');
@@ -56,7 +66,7 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
 
           
 
-
+           
            
             liga.img = nombreArchivo;
            
@@ -71,6 +81,16 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
         case 'usuarios':
 
             const usuario = await Usuario.findById(id);
+            if(usuario.img){
+                const nombreArr = usuario.img.split('/');
+                const nombre    = nombreArr[ nombreArr.length - 1 ];
+                const [ public_id ] = nombre.split('.');
+                cloudinary.uploader.destroy(public_id);
+                
+                console.log(public_id)
+               
+           }
+           
             if( !usuario ){
                 console.log('No es un usuario por id');
                 return false;
@@ -88,6 +108,16 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
         case 'jugadores':
 
             const jugador = await Jugador.findById(id);
+            if(jugador.img){
+                const nombreArr = jugador.img.split('/');
+                const nombre    = nombreArr[ nombreArr.length - 1 ];
+                const [ public_id ] = nombre.split('.');
+                cloudinary.uploader.destroy(public_id);
+                
+                console.log(public_id)
+               
+           }
+           
             if( !jugador ){
                 console.log('No es un jugador por id');
                 return false;

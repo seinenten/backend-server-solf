@@ -161,7 +161,7 @@ const fileUploadCloudinary = async (req, res = response) => {
         
 
          
-     const{secure_url}= await cloudinary.uploader.upload(path);
+     const{secure_url}= await cloudinary.uploader.upload(path,{folder: tipo});
      nombreArchivo=secure_url;
 
     
