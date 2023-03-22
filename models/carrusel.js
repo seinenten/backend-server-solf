@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 const CarruselSchema = Schema({
 
     img: {
+       
         type: String
     },
     nombre: {
