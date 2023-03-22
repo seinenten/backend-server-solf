@@ -34,7 +34,7 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                         titulo: 'Jugadores', url: '/gestor/jugadores'
                     },
                     {
-                        titulo: 'Carrusel', url: '/gestor/currusel'
+                        titulo: 'Carrusel', url: '/gestor/carruseles'
                     }
                 ]
             },
@@ -42,9 +42,9 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                 titulo: 'Diseño',
                 icono: 'edit',
                 submenu: [
-                    {
-                        titulo: 'carrusel', url: '/gestor/pepe'
-                    },
+                    // {
+                    //     titulo: 'carrusel', url: '/gestor/pepe'
+                    // },
                     {
                         titulo: 'icono', url: '/gestor/pepe'
                     }

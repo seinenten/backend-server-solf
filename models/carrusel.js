@@ -5,6 +5,10 @@ const CarruselSchema = Schema({
     img: {
         type: String
     },
+    nombre: {
+        type: String,
+        required: true
+    },
     usuario: {
         required: true,
         type: Schema.Types.ObjectId,
