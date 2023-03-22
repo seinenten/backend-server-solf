@@ -5,6 +5,7 @@ const express = require('express');
 var cors = require('cors');
 
 const { dbConnection } = require('./database/config.js');
+const fileUpload = require('express-fileupload');
 
 //Crear el servidor de express
 const app = express();
@@ -12,11 +13,16 @@ const app = express();
 // Configurar CORS
 app.use( cors() );
 
+app.use(fileUpload({
+    useTempFiles:true,
+    tempFileDir:'/tmp/'
+}));
 //Carpeta publica
 app.use(express.static('public')); 
 
 // Lectura y parseo del body
 app.use( express.json() );
+
 
 
 // Base de datos

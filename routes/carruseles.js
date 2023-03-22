@@ -23,9 +23,8 @@ router.get( '/:id'  , getCarruselPorId );
 router.post( '/', 
     [  
         validarJWT,
-        validarADMIN_ROLE,
-        check('img', 'la imagen del carrusel es necesaria').not().isEmpty(),
-        validarCampos
+       
+        
     ],
     CrearCarrusel
 );
