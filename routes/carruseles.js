@@ -10,7 +10,8 @@ const {
     ActualizarCarrusel,
     CrearCarrusel,
     getCarrusel,
-    getCarruselPorId
+    getCarruselPorId,
+    eliminarCarrusel
 } = require('../controllers/carruseles')
 
 const router = Router();
@@ -24,7 +25,7 @@ router.post( '/',
     [  
         validarJWT,
         validarADMIN_ROLE,
-        check('nombre', 'El nombre de la imagen del carrusel es necesaria').not().isEmpty(),
+        check('img', 'La imagen del carrusel es necesaria').not().isEmpty(),
         validarCampos
     ],
     CrearCarrusel
@@ -34,11 +35,17 @@ router.put( '/:id',
     [
         validarJWT,
         validarADMIN_ROLE,
-        check('nombre', 'El nombre de la imagen del carrusel es necesaria').not().isEmpty(),
+        check('img', 'La imagen del carrusel es necesaria').not().isEmpty(),
         validarCampos
     ], 
     ActualizarCarrusel 
 );
+
+router.delete( '/:id' , 
+                [
+                    validarJWT, 
+                    validarADMIN_ROLE 
+                ], eliminarCarrusel );
 
 
 

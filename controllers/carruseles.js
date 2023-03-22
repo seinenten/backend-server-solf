@@ -207,7 +207,37 @@ const ActualizarCarrusel = async(req, res = response) => {
         });
     }
 
+}
 
+const eliminarCarrusel = async(req, res = response) => {
+
+    const id = req.params.id
+
+    try {
+        const carrusel = await Carrusel.findById( id );
+
+        if( !carrusel ){
+            return res.status(404).json({
+                ok: true,
+                msg: 'Carrusel no encontrado por id'
+            });
+        }
+
+        await Carrusel.findByIdAndDelete( id );
+
+        res.json({
+            ok: true,
+            msg: 'Carrusel Eliminado'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+
+    }
 }
 
 
@@ -217,5 +247,6 @@ module.exports = {
     ActualizarCarrusel,
     CrearCarrusel,
     getCarrusel,
-    getCarruselPorId
+    getCarruselPorId,
+    eliminarCarrusel
 }
