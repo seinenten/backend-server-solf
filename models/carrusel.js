@@ -6,6 +6,9 @@ const CarruselSchema = Schema({
        
         type: String
     },
+    nombre: {
+        type:String
+    },
     usuario: {
         required: true,
         type: Schema.Types.ObjectId,

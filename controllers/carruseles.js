@@ -62,110 +62,32 @@ const getCarruselPorId = async(req, res = response) => {
 const CrearCarrusel = async(req, res = response) => {
 
     const uid = req.uid;
-    const img = req.files.imagen
-   console.log(req.files)
-   
+
+    const carrusel = new Carrusel({
+        usuario: uid,
+        ...req.body
+    });
+
+
     try {
 
-
-   // Validar que exista un archivo
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json({
-             ok: false,
-             msg: 'No hay ningun archivo'
-         });
-     }
-     
-              // Procesar la imagen...
-    
-              const file = req.files.imagen;
-     const nombreCortado = file.name.split('.'); //wolerine.1.3.2.jpg
-     const extensionArchivo = nombreCortado[ nombreCortado.length - 1 ];
-
-//     // Validar extension
-     const extensionesValidas = ['png','jpg','jpeg']; 
-     if ( !extensionesValidas.includes(extensionArchivo) ){
-         return res.status(400).json({
-             ok: false,
-             msg: 'No es una extension permitida'
-         });
-     }
-
-//     //Validar tamaño
-     if( !file.size >= 3000000 ){
-         return res.status(400).json({
-             ok: false,
-             msg: 'El archivo debe de tener un peso maximo de 3 mb'
-         });
-     }
-//     //Se termino de validar el tamaño
-
-//     // Generar el nombre del archivo 
-        let nombreArchivo ;
-    
-        
-     
-    
-// //  // Path para guardar la imagen
-
-    const path = toString(file.data);
-
-
-//     // Path para guardar la imagen
-        
-        const{secure_url}= await cloudinary.uploader.upload(path,{folder:'carruseles'});
-        nombreArchivo=secure_url;
-
-
-
-        console.log(nombreArchivo)
-
-
-//     // Mover la imagen
-     file.mv( path , async (err) => {
-         if (err){
-             console.log(err);
-             return res.status(500).json({
-                 ok: false,
-                 msg: 'Error al mover la imagen'
-             });
-         }
-       
-
-//         // Actualizar base de datos
-//         actualizarImagen( tipo, id, nombreArchivo );
-
-
-//         res.json({
-//             ok: true,
-//             msg: 'Archivo subido',
-//             nombreArchivo
-//         })
-//     });
-const carrusel = new Carrusel({
-    img:nombreArchivo, 
-    usuario: uid,
-    
-   
-
-    ...req.body,
-    
-} );
         const carruselDB = await carrusel.save();
         
         res.status(200).json({
             ok: true,
-            carrusel: carruselDB,
-            img:nombreArchivo
+            carrusel: carruselDB
         });
+
         
-    })} catch (error) {
+    } catch (error) {
         console.log(error);
         res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
-        });
+        }) 
+        
     }
+    
 
 
 }
@@ -183,7 +105,7 @@ const ActualizarCarrusel = async(req, res = response) => {
         if( !carrusel ){
             return res.status(404).json({
                 ok: true,
-                msg: 'Liga no encontrado por id'
+                msg: 'Carrusel no encontrado por id'
             });
         }
 

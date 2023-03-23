@@ -93,7 +93,7 @@ const fileUploadCloudinary = async (req, res = response) => {
     const id = req.params.id;
     const img=req.params.img
 
-    const tiposValidos = ['jugadores','equipos','ligas','usuarios'];
+    const tiposValidos = ['jugadores','equipos','ligas','usuarios','carruseles'];
    
     if ( !tiposValidos.includes(tipo) ){
         return res.status(400).json({

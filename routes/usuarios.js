@@ -10,6 +10,8 @@ const { validarJWT, validarADMIN_ROLE, validarADMIN_ROLE_o_MismoUsuario } = requ
 
 const { getUsuarios,getUsuariosporStatusFalse, getUsuariosporStatusTrue,crearUsuario, actualizarUsuario, eliminarUsuario, getEmails } = require('../controllers/usuarios');
 
+const { enviarCorreo } = require('../controllers/recuperarPassword');
+
 const router = Router();
 
 
@@ -22,7 +24,7 @@ router.get( '/statusfalse', validarJWT  , getUsuariosporStatusFalse );
 
 router.get( '/statustrue', validarJWT  , getUsuariosporStatusTrue );
 
-
+router.post('/recuperar',validarJWT, enviarCorreo)
 
 
 router.post( '/', 

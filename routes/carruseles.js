@@ -25,7 +25,7 @@ router.post( '/',
     [  
         validarJWT,
         validarADMIN_ROLE,
-        check('img', 'La imagen del carrusel es necesaria').not().isEmpty(),
+        check('nombre', 'el nombre del carrusel es necesario').not().isEmpty(),
         validarCampos
     ],
     CrearCarrusel
@@ -35,7 +35,7 @@ router.put( '/:id',
     [
         validarJWT,
         validarADMIN_ROLE,
-        check('img', 'La imagen del carrusel es necesaria').not().isEmpty(),
+        check('nombre', 'el nombre del carrusel es necesario').not().isEmpty(),
         validarCampos
     ], 
     ActualizarCarrusel 

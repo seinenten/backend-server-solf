@@ -6,6 +6,7 @@ cloudinary.config(process.env.CLOUDINARY_URL);
 const Usuario = require('../models/usuario');
 const Equipo = require('../models/equipo');
 const Liga = require('../models/liga');
+const Carrusel = require('../models/carrusel');
 const Jugador = require('../models/jugador');
 
 const borrarImagen = ( ) => {
@@ -40,7 +41,7 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
 
 
             
-            
+            equipo.img = nombreArchivo;
             await equipo.save();
             return true;
 
@@ -126,7 +127,31 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
            
 
             jugador.img = nombreArchivo;
-            await jugador.save();
+            await carrusel.save();
+            return true;
+        
+        break;
+        case 'carruseles':
+            const carrusel = await Carrusel.findById(id);
+            if(carrusel.img){
+                const nombreArr = carrusel.img.split('/');
+                const nombre    = nombreArr[ nombreArr.length - 1 ];
+                const [ public_id ] = nombre.split('.');
+                cloudinary.uploader.destroy(public_id);
+                
+                console.log(public_id)
+               
+           }
+           
+            if( !carrusel ){
+                console.log('No es un carrusel por id');
+                return false;
+            }    
+
+           
+
+            carrusel.img = nombreArchivo;
+            await carrusel.save();
             return true;
         
         break;

@@ -13,10 +13,7 @@ const app = express();
 // Configurar CORS
 app.use( cors() );
 
-app.use(fileUpload({
-    useTempFiles:true,
-    tempFileDir:'/tmp/'
-}));
+
 //Carpeta publica
 app.use(express.static('public')); 
 
