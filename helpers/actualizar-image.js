@@ -16,7 +16,6 @@ const borrarImagen = ( ) => {
 
 const actualizarImagen = async( tipo, id,nombreArchivo) => {
     
-   
     
     switch ( tipo ) {
         case 'equipos':
@@ -29,9 +28,8 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
                 cloudinary.uploader.destroy(public_id);
                 
                 console.log(public_id)
-               
-           }
-           
+            
+            }
             if( !equipo ){
                 console.log('No es un equipo por id');
                 return false;
@@ -50,31 +48,25 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
         case 'ligas':
 
             const liga = await Liga.findById(id);
-           if(liga.img){
+            if(liga.img){
                 const nombreArr = liga.img.split('/');
                 const nombre    = nombreArr[ nombreArr.length - 1 ];
                 const [ public_id ] = nombre.split('.');
                 cloudinary.uploader.destroy(public_id);
                 
                 console.log(public_id)
-               
-           }
-           
+            
+            }
             if( !liga ){
                 console.log('No es una liga por id');
                 return false;
             }    
 
-          
-
-           
-           
             liga.img = nombreArchivo;
-           
-             
+
             
             await liga.save();
-           
+
             return true;
         
         break;
@@ -89,9 +81,7 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
                 cloudinary.uploader.destroy(public_id);
                 
                 console.log(public_id)
-               
-           }
-           
+            }
             if( !usuario ){
                 console.log('No es un usuario por id');
                 return false;
@@ -116,18 +106,15 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
                 cloudinary.uploader.destroy(public_id);
                 
                 console.log(public_id)
-               
-           }
-           
+            }
             if( !jugador ){
                 console.log('No es un jugador por id');
                 return false;
             }    
 
-           
 
             jugador.img = nombreArchivo;
-            await carrusel.save();
+            await jugador.save();
             return true;
         
         break;
@@ -140,15 +127,12 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
                 cloudinary.uploader.destroy(public_id);
                 
                 console.log(public_id)
-               
-           }
-           
+            }
             if( !carrusel ){
                 console.log('No es un carrusel por id');
                 return false;
             }    
 
-           
 
             carrusel.img = nombreArchivo;
             await carrusel.save();
@@ -159,7 +143,7 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
         default:
 
     }
-  
+
 
 }
 
