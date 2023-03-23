@@ -38,18 +38,18 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                     }
                 ]
             },
-            {
-                titulo: 'Diseño',
-                icono: 'edit',
-                submenu: [
-                    // {
-                    //     titulo: 'carrusel', url: '/gestor/pepe'
-                    // },
-                    {
-                        titulo: 'icono', url: '/gestor/pepe'
-                    }
-                ]
-            }
+            // {
+            //     titulo: 'Diseño',
+            //     icono: 'edit',
+            //     submenu: [
+            //         // {
+            //         //     titulo: 'carrusel', url: '/gestor/pepe'
+            //         // },
+            //         {
+            //             titulo: 'icono', url: '/gestor/pepe'
+            //         }
+            //     ]
+            // }
         )
     }
 
