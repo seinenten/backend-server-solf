@@ -13,10 +13,9 @@ const fileUploadCloudinary = async (req, res = response) => {
     
     const tipo = req.params.tipo;
     const id = req.params.id;
-    const img=req.params.img
 
     const tiposValidos = ['jugadores','equipos','ligas','usuarios','carruseles'];
-   
+
     if ( !tiposValidos.includes(tipo) ){
         return res.status(400).json({
             ok: false,
@@ -33,80 +32,67 @@ const fileUploadCloudinary = async (req, res = response) => {
     }
 
     // Procesar la imagen...
-   
-   
+
     const file = req.files.imagen;
-  
+
      const nombreCortado = file.name.split('.'); //wolerine.1.3.2.jpg
-     const extensionArchivo = nombreCortado[ nombreCortado.length - 1 ];
+    const extensionArchivo = nombreCortado[ nombreCortado.length - 1 ];
 
     //Validar extension
     const extensionesValidas = ['png','jpg','jpeg']; 
-     if ( !extensionesValidas.includes(extensionArchivo) ){
+    if ( !extensionesValidas.includes(extensionArchivo) ){
          return res.status(400).json({
-             ok: false,
-             msg: 'No es una extension permitida'
-         });
-     }
+            ok: false,
+            msg: 'No es una extension permitida'
+        });
+    }
 
-     //Validar tamaño
-     if( !file.size >= 3000000 ){
+    //Validar tamaño
+    if( !file.size >= 3000000 ){
         return res.status(400).json({
             ok: false,
-             msg: 'El archivo debe de tener un peso maximo de 3 mb'
-         });
-     }
+            msg: 'El archivo debe de tener un peso maximo de 3 mb'
+        });
+    }
     //Se termino de validar el tamaño
 
     // Generar el nombre del archivo 
-       let nombreArchivo ;
-    
-        
-     
+        let nombreArchivo ;
     
     // //  // Path para guardar la imagen
 
     const path = toString(file.data);
-   
-     
+
     // // // // Mover la imagen
-     file.mv( path , async (err) => {
-         if (err){
-         console.log(err);
-             return res.status(500).json({
-                 ok: false,
-                 msg: 'Error al mover la imagen'
-             });
-         }
-         
+    file.mv( path , async (err) => {
+        if (err){
+        console.log(err);
+            return res.status(500).json({
+                ok: false,
+                msg: 'Error al mover la imagen'
+            });
+        }
         
         
+        
 
-         
-     const{secure_url}= await cloudinary.uploader.upload(path,{folder: tipo});
-     nombreArchivo=secure_url;
-
-    
-
-     console.log(nombreArchivo)
-    
+        
+        const{secure_url}= await cloudinary.uploader.upload(path,{folder: tipo});
+        nombreArchivo=secure_url;
         
          // Actualizar base de datos
-           actualizarImagen( tipo, id,nombreArchivo);
-           
-           res.json({
-               ok: true,
-               msg: 'Archivo subido',
-              nombreArchivo
-              
-          })
-       
-     
-        });  
-         
-    }
+        actualizarImagen( tipo, id,nombreArchivo);
+        
+        res.json({
+            ok: true,
+            msg: 'Archivo subido',
+            nombreArchivo
+        })
 
- 
+    });  
+}
+
+
 
 
 
@@ -119,7 +105,7 @@ const retornaImagen = ( req, res = response ) => {
     const tipo = req.params.tipo;
     const foto = req.params.foto;
 
-    const tiposValidos = ['jugadores','equipos','ligas','usuarios'];
+    const tiposValidos = ['jugadores','equipos','ligas','usuarios','carruseles'];
 
     if ( !tiposValidos.includes(tipo) ){
         return res.status(400).json({
