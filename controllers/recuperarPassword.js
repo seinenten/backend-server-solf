@@ -1,9 +1,10 @@
 const nodemailer = require('nodemailer');
-
+const bcrypt = require('bcryptjs');
+var generator =require('generate-password')
 
 const Usuario = require('../models/usuario');
-
-enviarEmail=async ()=>{
+//configuracion para enviar correos.
+enviarEmail=async (email,newPass)=>{
 
     const config={
         host:'smtp.gmail.com',
@@ -16,9 +17,9 @@ enviarEmail=async ()=>{
 
     const mensaje ={
         from: 'websolf@gmail.com',
-        to: 'websolf@gmail.com',
+        to: email,
         subject: 'correo de pruebas ',
-        text: ' Envio de link para restablecer la contraseña'
+        text: ` Envio de  contraseña : ${newPass}`
     } 
 
 
@@ -39,7 +40,7 @@ const enviarCorreo=async(req,res=response)=>{
 
 
     try {
-        const usuarioDB= await Usuario.findOne({nombre});
+        var usuarioDB= await Usuario.findOne({nombre});
         if(!usuarioDB){
             return res.status(400).json({
                 ok:false,
@@ -53,11 +54,35 @@ const enviarCorreo=async(req,res=response)=>{
             })
 
         }
+        
+        var newPass=generator.generate({
+            length:6,
+            numbers:true,
+            uppercase:false
+        })
 
-        enviarEmail();
+       
+
+        const salt = bcrypt.genSaltSync();
+        pass = bcrypt.hashSync( newPass, salt );
+        password=usuarioDB.password
+        password=pass
+       await Usuario.updateOne({ nombre: nombre }, {
+            $set: {
+                password: password,
+                
+            }
+        })
+       
+         
+
+//se envia el correo
+        enviarEmail(email,newPass);
+        const Email=email
         return res.status(200).json({
             ok: true,
-            msg: 'Correo Enviado'
+            msg: 'Correo Enviado',
+            Email
         })
 
 
@@ -68,6 +93,7 @@ const enviarCorreo=async(req,res=response)=>{
             msg:'Nel'
         })
     }
+
 
 }
 
