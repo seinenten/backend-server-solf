@@ -26,9 +26,9 @@ router.get( '/statusfalse', validarJWT  , getUsuariosporStatusFalse );
 router.get( '/statustrue', validarJWT  , getUsuariosporStatusTrue );
 
 //recuperar password por email
-router.post('/recuperar',validarJWT, enviarCorreo)
+router.post('/recuperar', enviarCorreo)
 //recuperar password por pregunta secreta
-router.post('/preguntaSecret',validarJWT, preguntaSecreta)
+router.post('/preguntaSecret', preguntaSecreta)
 
 
 router.post( '/', 

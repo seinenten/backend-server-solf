@@ -37,6 +37,7 @@ app.use( '/api/upload', require('./routes/uploads')   );
 
 //ruta carrusel 
 app.use( '/api/carruseles', require( './routes/carruseles' ) );
+app.use( '/api/preguntas', require( './routes/preguntas' ) );
 
 // Lo ultimo
 
