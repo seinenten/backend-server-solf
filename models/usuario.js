@@ -23,6 +23,19 @@ const UsuarioSchema = Schema({
         type: String,
         required: true,
     },
+    pregunta: {
+        type: Schema.Types.ObjectId,
+        ref: 'Preguntas',
+        
+    },
+    
+    respuesta: {
+        type: String,
+        
+        required: true,
+    },
+    
+
     img: {
         type: String
     },
