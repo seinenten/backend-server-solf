@@ -44,7 +44,7 @@ const restaurarBD=async(req,res=response)=>{
 
 exec('subirRespaldo.bat', (error, stdout, stderr) => {
   if (error) {
-    console.error(`Error al ejecutar respaldo.bat: ${error.message}`);
+    console.error(`Error al ejecutar subirRespaldo.bat: ${error.message}`);
     return;
   }
   if (stderr) {
