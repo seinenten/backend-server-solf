@@ -1,1 +1,1 @@
-mongorestore --uri mongodb+srv://trejo123:vAMMSmHFHr7kGOZI@micluster.4p13mei.mongodb.net --db C:\Users\52563\Desktop\respaldos\solf\solfdb
+mongorestore --uri mongodb+srv://trejo123:vAMMSmHFHr7kGOZI@micluster.4p13mei.mongodb.net C:\Users\52563\Desktop\respaldos\solf
