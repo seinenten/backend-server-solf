@@ -39,17 +39,26 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                 ]
             },
             // {
-            //     titulo: 'Diseño',
+            //     titulo: 'Respaldos',
             //     icono: 'edit',
             //     submenu: [
-            //         // {
-            //         //     titulo: 'carrusel', url: '/gestor/pepe'
-            //         // },
+            //         {
+            //             titulo: 'carrusel', url: '/gestor/pepe'
+            //         },
             //         {
             //             titulo: 'icono', url: '/gestor/pepe'
             //         }
             //     ]
-            // }
+            // },
+            {
+                titulo: 'Respaldos',
+                icono: 'edit',
+                submenu: [
+                    {
+                        titulo: 'Repaldos', url: '/gestor/restaurar'
+                    },
+                ]
+            }
         )
     }
 
