@@ -1,0 +1,1 @@
+mongodump --uri mongodb+srv://trejo123:vAMMSmHFHr7kGOZI@micluster.4p13mei.mongodb.net/solfdb --out=C:\Users\52563\Desktop\respaldos\solf
