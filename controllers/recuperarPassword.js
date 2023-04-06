@@ -51,11 +51,47 @@ enviarEmail=async (email,newPass)=>{
         //https://solf.onrender.com/auth/login
     } 
 
+    const verificacion ={
+        from: 'websolf@gmail.com',
+        to: email,
+        subject: 'Codigo de verificacion ',
+        text: ` Envio de codigo de verificacion :  ${newPass} 
+        ingresa el codigo en el siguiente link  https://solf.onrender.com/auth/login`
+        //https://solf.onrender.com/auth/login
+    }
 
     const transport=nodemailer.createTransport(config);
     const info = await transport.sendMail(mensaje);
     console.log(info);
 }
+
+
+
+confir=async (email,id)=>{
+
+    const config={
+        host:'smtp.gmail.com',
+        port: 587,
+        auth:{
+            user:'websolf@gmail.com',
+            pass:'pgoyeqzbcuijeiel'
+        }
+    }
+
+    const mensaje ={
+        from: 'websolf@gmail.com',
+        to: email,
+        subject: 'correo de pruebas ',
+        text: ` Envio de link para confirmar su cuenta : http://localhost:3005/api/usuarios/confirmar/${id}`
+        //https://solf.onrender.com/auth/login
+    } 
+
+    const transport=nodemailer.createTransport(config);
+    const info = await transport.sendMail(mensaje);
+    console.log(info);
+
+}
+
 
 
 
@@ -128,6 +164,70 @@ const enviarCorreo=async(req,res=response)=>{
 
 
 
+
+const verificarEmail=(req,res=response)=>{
+   
+    const{id}=req.params;
+    console.log(id);
+try{
+
+    confir(email,id);
+    const Email=email
+    return res.status(200).json({
+        ok: true,
+        msg: `Correo Enviado a ${Email} `
+        
+    })
+
+
+} catch (error) {
+    console.log(error)
+    return res.status(400).json({
+        ok:false,
+        msg:'Nel'
+    })
+}
+
+
+
+    // try {
+    //     var usuarioDB= await Usuario.findOne({id});
+    //     if(!usuarioDB){
+    //         return res.status(400).json({
+    //             ok:false,
+    //             msg:'El usuario no existe'
+    //         })
+    //     }
+    
+        
+// se genera una nueva contraseña
+        // var newPass=generator.generate({
+        //     length:6,
+        //     numbers:true,
+        //     uppercase:false
+        // })
+
+//se encripta la contraseña generada
+       
+
+    //    await Usuario.updateOne({ nombre: nombre }, {
+    //         $set: {
+    //             password: password,
+                
+    //         }
+    //     })
+       
+         
+
+//se envia el correo
+      
+    }
+
+
+
+
+
+
 //recuperar contraseña por pregunta secreta
 
 
@@ -190,5 +290,6 @@ module.exports={
     enviarEmail,
     enviarCorreo,
     enviarLink,
-    preguntaSecreta
+    preguntaSecreta,
+    verificarEmail
 }

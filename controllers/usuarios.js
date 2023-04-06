@@ -142,7 +142,7 @@ const crearUsuario = async(req, res = response) => {
 
         // Generar token
         const token = await generarJWT( usuario.id );
-    
+      
         res.json( {
             ok: true,
             usuario,

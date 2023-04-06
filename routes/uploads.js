@@ -7,6 +7,7 @@ const expressFileUpload = require('express-fileupload');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const {  retornaImagen, fileUploadCloudinary } = require('../controllers/uploads');
 const { restaurarBD, copiaBD } = require('../controllers/resataurarBD');
+const { validarCampos } = require('../middlewares/validar-campos');
 
 const router = Router();
 
@@ -16,8 +17,8 @@ router.put( '/:tipo/:id', validarJWT  , fileUploadCloudinary  );
 
 router.get( '/:tipo/:foto',   retornaImagen  );
 
-router.get('/copia',copiaBD)
+router.get('/copia',validarJWT,copiaBD)
 
-router.get('/restaurar',restaurarBD)
+router.get('/restaurar',validarJWT,restaurarBD)
 
 module.exports = router;

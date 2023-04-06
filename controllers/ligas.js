@@ -2,6 +2,7 @@ const { response } = require("express");
 
 
 const Liga = require('../models/liga');
+const usuario = require("../models/usuario");
 
 
 const getLigas = async(req, res = response) => {
@@ -129,14 +130,23 @@ const CrearLiga = async(req, res = response) => {
         usuario: uid,
         ...req.body
     } );
+   
 
     try {
 
-        const ligaDB = await liga.save();
+   const user=  await usuario.findById(uid)
+                                    .populate('usuario', 'nombre apellidoP apellidoM');
+            const ligaDB= await liga.save();
         
         res.status(200).json({
             ok: true,
-            liga: ligaDB
+            liga: ligaDB,
+            nombreUsuario:user.nombre,
+            apellido:user.apellidoP
+
+         
+
+        
         });
         
     } catch (error) {
