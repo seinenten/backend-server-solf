@@ -49,7 +49,7 @@ router.put( '/:id',
     ActualizarEquipo 
 );
 
-router.delete( '/desactivar/:id' , [
+router.put( '/desactivar/:id' , [
     validarJWT,
     validarADMIN_ROLE,
     check('status' , 'El status es obligatorio').not().isEmpty(),

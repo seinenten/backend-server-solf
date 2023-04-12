@@ -177,7 +177,7 @@ const eliminarEquipo = async (req, res = response) => {
 
         const cambiosEquipo = {
             ...req.body,
-            usuario: uid
+            usuario: id
         }
 
         await Equipo.findByIdAndUpdate( id, cambiosEquipo, { new: true } );

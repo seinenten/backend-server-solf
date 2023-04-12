@@ -13,7 +13,7 @@ const router = Router();
 
 router.use(expressFileUpload());
 
-router.put( '/:tipo/:id', validarJWT  , fileUploadCloudinary  );
+router.put( '/:tipo/:id',validarJWT ,fileUploadCloudinary );
 
 router.get( '/:tipo/:foto',   retornaImagen  );
 
