@@ -25,6 +25,28 @@ const getEquipos = async(req, res = response) => {
     })
 }
 
+const getEquiposPorliga = async(req, res = response) => {
+
+    const id = req.params.id;
+
+    //equipos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const equipos = await Equipo.find({"liga":id,"status":true})
+                    
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        equipos: equipos
+    })
+}
+
 const getEquiposPorStatusTrue = async(req, res = response) => {
 
     //equipos?desde=10&limite=3
@@ -209,5 +231,6 @@ module.exports = {
     ActualizarEquipo,
     eliminarEquipo,
     getEquiposPorStatusFalse,
-    getEquiposPorStatusTrue
+    getEquiposPorStatusTrue,
+    getEquiposPorliga
 }

@@ -13,13 +13,16 @@ const {
     getEquipos,
     getEquiposPorId,
     getEquiposPorStatusFalse,
-    getEquiposPorStatusTrue
+    getEquiposPorStatusTrue,
+    getEquiposPorliga
 } = require('../controllers/equipos')
 
 const router = Router();
 
 
 router.get( '/'  ,getEquipos );
+
+router.get('/liga/:id',getEquiposPorliga)
 
 router.get( '/statusFalse',getEquiposPorStatusFalse );
 
