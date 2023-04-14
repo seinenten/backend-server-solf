@@ -6,7 +6,7 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
             icono: 'home',
             submenu: [
                 {
-                    titulo: 'Inicio', url: '/dashboard'
+                    titulo: 'Inicio', url: '/inicio'
                 },
                 {
                     titulo: 'Mi cuenta', url: '/gestor/perfil'
