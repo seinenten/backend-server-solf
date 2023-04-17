@@ -6,7 +6,10 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
             icono: 'home',
             submenu: [
                 {
-                    titulo: 'Inicio', url: '/inicio'
+                    titulo: 'Inicio Panel', url: '/gestor/inicio'
+                },
+                {
+                    titulo: 'Inicio SOLF', url: '/inicio'
                 },
                 {
                     titulo: 'Mi cuenta', url: '/gestor/perfil'
