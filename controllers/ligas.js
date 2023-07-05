@@ -96,7 +96,7 @@ const getLigasPorNombre = async(req, res) => {
     // tipoCategoria: 'libre'
         let ligas;
         if(tipocategoria === '' && tipojuego === ''){
-            ligas= await Liga.find( { nombre: regex } , 'nombre tipoCategoria tipoJuego' )
+            ligas= await Liga.find( { nombre: regex } , 'nombre tipoCategoria tipoJuego descripcion' )
                                                 .limit( limite );
 
         }else if(tipocategoria !== '' && tipojuego === ''){
