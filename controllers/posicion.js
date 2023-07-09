@@ -1,12 +1,27 @@
 const { response } = require('express');
 const Posicion = require('../models/posicion');
+const resultados = require('../models/resultados');
+const Resultado = require('../models/resultados');
 
 const getPosiciones = async (req, res = response) => {
+  const { ligaId } = req.params;
   try {
-    const posiciones = await Posicion.find();
+    //Filtra los equipos por liga
+    const resultados = await Resultado.find({ liga: ligaId });
+    // genera una tabla por liga
+    const tablaPosiciones = generarTablaPosiciones(resultados);
+
+    const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
+      { liga: ligaId },
+      { posiciones: tablaPosiciones },
+      { upsert: true, new: true }
+    );
+
+
     res.status(200).json({
       ok: true,
-      posiciones: posiciones,
+
+      tablaPosiciones: tablaPosiciones
     });
   } catch (error) {
     console.log(error);
@@ -17,27 +32,110 @@ const getPosiciones = async (req, res = response) => {
   }
 };
 
-const getPosicionPorId = async (req, res = response) => {
-    const id = req.params.id;
-  
-    try {
-      const posicion = await Posicion.findById(id)
-        .populate('equipo', 'nombre descripcion img')
-        .select('equipo PJ PG PE PP GF GC DIF EF');
-  
-      res.status(200).json({
-        ok: true,
-        posicion: posicion,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        ok: false,
-        msg: 'Hable con el administrador',
-      });
+const generarTablaPosiciones = (resultados) => {
+  // Crear un objeto para almacenar las estadísticas de cada equipo
+  const estadisticasEquipos = {};
+
+  // Iterar sobre los resultados y actualizar las estadísticas de cada equipo
+  resultados.forEach((resultado) => {
+    const equipoLocal = resultado.equipoLocal;
+    const equipoVisitante = resultado.equipoVisitante;
+    const golesLocal = resultado.golesLocal;
+    const golesVisitante = resultado.golesVisitante;
+
+    // Actualizar las estadísticas del equipo local
+    if (!estadisticasEquipos[equipoLocal]) {
+      estadisticasEquipos[equipoLocal] = {
+        PJ: 0,
+        PG: 0,
+        PE: 0,
+        PP: 0,
+        GF: 0,
+        GC: 0,
+        Puntos: 0,
+      };
     }
-  };
-  
+    estadisticasEquipos[equipoLocal].PJ++;
+    estadisticasEquipos[equipoLocal].GF += golesLocal;
+    estadisticasEquipos[equipoLocal].GC += golesVisitante;
+    if (golesLocal > golesVisitante) {
+      estadisticasEquipos[equipoLocal].PG++;
+      estadisticasEquipos[equipoLocal].Puntos += 3;
+    } else if (golesLocal === golesVisitante) {
+      estadisticasEquipos[equipoLocal].PE++;
+      estadisticasEquipos[equipoLocal].Puntos += 1;
+    } else {
+      estadisticasEquipos[equipoLocal].PP++;
+    }
+
+    // Actualizar las estadísticas del equipo visitante
+    if (!estadisticasEquipos[equipoVisitante]) {
+      estadisticasEquipos[equipoVisitante] = {
+        PJ: 0,
+        PG: 0,
+        PE: 0,
+        PP: 0,
+        GF: 0,
+        GC: 0,
+        Puntos: 0,
+      };
+    }
+    estadisticasEquipos[equipoVisitante].PJ++;
+    estadisticasEquipos[equipoVisitante].GF += golesVisitante;
+    estadisticasEquipos[equipoVisitante].GC += golesLocal;
+    if (golesVisitante > golesLocal) {
+      estadisticasEquipos[equipoVisitante].PG++;
+      estadisticasEquipos[equipoVisitante].Puntos += 3;
+    } else if (golesVisitante === golesLocal) {
+      estadisticasEquipos[equipoVisitante].PE++;
+      estadisticasEquipos[equipoVisitante].Puntos += 1;
+    } else {
+      estadisticasEquipos[equipoVisitante].PP++;
+    }
+  });
+
+  // Convertir el objeto de estadísticas en un array de posiciones
+  const tablaPosiciones = Object.entries(estadisticasEquipos).map(([equipo, estadisticas]) => ({
+    equipo,
+    ...estadisticas,
+  }));
+
+  // Ordenar la tabla de posiciones por puntos y diferencia de goles
+  tablaPosiciones.sort((a, b) => {
+    if (a.Puntos !== b.Puntos) {
+      return b.Puntos - a.Puntos; // Orden descendente por puntos
+    }
+    return b.GF - b.GC - (a.GF - a.GC); // Orden descendente por diferencia de goles
+  });
+
+
+  return tablaPosiciones;
+};
+
+
+
+
+const getPosicionPorId = async (req, res = response) => {
+  const id = req.params.id;
+
+  try {
+    const posicion = await Posicion.findById(id)
+      .populate('equipo', 'nombre descripcion img')
+      .select('equipo PJ PG PE PP GF GC DIF EF');
+
+    res.status(200).json({
+      ok: true,
+      posicion: posicion,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Hable con el administrador',
+    });
+  }
+};
+
 
 const crearPosicion = async (req, res = response) => {
   const posicion = new Posicion(req.body);
@@ -93,6 +191,7 @@ const eliminarPosicion = async (req, res = response) => {
 module.exports = {
   getPosiciones,
   getPosicionPorId,
+  generarTablaPosiciones,
   crearPosicion,
   actualizarPosicion,
   eliminarPosicion,

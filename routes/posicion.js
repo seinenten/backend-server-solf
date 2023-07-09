@@ -35,7 +35,7 @@ router.post(
 
 // Ruta: GET /posiciones
 // Obtener todas las posiciones
-router.get('/', getPosiciones);
+router.get('/:ligaId', getPosiciones);
 
 // Ruta: GET /posiciones/:id
 // Obtener una posición por su ID

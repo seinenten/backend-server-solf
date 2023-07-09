@@ -1,43 +1,48 @@
 const { Schema, model } = require('mongoose');
 
 const PosicionSchema = Schema({
-  equipo: {
+  liga: {
     type: Schema.Types.ObjectId,
-    ref: 'Equipo',
+    ref: 'Liga',
     required: true,
+    unique: true
   },
-  PJ: {
-    type: Number,
-    required: true,
-  },
-  PG: {
-    type: Number,
-    required: true,
-  },
-  PE: {
-    type: Number,
-    required: true,
-  },
-  PP: {
-    type: Number,
-    required: true,
-  },
-  GF: {
-    type: Number,
-    required: true,
-  },
-  GC: {
-    type: Number,
-    required: true,
-  },
-  DIF: {
-    type: Number,
-    required: true,
-  },
-  EF: {
-    type: Number,
-    required: true,
-  },
+  posiciones: [
+    {
+      equipo: {
+        type: Schema.Types.ObjectId,
+        ref: 'Equipo',
+        required: true
+      },
+      PJ: {
+        type: Number,
+        default: 0
+      },
+      PG: {
+        type: Number,
+        default: 0
+      },
+      PE: {
+        type: Number,
+        default: 0
+      },
+      PP: {
+        type: Number,
+        default: 0
+      },
+      GF: {
+        type: Number,
+        default: 0
+      },
+      GC: {
+        type: Number,
+        default: 0
+      },
+      Puntos: {
+        type: Number
+      }
+    }
+  ]
 });
 
 module.exports = model('Posicion', PosicionSchema);

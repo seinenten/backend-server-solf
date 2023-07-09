@@ -11,14 +11,14 @@ const fileUpload = require('express-fileupload');
 const app = express();
 
 // Configurar CORS
-app.use( cors() );
+app.use(cors());
 
 
 //Carpeta publica
-app.use(express.static('public')); 
+app.use(express.static('public'));
 
 // Lectura y parseo del body
-app.use( express.json() );
+app.use(express.json());
 
 
 
@@ -27,28 +27,33 @@ dbConnection();
 
 
 // Rutas
-app.use( '/api/usuarios', require( './routes/usuarios' ) );
-app.use( '/api/login', require( './routes/auth' ) );
-app.use( '/api/ligas', require( './routes/ligas' ) );
-app.use( '/api/equipos', require( './routes/equipos' ) );
-app.use( '/api/jugadores', require( './routes/jugadores' ) );
-app.use( '/api/todo', require('./routes/busquedas')   );
-app.use( '/api/upload', require('./routes/uploads')   );
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
+app.use('/api/ligas', require('./routes/ligas'));
+app.use('/api/equipos', require('./routes/equipos'));
+app.use('/api/jugadores', require('./routes/jugadores'));
+app.use('/api/todo', require('./routes/busquedas'));
+app.use('/api/upload', require('./routes/uploads'));
+app.use('/api/posiciones', require('./routes/posicion'));
+app.use('/api/resultados', require('./routes/resultados'))
+app.use('/api/jornadas', require('./routes/jornadas'))
+
+
 
 // Rutas prenda
 app.use( '/api/prendas', require( './routes/prendas' ) );
 
 
 //ruta carrusel 
-app.use( '/api/carruseles', require( './routes/carruseles' ) );
-app.use( '/api/preguntas', require( './routes/preguntas' ) );
+app.use('/api/carruseles', require('./routes/carruseles'));
+app.use('/api/preguntas', require('./routes/preguntas'));
 
 // Lo ultimo
 
-app.get('*', (req,res) => {
-    res.sendFile( path.resolve( __dirname, 'public/index.html' ) );
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/index.html'));
 });
 
-app.listen( process.env.PORT , () => {
+app.listen(process.env.PORT, () => {
     console.log('Servidor corriendo en puerto ' + process.env.PORT);
-} )
+})
