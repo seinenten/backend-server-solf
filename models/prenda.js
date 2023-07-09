@@ -18,9 +18,10 @@ const PrendaSchema = Schema({
         type: String,
         required: true,
     },
-    img: {
+    img:{
         type: String
     }
+    
 });
 
 PrendaSchema.method('toJSON', function () {

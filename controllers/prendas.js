@@ -13,13 +13,13 @@ const getPrendas = async(req, res = response) => {
 
     const prendas = await Prenda.find()
                                 //obtener el nombre del usuario que creo la liga, y sus otras propiedades
-                                .populate('nombre descripcion talla precio img')
+                                .populate('liga' , 'nombre descripcion talla precio img')
                                     .skip( desde )
                                     .limit( limite )
 
     res.status(200).json({
         ok: true,
-        ligas: prendas
+        prendas: prendas
     });
 }
 
@@ -30,7 +30,7 @@ const getPrendasPorId = async(req, res = response) => {
 
         const prenda = await Prenda.findById(id)
                                     //obtener el nombre del usuario que creo la liga, y sus otras propiedades
-                                    .populate('nombre descripcion talla precio img');
+                                    .populate('liga' , 'nombre descripcion talla precio img');
     
         res.status(200).json({
             ok: true,
@@ -51,7 +51,6 @@ const getPrendasPorId = async(req, res = response) => {
 
 const CrearPrenda = async(req, res = response) => {
 
-    const uid = req.uid;
     const prenda = new Prenda({
         ...req.body
     } );
@@ -98,7 +97,7 @@ const ActualizarPrenda = async(req, res = response) => {
 
         res.json({
             ok: true,
-            liga: prendaActualizado
+            prenda: prendaActualizado
         });
         
     } catch (error) {
