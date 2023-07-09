@@ -35,6 +35,10 @@ app.use( '/api/jugadores', require( './routes/jugadores' ) );
 app.use( '/api/todo', require('./routes/busquedas')   );
 app.use( '/api/upload', require('./routes/uploads')   );
 
+// Rutas prenda
+app.use( '/api/prendas', require( './routes/prendas' ) );
+
+
 //ruta carrusel 
 app.use( '/api/carruseles', require( './routes/carruseles' ) );
 app.use( '/api/preguntas', require( './routes/preguntas' ) );
