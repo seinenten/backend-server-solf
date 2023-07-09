@@ -10,39 +10,27 @@ const {
     ActualizarJugador,
     CrearJugador,
     eliminarJugador,
-    getJugadores,    
+    getJugadores,
     getJugadoresPorId,
     getJugadoresPorStatusFalse,
-    getJugadoresPorStatusTrue
+    getJugadoresPorStatusTrue,
+    getjugadoresPorNombre
 } = require('../controllers/jugadores')
 
 const router = Router();
 
 
-router.get( '/'  ,getJugadores );
+router.get('/', getJugadores);
 
+router.get('/nombre/:nombre', getjugadoresPorNombre);
 
-router.get( '/statusFalse'  ,getJugadoresPorStatusFalse );
+router.get('/statusFalse', getJugadoresPorStatusFalse);
 
-router.get( '/statusTrue'  ,getJugadoresPorStatusTrue );
+router.get('/statusTrue', getJugadoresPorStatusTrue);
 
-router.get( '/:id'  , getJugadoresPorId );
+router.get('/:id', getJugadoresPorId);
 
-router.post( '/', 
-    [  
-        validarJWT,
-        check('nombre', 'el Nombre es necesario').not().isEmpty(),
-        check('apellidoP', 'el Apellido Paterno es necesario').not().isEmpty(),
-        check('apellidoM', 'el Apellido Materno es necesario').not().isEmpty(),
-        check('curp', 'la curp es necesaria').not().isEmpty(),
-        // check('liga','El id de la Liga debe de ser valido').isMongoId(),
-        check('equipo','El id del equipo debe de ser valido').isMongoId(),
-        validarCampos
-    ],
-    CrearJugador
-);
-
-router.put( '/:id', 
+router.post('/',
     [
         validarJWT,
         check('nombre', 'el Nombre es necesario').not().isEmpty(),
@@ -50,18 +38,32 @@ router.put( '/:id',
         check('apellidoM', 'el Apellido Materno es necesario').not().isEmpty(),
         check('curp', 'la curp es necesaria').not().isEmpty(),
         // check('liga','El id de la Liga debe de ser valido').isMongoId(),
-        check('equipo','El id del equipo debe de ser valido').isMongoId(),
+        check('equipo', 'El id del equipo debe de ser valido').isMongoId(),
         validarCampos
-    ], 
+    ],
+    CrearJugador
+);
+
+router.put('/:id',
+    [
+        validarJWT,
+        check('nombre', 'el Nombre es necesario').not().isEmpty(),
+        check('apellidoP', 'el Apellido Paterno es necesario').not().isEmpty(),
+        check('apellidoM', 'el Apellido Materno es necesario').not().isEmpty(),
+        check('curp', 'la curp es necesaria').not().isEmpty(),
+        // check('liga','El id de la Liga debe de ser valido').isMongoId(),
+        check('equipo', 'El id del equipo debe de ser valido').isMongoId(),
+        validarCampos
+    ],
     ActualizarJugador
 );
 
-router.put( '/desactivar/:id' ,[
+router.put('/desactivar/:id', [
     validarJWT,
     validarADMIN_ROLE,
-    check('status' , 'El status es obligatorio').not().isEmpty(),
+    check('status', 'El status es obligatorio').not().isEmpty(),
     validarCampos
-], eliminarJugador );
+], eliminarJugador);
 
 
 
