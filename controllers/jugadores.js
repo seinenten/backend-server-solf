@@ -34,6 +34,7 @@ const getjugadoresPorNombre = async (req, res) => {
     // tipoCategoria: 'libre'
     let jugador;
     jugador = await Jugador.find({ nombre: regex }, 'nombre apellidoP apellidoM img ')
+        .populate('equipo', 'nombre img descripcion liga')
         .limit(limite);
 
 
