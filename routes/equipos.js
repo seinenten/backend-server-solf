@@ -14,7 +14,8 @@ const {
     getEquiposPorId,
     getEquiposPorStatusFalse,
     getEquiposPorStatusTrue,
-    getEquiposPorliga
+    getEquiposPorliga,
+    getEquiposPorNombre
 } = require('../controllers/equipos')
 
 const router = Router();
@@ -29,6 +30,8 @@ router.get( '/statusFalse',getEquiposPorStatusFalse );
 router.get( '/statusTrue',getEquiposPorStatusTrue );
 
 router.get( '/:id'  , getEquiposPorId );
+
+router.get('/nombre/:nombre', getEquiposPorNombre);
 
 router.post( '/', 
     [  

@@ -1,6 +1,5 @@
 const { response } = require('express');
 const Posicion = require('../models/posicion');
-const resultados = require('../models/resultados');
 const Resultado = require('../models/resultados');
 
 const getPosiciones = async (req, res = response) => {

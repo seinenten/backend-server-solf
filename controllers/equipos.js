@@ -112,6 +112,23 @@ const getEquiposPorId = async(req, res = response) => {
     }
 }
 
+const getEquiposPorNombre = async (req, res) => {
+    const busqueda = req.params.nombre;
+    const regex = new RegExp(busqueda, 'i');
+    const limite = Number(req.query.limite) || 0;
+
+    let equipos;
+    equipos = await Equipo.find({ nombre: regex }, 'nombre img descripcion')
+        .populate('liga', 'nombre descripcion tipoCategoria img tipoJuego')
+        .limit(limite);
+
+    res.json({
+        ok: true,
+        equipos
+    })
+
+}
+
 const CrearEquipo = async(req, res = response) => {
 
     const uid = req.uid;
@@ -232,5 +249,6 @@ module.exports = {
     eliminarEquipo,
     getEquiposPorStatusFalse,
     getEquiposPorStatusTrue,
-    getEquiposPorliga
+    getEquiposPorliga,
+    getEquiposPorNombre
 }
