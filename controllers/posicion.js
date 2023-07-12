@@ -6,7 +6,12 @@ const getPosiciones = async (req, res = response) => {
   const { ligaId } = req.params;
   try {
     //Filtra los equipos por liga
-    const resultados = await Resultado.find({ liga: ligaId });
+    const resultados = await Resultado.find({ liga: ligaId })
+
+    const equipos = await Resultado.find({ liga: ligaId })
+                  .populate('liga', 'nombre img descripcion')
+                  .populate('equipoLocal', 'nombre img descripcion')
+                  .populate('equipoVisitante', 'nombre img descripcion') 
     // genera una tabla por liga
     const tablaPosiciones = generarTablaPosiciones(resultados);
 
@@ -16,10 +21,9 @@ const getPosiciones = async (req, res = response) => {
       { upsert: true, new: true }
     );
 
-
     res.status(200).json({
       ok: true,
-
+      equipos:equipos,
       tablaPosiciones: tablaPosiciones
     });
   } catch (error) {

@@ -39,7 +39,7 @@ router.get('/:ligaId', getPosiciones);
 
 // Ruta: GET /posiciones/:id
 // Obtener una posición por su ID
-router.get('/:id', getPosicionPorId);
+// router.get('/:id', getPosicionPorId);
 
 // Ruta: PUT /posiciones/:id
 // Actualizar una posición por su ID
