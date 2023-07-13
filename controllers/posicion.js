@@ -1,7 +1,7 @@
 const { response } = require('express');
 const Posicion = require('../models/posicion');
 const Resultado = require('../models/resultados');
-
+const Liga = require('../models/liga');
 const getPosiciones = async (req, res = response) => {
   const { ligaId } = req.params;
   try {
@@ -9,9 +9,9 @@ const getPosiciones = async (req, res = response) => {
     const resultados = await Resultado.find({ liga: ligaId })
 
     const equipos = await Resultado.find({ liga: ligaId })
-                  .populate('liga', 'nombre img descripcion')
-                  .populate('equipoLocal', 'nombre img descripcion')
-                  .populate('equipoVisitante', 'nombre img descripcion') 
+      .populate('liga', 'nombre img descripcion')
+      .populate('equipoLocal', 'nombre img descripcion')
+      .populate('equipoVisitante', 'nombre img descripcion')
     // genera una tabla por liga
     const tablaPosiciones = generarTablaPosiciones(resultados);
 
@@ -23,7 +23,56 @@ const getPosiciones = async (req, res = response) => {
 
     res.status(200).json({
       ok: true,
-      equipos:equipos,
+      equipos: equipos,
+      tablaPosiciones: tablaPosiciones
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Hable con el administrador',
+    });
+  }
+};
+
+const getPosicionesPornombre = async (req, res = response) => {
+  const busqueda = req.params.nombre;
+  const regex = new RegExp(busqueda, 'i');
+  const limite = Number(req.query.limite) || 0;
+  const liga = await Liga.findOne({ nombre: regex });
+
+  if (!liga) {
+    return res.status(404).json({
+      ok: false,
+      msg: 'Liga no encontrada',
+    });
+  }
+  try {
+
+
+    // Busca la liga por su nombre en lugar de su ID
+
+
+    //Filtra los equipos por liga
+
+    const resultados = await Resultado.find({ liga: liga._id })
+
+    const equipos = await Resultado.find({ liga: liga._id })
+      .populate('liga', 'nombre img')
+      .populate('equipoLocal', 'nombre img')
+      .populate('equipoVisitante', 'nombre img')
+    // genera una tabla por liga
+    const tablaPosiciones = generarTablaPosiciones(resultados);
+
+    const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
+      { liga: liga._id },
+      { posiciones: tablaPosiciones },
+      { upsert: true, new: true }
+    );
+
+    res.status(200).json({
+      ok: true,
+      equipos: equipos,
       tablaPosiciones: tablaPosiciones
     });
   } catch (error) {
@@ -193,6 +242,7 @@ const eliminarPosicion = async (req, res = response) => {
 
 module.exports = {
   getPosiciones,
+  getPosicionesPornombre,
   getPosicionPorId,
   generarTablaPosiciones,
   crearPosicion,

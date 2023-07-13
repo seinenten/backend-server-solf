@@ -8,7 +8,8 @@ const {
     getPosiciones,
     getPosicionPorId,
     actualizarPosicion,
-    eliminarPosicion
+    eliminarPosicion,
+    getPosicionesPornombre
 } = require('../controllers/posicion');
 
 const router = Router();
@@ -37,9 +38,7 @@ router.post(
 // Obtener todas las posiciones
 router.get('/:ligaId', getPosiciones);
 
-// Ruta: GET /posiciones/:id
-// Obtener una posición por su ID
-// router.get('/:id', getPosicionPorId);
+router.get('/nombre/:nombre', getPosicionesPornombre);
 
 // Ruta: PUT /posiciones/:id
 // Actualizar una posición por su ID
