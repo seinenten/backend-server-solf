@@ -57,10 +57,10 @@ const getPosicionesPornombre = async (req, res = response) => {
 
     const resultados = await Resultado.find({ liga: liga._id })
 
-    const equipos = await Resultado.find({ liga: liga._id })
-      .populate('liga', 'nombre img')
-      .populate('equipoLocal', 'nombre img')
-      .populate('equipoVisitante', 'nombre img')
+    // const equipos = await Resultado.find({ liga: liga._id })
+    //   .populate('liga', 'nombre img')
+    //   .populate('equipoLocal', 'nombre img')
+    //   .populate('equipoVisitante', 'nombre img')
     // genera una tabla por liga
     const tablaPosiciones = generarTablaPosiciones(resultados);
 
@@ -68,12 +68,23 @@ const getPosicionesPornombre = async (req, res = response) => {
       { liga: liga._id },
       { posiciones: tablaPosiciones },
       { upsert: true, new: true }
-    );
+    ).populate('posiciones.equipo', 'nombre');;
 
+    const posicionesConNombreEquipo = tablaPosicionesPorLiga.posiciones.map((posicion) => {
+      return {
+        equipo: posicion.equipo.nombre,
+        PJ: posicion.PJ,
+        PG: posicion.PG,
+        PE: posicion.PE,
+        PP: posicion.PP,
+        GF: posicion.GF,
+        GC: posicion.GC,
+        Puntos: posicion.Puntos,
+      };
+    });
     res.status(200).json({
       ok: true,
-      equipos: equipos,
-      tablaPosiciones: tablaPosiciones
+      tablaPosiciones: posicionesConNombreEquipo
     });
   } catch (error) {
     console.log(error);
