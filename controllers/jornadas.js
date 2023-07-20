@@ -23,6 +23,31 @@ const getJornadasEnfrentamientos = async (req, res = response) => {
     }
 };
 
+const getJornadasPorliga = async(req, res = response) => {
+
+    const id = req.params.id;
+
+    //equipos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const jornadas = await JornadaEnfrentamiento.find({"liga":id})
+                    .populate('liga', 'nombre') // Popula la información de la liga
+                    .populate('enfrentamientos.equipoLocal', 'nombre') // Popula la información del equipo local
+                    .populate('enfrentamientos.equipoVisitante', 'nombre') // Popula la información del equipo visitante
+                    .sort({ fechaHora: 1 })
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        jornadas: jornadas
+    })
+}
+
 // Crear una nueva jornada de enfrentamiento
 const crearJornadaEnfrentamiento = async (req, res = response) => {
     const { liga, enfrentamientos } = req.body;
@@ -97,5 +122,6 @@ module.exports = {
     getJornadasEnfrentamientos,
     crearJornadaEnfrentamiento,
     actualizarJornadaEnfrentamiento,
-    eliminarJornadaEnfrentamiento
+    eliminarJornadaEnfrentamiento,
+    getJornadasPorliga
 };

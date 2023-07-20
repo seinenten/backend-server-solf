@@ -7,7 +7,8 @@ const {
     getJornadasEnfrentamientos,
     crearJornadaEnfrentamiento,
     actualizarJornadaEnfrentamiento,
-    eliminarJornadaEnfrentamiento
+    eliminarJornadaEnfrentamiento, 
+    getJornadasPorliga
 } = require('../controllers/jornadas');
 
 const router = Router();
@@ -15,6 +16,8 @@ const router = Router();
 // Ruta: GET /jornadas-enfrentamientos
 // Obtener todas las jornadas de enfrentamientos
 router.get('/', getJornadasEnfrentamientos);
+
+router.get('/liga/:id',getJornadasPorliga)
 
 // Ruta: POST /jornadas-enfrentamientos
 // Crear una nueva jornada de enfrentamiento
