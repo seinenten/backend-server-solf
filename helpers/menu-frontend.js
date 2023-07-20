@@ -31,6 +31,9 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                         titulo: 'Ligas', url: '/gestor/ligas'
                     },
                     {
+                        titulo: 'Jornadas', url: '/gestor/jornadas'
+                    },
+                    {
                         titulo: 'Equipos', url: '/gestor/equipos'
                     },
                     {
