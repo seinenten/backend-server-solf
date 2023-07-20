@@ -40,7 +40,13 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                         titulo: 'Jugadores', url: '/gestor/jugadores'
                     },
                     {
+                        titulo: 'Logo', url: '/gestor/logo'
+                    },
+                    {
                         titulo: 'Carrusel', url: '/gestor/carruseles'
+                    },                    
+                    {
+                        titulo: 'Estadios', url: '/gestor/estadios'
                     }
                 ]
             },
