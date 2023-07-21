@@ -1,6 +1,6 @@
 const { response } = require('express');
 const JornadaEnfrentamiento = require('../models/jornadas');
-
+const moment = require('moment');
 // Obtener todas las jornadas de enfrentamientos
 const getJornadasEnfrentamientos = async (req, res = response) => {
     try {
@@ -23,38 +23,52 @@ const getJornadasEnfrentamientos = async (req, res = response) => {
     }
 };
 
-const getJornadasPorliga = async(req, res = response) => {
-
+const getJornadasPorliga = async (req, res = response) => {
     const id = req.params.id;
 
-    //equipos?desde=10&limite=3
+    try {
+        const fechaActual = moment().format('YYYY-MM-DD'); // Obtenemos la fecha y hora actual
 
-    const desde =  Number(req.query.desde)  || 0;
-    const limite = Number(req.query.limite) || 0;
 
-    const jornadas = await JornadaEnfrentamiento.find({"liga":id})
-                    .populate('liga', 'nombre') // Popula la información de la liga
-                    .populate('enfrentamientos.equipoLocal', ['nombre','img']) // Popula la información del equipo local
-                    .populate('enfrentamientos.equipoVisitante', ['nombre','img']) // Popula la información del equipo visitante
-                    .sort({ fechaHora: 1 })
-                    .skip( desde )
-                    .limit( limite );
-                                
-                                
+        const jornadaActual = await JornadaEnfrentamiento.findOne({
+            liga: id,
+            fecha: { $gte: fechaActual },
+        })
+            .populate('liga', 'nombre')
+            .populate('enfrentamientos.equipoLocal', ['nombre', 'img'])
+            .populate('enfrentamientos.equipoVisitante', ['nombre', 'img'])
+            .sort({ fecha: 1 }) // Ordenamos por fecha ascendente para obtener la jornada más cercana primero
+            .limit(1); // Limitamos el resultado a 1 jornada
 
-    res.status(200).json({
-        ok: true,
-        jornadas: jornadas
-    })
-}
+        if (!jornadaActual) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Jornada actual no encontrada para la liga especificada',
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            jornadaActual,
+        });
+    } catch (error) {
+        console.error('Error al obtener la jornada actual:', error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador',
+        });
+    }
+};
+
 
 // Crear una nueva jornada de enfrentamiento
 const crearJornadaEnfrentamiento = async (req, res = response) => {
-    const { liga, enfrentamientos } = req.body;
+    const { liga, fecha, enfrentamientos } = req.body;
 
     try {
         const jornadaEnfrentamiento = new JornadaEnfrentamiento({
             liga,
+            fecha,
             enfrentamientos
         });
 

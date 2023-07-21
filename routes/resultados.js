@@ -19,7 +19,7 @@ router.post(
     [
         validarJWT,
         validarADMIN_ROLE,
-        check('resultados', 'Se requiere un arreglo de resultados').isArray(),
+
         check('resultados.*.equipoLocal', 'El ID del equipo local es obligatorio').not().isEmpty(),
         check('resultados.*.equipoVisitante', 'El ID del equipo visitante es obligatorio').not().isEmpty(),
         check('resultados.*.golesLocal', 'El valor de goles local es obligatorio').isInt(),

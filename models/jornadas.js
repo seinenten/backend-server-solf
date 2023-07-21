@@ -10,6 +10,10 @@ const JornadaSchema = Schema({
         ref: 'Liga',
         required: true
     },
+    fecha: {
+        type: Date,
+        required: true
+    },
     enfrentamientos: [
         {
             equipoLocal: {
@@ -32,7 +36,7 @@ const JornadaSchema = Schema({
 });
 
 JornadaSchema.method('toJSON', function () {
-    const { __v , ...object } = this.toObject();
+    const { __v, ...object } = this.toObject();
 
     return object;
 });
