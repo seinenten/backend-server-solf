@@ -6,8 +6,8 @@ const getJornadasEnfrentamientos = async (req, res = response) => {
     try {
         const jornadas = await JornadaEnfrentamiento.find()
             .populate('liga', 'nombre') // Popula la información de la liga
-            .populate('enfrentamientos.equipoLocal', 'nombre') // Popula la información del equipo local
-            .populate('enfrentamientos.equipoVisitante', 'nombre') // Popula la información del equipo visitante
+            .populate('enfrentamientos.equipoLocal', ['nombre', 'img']) // Popula la información del equipo local
+            .populate('enfrentamientos.equipoVisitante', ['nombre', 'img']) // Popula la información del equipo visitante
             .sort({ fechaHora: 1 }); // Ordena por fecha y hora ascendente
 
         res.status(200).json({
