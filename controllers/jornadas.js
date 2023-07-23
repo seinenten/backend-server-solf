@@ -61,6 +61,43 @@ const getJornadasPorliga = async (req, res = response) => {
 };
 
 
+const getJornadasenfrentamientosPorliga = async (req, res = response) => {
+    const id = req.params.id;
+
+    try {
+        const fechaActual = moment().format('YYYY-MM-DD'); // Obtenemos la fecha y hora actual
+
+
+        const jornadas = await JornadaEnfrentamiento.findOne({
+            liga: id,
+            fecha: { $gte: fechaActual },
+        })
+            .populate('liga', 'nombre')
+            .populate('enfrentamientos.equipoLocal', ['nombre', 'img'])
+            .populate('enfrentamientos.equipoVisitante', ['nombre', 'img'])
+            .sort({ fecha: 1 }) // Ordenamos por fecha ascendente para obtener la jornada más cercana primero
+            .limit(1); // Limitamos el resultado a 1 jornada
+
+        if (!jornadas) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Jornada actual no encontrada para la liga especificada',
+            });
+        }
+
+        res.status(200).json({
+            ok: true,
+            enfrentamientos: jornadas.enfrentamientos
+        });
+    } catch (error) {
+        console.error('Error al obtener la jornada actual:', error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador',
+        });
+    }
+};
+
 // Crear una nueva jornada de enfrentamiento
 const crearJornadaEnfrentamiento = async (req, res = response) => {
     const { liga, fecha, enfrentamientos } = req.body;
@@ -86,6 +123,8 @@ const crearJornadaEnfrentamiento = async (req, res = response) => {
         });
     }
 };
+
+
 
 // Actualizar una jornada de enfrentamiento existente
 const actualizarJornadaEnfrentamiento = async (req, res = response) => {
@@ -137,5 +176,6 @@ module.exports = {
     crearJornadaEnfrentamiento,
     actualizarJornadaEnfrentamiento,
     eliminarJornadaEnfrentamiento,
-    getJornadasPorliga
+    getJornadasPorliga,
+    getJornadasenfrentamientosPorliga
 };
