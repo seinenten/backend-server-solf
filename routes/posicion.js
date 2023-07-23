@@ -7,6 +7,7 @@ const {
     crearPosicion,
     getPosiciones,
     getPosicionPorId,
+    getPosicionesPorId,
     actualizarPosicion,
     eliminarPosicion,
     getPosicionesPornombre
@@ -36,7 +37,7 @@ router.post(
 
 // Ruta: GET /posiciones
 // Obtener todas las posiciones
-router.get('/:ligaId', getPosiciones);
+router.get('/:ligaId', getPosicionesPorId);
 
 router.get('/nombre/:nombre', getPosicionesPornombre);
 

@@ -2,6 +2,7 @@ const { response } = require('express');
 const Posicion = require('../models/posicion');
 const Resultado = require('../models/resultados');
 const Liga = require('../models/liga');
+
 const getPosiciones = async (req, res = response) => {
   const { ligaId } = req.params;
   try {
@@ -25,6 +26,57 @@ const getPosiciones = async (req, res = response) => {
       ok: true,
       equipos: equipos,
       tablaPosiciones: tablaPosiciones
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Hable con el administrador',
+    });
+  }
+};
+
+const getPosicionesPorId = async (req, res = response) => {
+  const { ligaId } = req.params;
+  const limite = Number(req.query.limite) || 0;
+  const liga = await Liga.findById(ligaId);
+
+  if (!liga) {
+    return res.status(404).json({
+      ok: false,
+      msg: 'Liga no encontrada',
+    });
+  }
+
+  try {
+    // Busca los resultados por el ID de la liga
+    const resultados = await Resultado.find({ liga: ligaId });
+
+    // genera una tabla por liga
+    const tablaPosiciones = generarTablaPosiciones(resultados);
+
+    const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
+      { liga: ligaId },
+      { posiciones: tablaPosiciones },
+      { upsert: true, new: true }
+    ).populate('posiciones.equipo', 'nombre');
+
+    const posicionesConNombreEquipo = tablaPosicionesPorLiga.posiciones.map((posicion) => {
+      return {
+        equipo: posicion.equipo.nombre,
+        PJ: posicion.PJ,
+        PG: posicion.PG,
+        PE: posicion.PE,
+        PP: posicion.PP,
+        GF: posicion.GF,
+        GC: posicion.GC,
+        Puntos: posicion.Puntos,
+      };
+    });
+
+    res.status(200).json({
+      ok: true,
+      tablaPosiciones: posicionesConNombreEquipo,
     });
   } catch (error) {
     console.log(error);
@@ -253,6 +305,7 @@ const eliminarPosicion = async (req, res = response) => {
 
 module.exports = {
   getPosiciones,
+  getPosicionesPorId,
   getPosicionesPornombre,
   getPosicionPorId,
   generarTablaPosiciones,
