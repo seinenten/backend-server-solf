@@ -28,6 +28,9 @@ const JornadaSchema = Schema({
             },
             fecha: {
                 type: Date
+            },
+            estadio: {
+                type: String
             }
         }
 
