@@ -30,7 +30,7 @@ const getJornadasPorliga = async (req, res = response) => {
         const fechaActual = moment().format('YYYY-MM-DD'); // Obtenemos la fecha y hora actual
 
 
-        const jornadaActual = await JornadaEnfrentamiento.findOne({
+        const jornadas = await JornadaEnfrentamiento.findOne({
             liga: id,
             fecha: { $gte: fechaActual },
         })
@@ -40,7 +40,7 @@ const getJornadasPorliga = async (req, res = response) => {
             .sort({ fecha: 1 }) // Ordenamos por fecha ascendente para obtener la jornada más cercana primero
             .limit(1); // Limitamos el resultado a 1 jornada
 
-        if (!jornadaActual) {
+        if (!jornadas) {
             return res.status(404).json({
                 ok: false,
                 msg: 'Jornada actual no encontrada para la liga especificada',
@@ -49,7 +49,7 @@ const getJornadasPorliga = async (req, res = response) => {
 
         res.status(200).json({
             ok: true,
-            jornadaActual,
+            jornadas: jornadas
         });
     } catch (error) {
         console.error('Error al obtener la jornada actual:', error);
