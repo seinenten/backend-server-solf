@@ -47,6 +47,9 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                     },                    
                     {
                         titulo: 'Estadios', url: '/gestor/estadios'
+                    },                    
+                    {
+                        titulo: 'Resultados', url: '/gestor/resultados'
                     }
                 ]
             },
