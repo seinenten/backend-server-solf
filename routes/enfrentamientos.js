@@ -5,7 +5,7 @@ const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 
 const {
     generarEnfrentamientosPorLiga,
-    getEnfrentamientosPorId,
+    getEnfrentamientosPorLiga,
     getEnfrentamientos
 } = require('../controllers/enfrentamientos')
 
@@ -14,7 +14,7 @@ const router = Router();
 
 router.get('/liga/:ligaId' , generarEnfrentamientosPorLiga);
 
-router.get('/:id', getEnfrentamientosPorId);
+router.get('/:id', getEnfrentamientosPorLiga);
 
 router.get('/', getEnfrentamientos);
 

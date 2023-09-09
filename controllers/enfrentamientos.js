@@ -35,6 +35,7 @@ const generarEnfrentamientosPorLiga = async(req, res = response) => {
         const numeroJornada = i + 1; // Incrementa el número de jornada en 1 para que comience desde 1
 
         const enfrentamiento = new Enfrentamiento({
+            liga:  id,
             jornada: numeroJornada,
             equipoLocal: equipoLocal,
             equipoVisitante: equipoVisitante,
@@ -53,11 +54,45 @@ const generarEnfrentamientosPorLiga = async(req, res = response) => {
 }
 
 
-const getEnfrentamientosPorId = async(req, res = response) => {
+const getEnfrentamientosPorLiga = async(req, res = response) => {
+    const id = req.params.id;
 
+    //enfrentamientos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const enfrentamientos = await Enfrentamiento.find({"liga":id})
+                    .populate('liga', 'nombre img')
+                    .populate('equipoLocal', 'nombre img')
+                    .populate('equipoVisitante', 'nombre img')
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
 }
 
 const getEnfrentamientos = async(req, res = response) => {
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const enfrentamientos = await Enfrentamiento.find()
+                                .populate('liga', 'nombre img')
+                                .populate('equipoLocal', 'nombre img')
+                                .populate('equipoVisitante', 'nombre img')
+                                    .skip( desde )
+                                    .limit( limite )
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    });
 
 }
 
@@ -65,6 +100,6 @@ const getEnfrentamientos = async(req, res = response) => {
 
 module.exports = {
     getEnfrentamientos,
-    getEnfrentamientosPorId,
+    getEnfrentamientosPorLiga,
     generarEnfrentamientosPorLiga
 }

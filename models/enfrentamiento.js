@@ -2,6 +2,12 @@ const { Schema, model } = require('mongoose');
 
 const EnfrentamientoSchema = Schema({
 
+    liga: {
+        type: Schema.Types.ObjectId,
+        ref: 'Liga',
+        required: true
+    },
+
     jornada: {
         type: Number,
         required: true
@@ -21,9 +27,12 @@ const EnfrentamientoSchema = Schema({
 
     fecha: {
         type: Date
-    }
+    },
     
-    //? estadio: { }
+    estadio: {
+        type: Schema.Types.ObjectId,
+        ref: 'Estadio',
+    }
 })
 
 EnfrentamientoSchema.method('toJSON', function () {
