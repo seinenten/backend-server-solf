@@ -6,7 +6,8 @@ const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 const {
     generarEnfrentamientosPorLiga,
     getEnfrentamientosPorLiga,
-    getEnfrentamientos
+    getEnfrentamientos,
+    ActualizarEnfrentamientos
 } = require('../controllers/enfrentamientos')
 
 
@@ -17,5 +18,13 @@ router.get('/liga/:ligaId' , generarEnfrentamientosPorLiga);
 router.get('/:id', getEnfrentamientosPorLiga);
 
 router.get('/', getEnfrentamientos);
+
+router.put('/:id',[
+    validarJWT,
+    check('fecha', 'la fecha es necesaria').not().isEmpty(),
+    check('estadio', 'el estadio es necesario').not().isEmpty(),
+    
+],  ActualizarEnfrentamientos);
+
 
 module.exports = router;

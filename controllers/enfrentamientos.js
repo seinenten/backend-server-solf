@@ -95,11 +95,47 @@ const getEnfrentamientos = async(req, res = response) => {
     });
 
 }
+const ActualizarEnfrentamientos= async(req, res = response )=>{
 
+    const id = req.params.id
+    //tenemos el uid por que pasamos por la verificacion de jwt
+    const uid = req.uid;
 
+    try {
+
+        const enfrentamiento = await Enfrentamiento.findById( id );
+
+        if( !enfrentamiento ){
+            return res.status(404).json({
+                ok: true,
+                msg: 'Enfrentamiento no encontrado por id'
+            });
+        }
+
+        const cambiosEnfrentamiento = {
+            ...req.body,
+            usuario: uid
+        }
+        const enfrentamientoActualizado = await Enfrentamiento.findByIdAndUpdate( id, cambiosEnfrentamiento, { new: true } );
+
+        res.json({
+            ok: true,
+            enfrentamientos: enfrentamientoActualizado
+        });
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+    }
+    
 
 module.exports = {
     getEnfrentamientos,
     getEnfrentamientosPorLiga,
-    generarEnfrentamientosPorLiga
+    generarEnfrentamientosPorLiga,
+    ActualizarEnfrentamientos
 }
