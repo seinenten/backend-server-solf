@@ -36,12 +36,9 @@ app.use('/api/todo', require('./routes/busquedas'));
 app.use('/api/upload', require('./routes/uploads'));
 app.use('/api/posiciones', require('./routes/posicion'));
 app.use('/api/resultados', require('./routes/resultados'))
-app.use('/api/jornadas', require('./routes/jornadas'))
+app.use('/api/estadios', require('./routes/estadios'))
 
-
-
-// Rutas prenda
-app.use( '/api/prendas', require( './routes/prendas' ) );
+//!, enfrentamientos
 
 
 //ruta carrusel 
