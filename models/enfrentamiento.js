@@ -3,8 +3,7 @@ const { Schema, model } = require('mongoose');
 const EnfrentamientoSchema = Schema({
 
     jornada: {
-        type: Schema.Types.ObjectId,
-        ref: 'Jornada',
+        type: Number,
         required: true
     },
     

@@ -2,8 +2,6 @@ const { response } = require("express");
 
 const Enfrentamiento = require('../models/enfrentamiento');
 const Equipo = require('../models/equipo');
-const Jornada = require('../models/jornada');
-
 
 const generarEnfrentamientosPorLiga = async(req, res = response) => {
 
@@ -12,18 +10,10 @@ const generarEnfrentamientosPorLiga = async(req, res = response) => {
 
     const totalEquipos = equipos.length;
 
-    const jornadas = [];
     const enfrentamientos = [];
 
     // Calcular el número de jornadas (totalEquipos si es impar, totalEquipos - 1 si es par)
     const numeroJornadas = totalEquipos % 2 === 0 ? totalEquipos - 1 : totalEquipos;
-
-    // Crear jornadas de acuerdo al número de jornadas calculado
-    for (let i = 1; i <= numeroJornadas; i++) {
-        jornadas.push(new Jornada({
-        nombre: `Jornada ${i}`,
-        }));
-    }
 
     // Crear una matriz de enfrentamientos vacía
     for (let i = 0; i < totalEquipos; i++) {
@@ -36,15 +26,16 @@ const generarEnfrentamientosPorLiga = async(req, res = response) => {
         const equipoLocalIndex = j;
         const equipoVisitanteIndex = (totalEquipos - 1 - j + i) % (totalEquipos - 1);
         
-        const jornada = jornadas[i];
         const equipoLocal = equipos[equipoLocalIndex];
         const equipoVisitante = equipos[equipoVisitanteIndex];
 
         enfrentamientos[equipoLocalIndex].push(equipoVisitanteIndex);
         enfrentamientos[equipoVisitanteIndex].push(equipoLocalIndex);
 
+        const numeroJornada = i + 1; // Incrementa el número de jornada en 1 para que comience desde 1
+
         const enfrentamiento = new Enfrentamiento({
-            jornada: jornada._id,
+            jornada: numeroJornada,
             equipoLocal: equipoLocal,
             equipoVisitante: equipoVisitante,
         });
