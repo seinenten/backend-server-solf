@@ -26,7 +26,22 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
             submenu: [
                     {
                         titulo: 'Usuarios', url: '/gestor/usuarios'
+                    },                    
+                    {
+                        titulo: 'Logo', url: '/gestor/logo'
                     },
+                    {
+                        titulo: 'Carrusel', url: '/gestor/carruseles'
+                    },                    
+                    {
+                        titulo: 'Estadios', url: '/gestor/estadios'
+                    }
+                ]
+            },
+            {
+                titulo: 'Partidos',
+                icono: 'ball',
+                submenu: [
                     {
                         titulo: 'Ligas', url: '/gestor/ligas'
                     },
@@ -38,16 +53,7 @@ const getMenuFronEnd = (role = 'USER_ROLE') => {
                     },
                     {
                         titulo: 'Jugadores', url: '/gestor/jugadores'
-                    },
-                    {
-                        titulo: 'Logo', url: '/gestor/logo'
-                    },
-                    {
-                        titulo: 'Carrusel', url: '/gestor/carruseles'
-                    },                    
-                    {
-                        titulo: 'Estadios', url: '/gestor/estadios'
-                    },                    
+                    },                  
                     {
                         titulo: 'Resultados', url: '/gestor/resultados'
                     }

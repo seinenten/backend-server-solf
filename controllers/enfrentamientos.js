@@ -63,7 +63,7 @@ const getEnfrentamientosPorLiga = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const enfrentamientos = await Enfrentamiento.find({"liga":id})
-                    .populate('liga', 'nombre img')
+                    .populate('liga', 'nombre')
                     .populate('equipoLocal', 'nombre img')
                     .populate('equipoVisitante', 'nombre img')
                     .skip( desde )
@@ -83,7 +83,7 @@ const getEnfrentamientos = async(req, res = response) => {
     const limite = Number(req.query.limite) || 0;
 
     const enfrentamientos = await Enfrentamiento.find()
-                                .populate('liga', 'nombre img')
+                                .populate('liga', 'nombre')
                                 .populate('equipoLocal', 'nombre img')
                                 .populate('equipoVisitante', 'nombre img')
                                     .skip( desde )
