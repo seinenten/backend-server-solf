@@ -19,11 +19,10 @@ router.get('/:id', getEnfrentamientosPorLiga);
 
 router.get('/', getEnfrentamientos);
 
-router.put('/:id',[
+router.patch('/:id',[
     validarJWT,
     check('fecha', 'la fecha es necesaria').not().isEmpty(),
     check('estadio', 'el estadio es necesario').not().isEmpty(),
-    
 ],  ActualizarEnfrentamientos);
 
 
