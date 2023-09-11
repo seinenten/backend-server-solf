@@ -25,7 +25,17 @@ const EnfrentamientoSchema = Schema({
         required:true
     },
 
-    fecha: {
+    fechaDeGeneracion: {
+        type: Date,
+        required: true // Asegura que cada enfrentamiento tenga una fecha de generación
+    },
+
+    esActual: {
+        type: Boolean,
+        default: true // Los nuevos enfrentamientos son considerados como actuales por defecto
+    },
+
+    fechaDeEnfrentamiento: {
         type: Date
     },
     

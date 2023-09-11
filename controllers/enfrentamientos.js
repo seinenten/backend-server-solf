@@ -36,7 +36,9 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
             const equipoVisitante = equipos[totalEquipos - 1 - i];
 
             if (equipoLocal && equipoVisitante && !equipoLocal.descanso && !equipoVisitante.descanso) {
-                enfrentamientoJornada.push({ liga: ligaId, jornada, equipoLocal, equipoVisitante });
+                const fechaDeGeneracion = new Date(); // Obtiene la fecha y hora actual
+                fechaDeGeneracion.setHours(0, 0, 0, 0); // Establece la hora a las 00:00:00.000
+                enfrentamientoJornada.push({ liga: ligaId, jornada, equipoLocal, equipoVisitante,fechaDeGeneracion });
             }
         }
 
