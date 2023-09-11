@@ -13,6 +13,10 @@ const EquipoSchema = Schema({
     img: {
         type: String
     },
+    descanso: {
+        type: Boolean,
+        default: false
+    },
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
@@ -28,14 +32,6 @@ const EquipoSchema = Schema({
         required: true
     }
 
-});
-
-// Agregar un campo "descanso" para identificar equipos de descanso
-EquipoSchema.add({
-    descanso: {
-        type: Boolean,
-        default: false
-    }
 });
 
 EquipoSchema.method('toJSON', function () {

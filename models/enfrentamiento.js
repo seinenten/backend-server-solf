@@ -14,13 +14,13 @@ const EnfrentamientoSchema = Schema({
     },
     
     equipoLocal: {
-        type: Schema.Types.ObjectId || text,
+        type: Schema.Types.ObjectId,
         ref: 'Equipo',
         required: true
     },
     
     equipoVisitante: {
-        type: Schema.Types.ObjectId || text,
+        type: Schema.Types.ObjectId,
         ref: 'Equipo',
         required:true
     },
