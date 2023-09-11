@@ -64,8 +64,11 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
             enfrentamientos.splice(indexDescansoEnfrentamientos, 1);
         }
 
-        const enfrentamientosGuardados = await Enfrentamiento.insertMany(enfrentamientos);
-        res.status(201).json(enfrentamientosGuardados);
+        await Enfrentamiento.insertMany(enfrentamientos);
+        res.status(200).json({
+            ok: true,
+            msg: "Se han generado los enfrentamientos."
+        });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar los enfrentamientos en la base de datos.' });
     }
