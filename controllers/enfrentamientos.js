@@ -3,60 +3,52 @@ const { response } = require("express");
 const Enfrentamiento = require('../models/enfrentamiento');
 const Equipo = require('../models/equipo');
 
+
+
 const generarEnfrentamientosPorLiga = async (req, res) => {
-    const id = req.params.ligaId;
-    const equipos = await Equipo.find({ "liga": id, "status": true }, 'nombre _id');
-
-    const totalEquipos = equipos.length;
-
+    const ligaId = req.params.ligaId;
+    const equipos = await Equipo.find({ liga: ligaId, status: true }, 'nombre _id');
     const enfrentamientos = [];
+    const equiposDisponibles = [...equipos];
 
-    if (totalEquipos % 2 === 1) {
-        equipos.unshift(equipos.pop());
+    // Agregar un equipo de descanso si el número de equipos es impar
+    if (equipos.length % 2 !== 0) {
+        const equipoDescanso = await Equipo.create({
+            nombre: 'Descanso',
+            descripcion: 'Equipo utilizado para el descanso',
+            descanso: true,
+            liga: ligaId, // Proporcionar un ID de liga ficticio
+        });
+        equipos.push(equipoDescanso);
     }
 
-    for (let i = 0; i < totalEquipos - 1; i++) {
-        const jornada = i + 1;
-        const equiposVisitantes = [...equipos.slice(1)]; // Copiar el arreglo de equipos excepto el primero
+    const totalJornadas = equipos.length - 1;
 
-        for (const equipoLocal of equipos) {
-            const enfrentamientosEnJornada = [];
-
-            for (const equipoVisitante of equiposVisitantes) {
-                if (equipoLocal._id !== equipoVisitante._id) {
-                    const enfrentamientoExistente = enfrentamientosEnJornada.find((e) => (
-                        (e.equipoLocal === equipoLocal._id && e.equipoVisitante === equipoVisitante._id) ||
-                        (e.equipoLocal === equipoVisitante._id && e.equipoVisitante === equipoLocal._id)
-                    ));
-
-                    if (!enfrentamientoExistente) {
-                        enfrentamientosEnJornada.push({
-                            liga: id,
-                            jornada: jornada,
-                            equipoLocal: equipoLocal._id,
-                            equipoVisitante: equipoVisitante._id,
-                            // Puedes agregar más campos según tus necesidades
-                        });
-                    }
-                }
+    for (let jornada = 1; jornada <= totalJornadas; jornada++) {
+        const enfrentamientoJornada = [];
+        for (let i = 0; i < equipos.length / 2; i++) {
+            const equipoLocal = equiposDisponibles[i];
+            const equipoVisitante = equiposDisponibles[equipos.length - 1 - i];
+            
+            // Verificar si ambos equipos son definidos y ninguno es de descanso
+            if (equipoLocal && equipoVisitante && !equipoLocal.descanso && !equipoVisitante.descanso) {
+                enfrentamientoJornada.push({ liga: ligaId,jornada, equipoLocal, equipoVisitante });
             }
-
-            enfrentamientos.push(...enfrentamientosEnJornada);
         }
+        enfrentamientos.push(...enfrentamientoJornada);
 
-        equipos.push(equipos.shift());
+        // Rotar los equipos para la próxima jornada
+        equiposDisponibles.splice(1, 0, equiposDisponibles.pop());
     }
 
     // Guardar los enfrentamientos en la base de datos
-    const enfrentamientosGuardados = await Enfrentamiento.insertMany(enfrentamientos);
-
-    res.status(200).json({
-        ok: true,
-        mensaje: "Se han generado los enfrentamientos según las restricciones especificadas.",
-        enfrentamientos: enfrentamientosGuardados,
-    });
+    try {
+        const enfrentamientosGuardados = await Enfrentamiento.insertMany(enfrentamientos);
+        res.status(201).json(enfrentamientosGuardados);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar los enfrentamientos en la base de datos.' });
+    }
 };
-
 
 const getEnfrentamientosPorLiga = async(req, res = response) => {
     const id = req.params.id;
