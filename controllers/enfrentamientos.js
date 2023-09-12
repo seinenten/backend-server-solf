@@ -13,7 +13,7 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
     });
 
     if (enfrentamientosActivos) {
-        return res.status(400).json({ error: 'Ya existen enfrentamientos activos para esta liga.' });
+        return res.status(400).json({ msg: 'Ya existen enfrentamientos activos para esta liga.' });
     }
     //? si pasa la validacion se ejecuta el codigo.
 
@@ -111,6 +111,67 @@ const getEnfrentamientosPorLiga = async(req, res = response) => {
     })
 }
 
+const getEnfrentamientosPorLigaActuales = async(req, res = response) => {
+    const id = req.params.id;
+
+    //enfrentamientos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const enfrentamientos = await Enfrentamiento.find({"liga":id, "esActual":true})
+                    .populate('liga', 'nombre')
+                    .populate('equipoLocal', 'nombre img')
+                    .populate('equipoVisitante', 'nombre img')
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
+}
+
+const obtenerGruposDeEnfrentamientosPorLiga = async (req, res = response) => {
+    const ligaId = req.params.id;
+
+    try {
+        console.log('Liga ID:', ligaId); // Agrega un log para verificar el valor de ligaId
+        const grupos = await Enfrentamiento.aggregate([
+            {
+                $match: {
+                    liga: ligaId,
+                }, // Filtrar por la liga específica
+                },
+                {
+                $group: {
+                    _id: {
+                    $dateToString: {
+                        format: "%Y-%m-%d", // Formato "YYYY-MM-DD"
+                        date: "$fechaDeGeneracion",
+                    },
+                    }, // Agrupar por fecha de generación (sin hora)
+                },
+                },
+            ]);
+    
+        console.log('Grupos:', grupos); // Agrega un log para verificar los resultados de la consulta
+    
+        return res.status(200).json({
+            ok: true,
+            grupos
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+}
+
 const getEnfrentamientos = async(req, res = response) => {
 
     const desde =  Number(req.query.desde)  || 0;
@@ -171,5 +232,7 @@ module.exports = {
     getEnfrentamientos,
     getEnfrentamientosPorLiga,
     generarEnfrentamientosPorLiga,
-    ActualizarEnfrentamientos
+    ActualizarEnfrentamientos,
+    getEnfrentamientosPorLigaActuales,
+    obtenerGruposDeEnfrentamientosPorLiga
 }

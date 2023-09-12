@@ -7,7 +7,9 @@ const {
     generarEnfrentamientosPorLiga,
     getEnfrentamientosPorLiga,
     getEnfrentamientos,
-    ActualizarEnfrentamientos
+    ActualizarEnfrentamientos,
+    getEnfrentamientosPorLigaActuales,
+    obtenerGruposDeEnfrentamientosPorLiga
 } = require('../controllers/enfrentamientos')
 
 
@@ -17,7 +19,11 @@ router.get('/liga/:ligaId' , generarEnfrentamientosPorLiga);
 
 router.get('/:id', getEnfrentamientosPorLiga);
 
-router.get('/', getEnfrentamientos);
+router.get('/actuales/:id', getEnfrentamientosPorLigaActuales);
+
+router.get('/grupos/:id', obtenerGruposDeEnfrentamientosPorLiga);
+
+router.get('/', getEnfrentamientos); 
 
 router.patch('/:id',[
     validarJWT,
