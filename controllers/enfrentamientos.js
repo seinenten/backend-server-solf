@@ -6,6 +6,19 @@ const Equipo = require('../models/equipo');
 const generarEnfrentamientosPorLiga = async (req, res) => {
     const ligaId = req.params.ligaId;
 
+    // Obtener la fecha actual y establecer la hora a las 00:00:00.000
+    const fechaActual = new Date();
+    fechaActual.setHours(0, 0, 0, 0);
+
+    // Verificar si ya existen enfrentamientos con la misma fecha
+    const enfrentamientosConFechaExistente = await Enfrentamiento.findOne({
+        fechaDeGeneracion: fechaActual
+    });
+
+    if (enfrentamientosConFechaExistente) {
+        return res.status(400).json({ msg: 'Ya existen enfrentamientos generados con la fecha de hoy.' });
+    }
+
     // Verificar si ya existen enfrentamientos activos para esta liga
     const enfrentamientosActivos = await Enfrentamiento.findOne({
         liga: ligaId,
@@ -50,6 +63,8 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
             if (equipoLocal && equipoVisitante && !equipoLocal.descanso && !equipoVisitante.descanso) {
                 const fechaDeGeneracion = new Date(); // Obtiene la fecha y hora actual
                 fechaDeGeneracion.setHours(0, 0, 0, 0); // Establece la hora a las 00:00:00.000
+                // Aquí puedes configurar la fecha deseada, por ejemplo, un día después
+                fechaDeGeneracion.setDate(fechaDeGeneracion.getDate() + 1); // Sumar un día
                 enfrentamientoJornada.push({ liga: ligaId, jornada, equipoLocal, equipoVisitante,fechaDeGeneracion });
             }
         }
