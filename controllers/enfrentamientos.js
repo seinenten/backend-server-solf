@@ -225,7 +225,43 @@ const ActualizarEnfrentamientos= async(req, res = response )=>{
             msg: 'Hable con el administrador'
         });
     }
-    }
+}
+
+const obtenerPartidosDeEquipoActuales = async (req, res = response) => {
+
+    const id = req.params.id;
+
+    const enfrentamientos = await Enfrentamiento.find({ $or:[ {"equipoVisitante":id} , {"equipoLocal":id}], "esActual":true})
+                    .populate('liga', 'nombre')
+                    .populate('equipoLocal', 'nombre img')
+                    .populate('equipoVisitante', 'nombre img');
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
+
+};
+
+const obtenerPartidosDeEquipo = async (req, res = response) => {
+
+    const id = req.params.id;
+
+    const enfrentamientos = await Enfrentamiento.find({ $or:[ {"equipoVisitante":id} , {"equipoLocal":id}]})
+                    .populate('liga', 'nombre')
+                    .populate('equipoLocal', 'nombre img')
+                    .populate('equipoVisitante', 'nombre img');
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
+
+};
     
 
 module.exports = {
@@ -234,5 +270,7 @@ module.exports = {
     generarEnfrentamientosPorLiga,
     ActualizarEnfrentamientos,
     getEnfrentamientosPorLigaActuales,
-    obtenerGruposDeEnfrentamientosPorLiga
+    obtenerGruposDeEnfrentamientosPorLiga,
+    obtenerPartidosDeEquipoActuales,
+    obtenerPartidosDeEquipo
 }

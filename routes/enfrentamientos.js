@@ -9,7 +9,9 @@ const {
     getEnfrentamientos,
     ActualizarEnfrentamientos,
     getEnfrentamientosPorLigaActuales,
-    obtenerGruposDeEnfrentamientosPorLiga
+    obtenerGruposDeEnfrentamientosPorLiga,
+    obtenerPartidosDeEquipoActuales,
+    obtenerPartidosDeEquipo
 } = require('../controllers/enfrentamientos')
 
 
@@ -24,6 +26,10 @@ router.get('/actuales/:id', getEnfrentamientosPorLigaActuales);
 router.get('/grupos/:id', obtenerGruposDeEnfrentamientosPorLiga);
 
 router.get('/', getEnfrentamientos); 
+
+router.get('/partidosEquipoActuales/:id', obtenerPartidosDeEquipoActuales);
+
+router.get('/partidosEquipo/:id', obtenerPartidosDeEquipo);
 
 router.patch('/:id',[
     validarJWT,
