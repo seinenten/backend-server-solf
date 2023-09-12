@@ -5,6 +5,18 @@ const Equipo = require('../models/equipo');
 
 const generarEnfrentamientosPorLiga = async (req, res) => {
     const ligaId = req.params.ligaId;
+
+    // Verificar si ya existen enfrentamientos activos para esta liga
+    const enfrentamientosActivos = await Enfrentamiento.findOne({
+        liga: ligaId,
+        esActual: true
+    });
+
+    if (enfrentamientosActivos) {
+        return res.status(400).json({ error: 'Ya existen enfrentamientos activos para esta liga.' });
+    }
+    //? si pasa la validacion se ejecuta el codigo.
+
     const equipos = await Equipo.find({ liga: ligaId, status: true }, 'nombre _id');
 
     // Agregar un equipo de descanso si el número de equipos es impar

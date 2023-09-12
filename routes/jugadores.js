@@ -14,7 +14,8 @@ const {
     getJugadoresPorId,
     getJugadoresPorStatusFalse,
     getJugadoresPorStatusTrue,
-    getjugadoresPorNombre
+    getjugadoresPorNombre,
+    getJugadoresPorEquipo
 } = require('../controllers/jugadores')
 
 const router = Router();
@@ -29,6 +30,8 @@ router.get('/statusFalse', getJugadoresPorStatusFalse);
 router.get('/statusTrue', getJugadoresPorStatusTrue);
 
 router.get('/:id', getJugadoresPorId);
+
+router.get('/equipo/:id', getJugadoresPorEquipo);
 
 router.post('/',
     [

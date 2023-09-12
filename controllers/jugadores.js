@@ -116,6 +116,28 @@ const getJugadoresPorId = async (req, res = response) => {
     }
 }
 
+const getJugadoresPorEquipo = async (req, res = response) => {
+
+    const id = req.params.id;
+
+    try {
+
+        const jugadores = await Jugador.find({"equipo":id,"status":true})
+
+        res.status(200).json({
+            ok: true,
+            jugadores: jugadores
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: true,
+            msg: 'Hable con el administrador'
+        })
+
+    }
+}
+
 const CrearJugador = async (req, res = response) => {
 
     const uid = req.uid;
@@ -234,5 +256,6 @@ module.exports = {
     ActualizarJugador,
     eliminarJugador,
     getJugadoresPorStatusFalse,
-    getJugadoresPorStatusTrue
+    getJugadoresPorStatusTrue,
+    getJugadoresPorEquipo
 }
