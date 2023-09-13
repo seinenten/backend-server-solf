@@ -10,13 +10,16 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
     const fechaActual = new Date();
     fechaActual.setHours(0, 0, 0, 0);
 
-    // Verificar si ya existen enfrentamientos con la misma fecha
+    //Verificar si ya existen enfrentamientos con la misma fecha
     const enfrentamientosConFechaExistente = await Enfrentamiento.findOne({
-        fechaDeGeneracion: fechaActual
+        fechaDeGeneracion: fechaActual, liga:ligaId
     });
 
     if (enfrentamientosConFechaExistente) {
-        return res.status(400).json({ msg: 'Ya existen enfrentamientos generados con la fecha de hoy.' });
+        return res.status(400).json({ 
+            ok: false,
+            msg: 'Ya existen enfrentamientos generados con la fecha de hoy.'
+            });
     }
 
     // Verificar si ya existen enfrentamientos activos para esta liga
@@ -26,7 +29,10 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
     });
 
     if (enfrentamientosActivos) {
-        return res.status(400).json({ msg: 'Ya existen enfrentamientos activos para esta liga.' });
+        return res.status(400).json({
+            ok: false,
+            msg: 'Ya existen enfrentamientos activos para esta liga.'
+        });
     }
     //? si pasa la validacion se ejecuta el codigo.
 
@@ -41,6 +47,12 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
             liga: ligaId,
         });
         equipos.push(equipoDescanso);
+    }
+
+    // Aleatoriamente mezclar los equipos utilizando el algoritmo de Fisher-Yates
+    for (let i = equipos.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [equipos[i], equipos[j]] = [equipos[j], equipos[i]];
     }
 
     const totalEquipos = equipos.length;
@@ -64,7 +76,7 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
                 const fechaDeGeneracion = new Date(); // Obtiene la fecha y hora actual
                 fechaDeGeneracion.setHours(0, 0, 0, 0); // Establece la hora a las 00:00:00.000
                 // Aquí puedes configurar la fecha deseada, por ejemplo, un día después
-                fechaDeGeneracion.setDate(fechaDeGeneracion.getDate() + 1); // Sumar un día
+                //fechaDeGeneracion.setDate(fechaDeGeneracion.getDate()+1); //? Sumar un día. Descomentar para realizar pruebas de lo contrario comentado 
                 enfrentamientoJornada.push({ liga: ligaId, jornada, equipoLocal, equipoVisitante,fechaDeGeneracion });
             }
         }
@@ -99,7 +111,10 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
             msg: "Se han generado los enfrentamientos."
         });
     } catch (error) {
-        res.status(500).json({ error: 'Error al guardar los enfrentamientos en la base de datos.' });
+        res.status(500).json({ 
+            ok: false,
+            msg: 'Error al guardar los enfrentamientos en la base de datos.' 
+        });
     }
 };
 
@@ -149,44 +164,6 @@ const getEnfrentamientosPorLigaActuales = async(req, res = response) => {
         ok: true,
         enfrentamientos: enfrentamientos
     })
-}
-
-const obtenerGruposDeEnfrentamientosPorLiga = async (req, res = response) => {
-    const ligaId = req.params.id;
-
-    try {
-        console.log('Liga ID:', ligaId); // Agrega un log para verificar el valor de ligaId
-        const grupos = await Enfrentamiento.aggregate([
-            {
-                $match: {
-                    liga: ligaId,
-                }, // Filtrar por la liga específica
-                },
-                {
-                $group: {
-                    _id: {
-                    $dateToString: {
-                        format: "%Y-%m-%d", // Formato "YYYY-MM-DD"
-                        date: "$fechaDeGeneracion",
-                    },
-                    }, // Agrupar por fecha de generación (sin hora)
-                },
-                },
-            ]);
-    
-        console.log('Grupos:', grupos); // Agrega un log para verificar los resultados de la consulta
-    
-        return res.status(200).json({
-            ok: true,
-            grupos
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el administrador'
-        });
-    }
 }
 
 const getEnfrentamientos = async(req, res = response) => {
@@ -284,60 +261,68 @@ const obtenerPartidosDeEquipo = async (req, res = response) => {
 
 const getJornadasPorFechaDeGeneracion = async (req, res) => {
     try {
-      const id = req.params.id; 
-     
-      const enfrentamientos = await Enfrentamiento.find({ liga: id })
-        .select('fechaDeGeneracion')
-        .sort({ fechaDeGeneracion: 1 });
-  
-     
-      const fechasUnicas = new Set();
-  
-      
-      for (let i = 0; i < enfrentamientos.length; i++) {
-        const enfrentamiento = enfrentamientos[i];
-        fechasUnicas.add(enfrentamiento.fechaDeGeneracion.toISOString().split('T')[0]); // Formatea la fecha sin la hora y agrega al conjunto
-      }
-  
-      
-      const fechasSeparadas = [];
-      for (const fecha of fechasUnicas) {
-        fechasSeparadas.push({ fechaDeGeneracion: fecha });
-      }
-  
-      res.status(200).json({
-        ok: true,
-        fechasDeGeneracion: fechasSeparadas,
-      });
+        const id = req.params.id;
+
+        // Obtener fechas únicas y sus valores de esActual
+        const enfrentamientos = await Enfrentamiento.find({ liga: id })
+            .select('fechaDeGeneracion esActual')
+            .sort({ fechaDeGeneracion: 1 });
+
+        const fechasDeGeneracion = [];
+
+        for (let i = 0; i < enfrentamientos.length; i++) {
+            const enfrentamiento = enfrentamientos[i];
+            const fecha = enfrentamiento.fechaDeGeneracion.toISOString().split('T')[0];
+
+            // Comprobar si la fecha ya existe en fechasDeGeneracion
+            const fechaExistente = fechasDeGeneracion.find(item => item.fechaDeGeneracion === fecha);
+
+            if (!fechaExistente) {
+                // Si la fecha no existe en fechasDeGeneracion, agregarla con el valor de esActual
+                fechasDeGeneracion.push({
+                    fechaDeGeneracion: fecha,
+                    esActual: enfrentamiento.esActual,
+                    liga: id
+                });
+            }
+        }
+
+        res.status(200).json({
+            ok: true,
+            fechasDeGeneracion
+        });
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener las fechas de generación' });
+        res.status(500).json({ 
+            ok: false,
+            msg: 'Error al obtener las fechas de generación' 
+        });
     }
-  };
-  
+};
 
 
-  const buscarPorFechaDeGeneracion = async (req, res) => {
+
+const buscarPorFechaDeGeneracion = async (req, res) => {
     try {
-      const fecha = req.params.busqueda;
-  
-   
-      await Enfrentamiento.updateMany(
-        { "fechaDeGeneracion": fecha },
-        { $set: { "esActual": false } }
-      );
-  
+        const fecha = req.params.fecha;
+        const idLiga = req.params.id;
     
-      const enfrentamientos = await Enfrentamiento.find({ "fechaDeGeneracion": fecha });
-  
-      res.status(200).json({
-        ok: true,
-        enfrentamientos: enfrentamientos
-      });
+    
+        await Enfrentamiento.updateMany(
+            { "fechaDeGeneracion": fecha, "liga":idLiga  },
+            { $set: { "esActual": false } }
+        );
+    
+        res.status(200).json({
+            ok: true,
+            msg: 'Se han inactivado los enfrentamientos'
+        });
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener los enfrentamientos o actualizar el campo esActual' });
+        res.status(500).json({ 
+            ok: false,
+            msg: 'Error hablar con el administrador' 
+        });
     }
-  };
-  
+};
 
 
 
@@ -349,7 +334,6 @@ module.exports = {
     generarEnfrentamientosPorLiga,
     ActualizarEnfrentamientos,
     getEnfrentamientosPorLigaActuales,
-    obtenerGruposDeEnfrentamientosPorLiga,
     obtenerPartidosDeEquipoActuales,
     obtenerPartidosDeEquipo,
     getJornadasPorFechaDeGeneracion,

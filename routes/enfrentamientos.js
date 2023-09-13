@@ -25,8 +25,6 @@ router.get('/:id', getEnfrentamientosPorLiga);
 
 router.get('/actuales/:id', getEnfrentamientosPorLigaActuales);
 
-router.get('/grupos/:id', obtenerGruposDeEnfrentamientosPorLiga);
-
 router.get('/grupoJornadas/:id', getJornadasPorFechaDeGeneracion);
 
 router.get('/', getEnfrentamientos); 
@@ -35,7 +33,7 @@ router.get('/partidosEquipoActuales/:id', obtenerPartidosDeEquipoActuales);
 
 router.get('/partidosEquipo/:id', obtenerPartidosDeEquipo);
 
-router.get('/buscar/:busqueda', buscarPorFechaDeGeneracion);
+router.get('/buscar/:fecha/:id', buscarPorFechaDeGeneracion);
 
 
 router.patch('/:id',[
