@@ -103,6 +103,8 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
     }
 };
 
+
+
 const getEnfrentamientosPorLiga = async(req, res = response) => {
     const id = req.params.id;
 
@@ -277,6 +279,68 @@ const obtenerPartidosDeEquipo = async (req, res = response) => {
     })
 
 };
+
+
+
+const getJornadasPorFechaDeGeneracion = async (req, res) => {
+    try {
+      const id = req.params.id; 
+     
+      const enfrentamientos = await Enfrentamiento.find({ liga: id })
+        .select('fechaDeGeneracion')
+        .sort({ fechaDeGeneracion: 1 });
+  
+     
+      const fechasUnicas = new Set();
+  
+      
+      for (let i = 0; i < enfrentamientos.length; i++) {
+        const enfrentamiento = enfrentamientos[i];
+        fechasUnicas.add(enfrentamiento.fechaDeGeneracion.toISOString().split('T')[0]); // Formatea la fecha sin la hora y agrega al conjunto
+      }
+  
+      
+      const fechasSeparadas = [];
+      for (const fecha of fechasUnicas) {
+        fechasSeparadas.push({ fechaDeGeneracion: fecha });
+      }
+  
+      res.status(200).json({
+        ok: true,
+        fechasDeGeneracion: fechasSeparadas,
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener las fechas de generación' });
+    }
+  };
+  
+
+
+  const buscarPorFechaDeGeneracion = async (req, res) => {
+    try {
+      const fecha = req.params.busqueda;
+  
+   
+      await Enfrentamiento.updateMany(
+        { "fechaDeGeneracion": fecha },
+        { $set: { "esActual": false } }
+      );
+  
+    
+      const enfrentamientos = await Enfrentamiento.find({ "fechaDeGeneracion": fecha });
+  
+      res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener los enfrentamientos o actualizar el campo esActual' });
+    }
+  };
+  
+
+
+
     
 
 module.exports = {
@@ -287,5 +351,7 @@ module.exports = {
     getEnfrentamientosPorLigaActuales,
     obtenerGruposDeEnfrentamientosPorLiga,
     obtenerPartidosDeEquipoActuales,
-    obtenerPartidosDeEquipo
+    obtenerPartidosDeEquipo,
+    getJornadasPorFechaDeGeneracion,
+    buscarPorFechaDeGeneracion
 }
