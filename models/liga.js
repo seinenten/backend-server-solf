@@ -30,6 +30,14 @@ const LigaSchema = Schema({
         required: true,
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
+    },
+    edadMax: {
+        required: true,
+        type: Number
+    },
+    edadMin: {
+        required: true,
+        type: Number
     }
 
 });

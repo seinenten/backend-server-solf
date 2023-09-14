@@ -1,7 +1,7 @@
 const { response } = require("express");
 
 const Jugador = require('../models/jugador');
-
+const Liga = require('../models/liga');
 
 const getJugadores = async (req, res = response) => {
 
@@ -139,35 +139,51 @@ const getJugadoresPorEquipo = async (req, res = response) => {
 }
 
 const CrearJugador = async (req, res = response) => {
+  const uid = req.uid;
+  const { edad, liga } = req.body;
 
-    const uid = req.uid;
+  try {
+    // Verificar si la liga existe y obtener su edad máxima y mínima permitida
+    const ligas = await Liga.findOne({ _id: liga }); // Suponiendo que "equipo" es el ID de la liga del jugador
 
-    const jugador = new Jugador({
-        usuario: uid,
-        ...req.body
-    });
-
-
-    try {
-
-        const jugadorDB = await jugador.save();
-
-        res.status(200).json({
-            ok: true,
-            jugador: jugadorDB
-        });
-
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            ok: false,
-            msg: 'Hable con el administrador'
-        })
-
+    if (!ligas) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'La liga no existe.',
+      });
     }
 
-}
+    const { edadMax, edadMin } = ligas;
+
+    // Verificar si la edad del jugador está dentro del rango de la liga
+    if (edad < edadMin || edad > edadMax) {
+      return res.status(400).json({
+        ok: false,
+        msg: 'La edad del jugador no está dentro del rango de la liga.',
+      });
+    }
+
+    // Crear el jugador
+    const jugador = new Jugador({
+      usuario: uid,
+      ...req.body,
+    });
+
+    const jugadorDB = await jugador.save();
+
+    res.status(200).json({
+      ok: true,
+      jugador: jugadorDB,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: 'Hable con el administrador',
+    });
+  }
+};
+
 
 const ActualizarJugador = async (req, res = response) => {
 

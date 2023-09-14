@@ -36,6 +36,15 @@ const jugadorSchema = Schema({
         ref: 'Equipo',
         required: true
     },
+    edad: {
+        type: Number,
+        required: true
+    },
+    liga: {
+        type: Schema.Types.ObjectId,
+        ref: 'Liga',
+        
+    },
 
 //colocar un nombre a la collection para que no diga jugadors
 }, { collection: 'jugadores' } );
