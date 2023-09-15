@@ -307,15 +307,22 @@ const buscarPorFechaDeGeneracion = async (req, res) => {
         const idLiga = req.params.id;
     
     
-        await Enfrentamiento.updateMany(
+        const resultado = await Enfrentamiento.updateMany(
             { "fechaDeGeneracion": fecha, "liga":idLiga  },
             { $set: { "esActual": false } }
         );
-    
-        res.status(200).json({
-            ok: true,
-            msg: 'Se han inactivado los enfrentamientos'
-        });
+
+        if (resultado.nModified > 0) {
+            res.status(200).json({
+                ok: true,
+                msg: 'Se han inactivado los enfrentamientos'
+            });
+        } else {
+            res.status(404).json({
+                ok: false,
+                msg: 'A ocurrido un erro al intentar inactivar los enfrentamientos. Por favor hable con el administrador.'
+            });
+        }
     } catch (error) {
         res.status(500).json({ 
             ok: false,
