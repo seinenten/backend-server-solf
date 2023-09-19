@@ -132,6 +132,18 @@ const getEnfrentamientosPorLiga = async(req, res = response) => {
                     .populate('liga', 'nombre')
                     .populate('equipoLocal', 'nombre img')
                     .populate('equipoVisitante', 'nombre img')
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.jugador',
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorEntra', // Poblaciona jugadorEntra
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorSale', // Poblaciona jugadorSale
+                        select: 'nombre img',
+                    })
                     .skip( desde )
                     .limit( limite );
                                 
@@ -155,6 +167,18 @@ const getEnfrentamientosPorLigaActuales = async(req, res = response) => {
                     .populate('liga', 'nombre')
                     .populate('equipoLocal', 'nombre img')
                     .populate('equipoVisitante', 'nombre img')
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.jugador',
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorEntra', // Poblaciona jugadorEntra
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorSale', // Poblaciona jugadorSale
+                        select: 'nombre img',
+                    })
                     .skip( desde )
                     .limit( limite );
                                 
@@ -175,6 +199,18 @@ const getEnfrentamientos = async(req, res = response) => {
                                 .populate('liga', 'nombre')
                                 .populate('equipoLocal', 'nombre img')
                                 .populate('equipoVisitante', 'nombre img')
+                                .populate({
+                                    path: 'estadisticas.estadisticasJugadores.jugador',
+                                    select: 'nombre img',
+                                })
+                                .populate({
+                                    path: 'estadisticas.estadisticasJugadores.cambios.jugadorEntra', // Poblaciona jugadorEntra
+                                    select: 'nombre img',
+                                })
+                                .populate({
+                                    path: 'estadisticas.estadisticasJugadores.cambios.jugadorSale', // Poblaciona jugadorSale
+                                    select: 'nombre img',
+                                })
                                     .skip( desde )
                                     .limit( limite )
 
@@ -320,7 +356,7 @@ const buscarPorFechaDeGeneracion = async (req, res) => {
         } else {
             res.status(404).json({
                 ok: false,
-                msg: 'A ocurrido un erro al intentar inactivar los enfrentamientos. Por favor hable con el administrador.'
+                msg: 'A ocurrido un error al intentar inactivar los enfrentamientos. Por favor hable con el administrador.'
             });
         }
     } catch (error) {
