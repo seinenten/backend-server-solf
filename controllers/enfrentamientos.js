@@ -132,6 +132,7 @@ const getEnfrentamientosPorLiga = async(req, res = response) => {
                     .populate('liga', 'nombre')
                     .populate('equipoLocal', 'nombre img')
                     .populate('equipoVisitante', 'nombre img')
+                    .populate('estadio', 'nombre img')
                     .populate({
                         path: 'estadisticas.estadisticasJugadores.jugador',
                         select: 'nombre img',
@@ -167,6 +168,7 @@ const getEnfrentamientosPorLigaActuales = async(req, res = response) => {
                     .populate('liga', 'nombre')
                     .populate('equipoLocal', 'nombre img')
                     .populate('equipoVisitante', 'nombre img')
+                    .populate('estadio', 'nombre img')
                     .populate({
                         path: 'estadisticas.estadisticasJugadores.jugador',
                         select: 'nombre img',
@@ -199,6 +201,7 @@ const getEnfrentamientos = async(req, res = response) => {
                                 .populate('liga', 'nombre')
                                 .populate('equipoLocal', 'nombre img')
                                 .populate('equipoVisitante', 'nombre img')
+                                .populate('estadio', 'nombre img')
                                 .populate({
                                     path: 'estadisticas.estadisticasJugadores.jugador',
                                     select: 'nombre img',
@@ -265,7 +268,6 @@ const obtenerPartidosDeEquipoActuales = async (req, res = response) => {
                     .populate('liga', 'nombre')
                     .populate('equipoLocal', 'nombre img')
                     .populate('equipoVisitante', 'nombre img');
-                                
                                 
 
     res.status(200).json({
