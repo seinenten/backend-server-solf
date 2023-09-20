@@ -1,12 +1,7 @@
 const { Schema, model } = require('mongoose');
 
-const EstadisticasJugadorSchema = Schema({ 
+const EstadisticasEquipoSchema = Schema({ 
 
-    jugador: {
-        type: Schema.Types.ObjectId,
-        ref: 'Jugador',
-        required: true
-    },
 
     equipo: {
         type: Schema.Types.ObjectId,
@@ -29,12 +24,12 @@ const EstadisticasJugadorSchema = Schema({
         default: 0
     },
 
-    temporada: {  //entiendase que es la fechaDeGenaracion de una liga
+    temporada: {  //entiendase que es la fechaDeGenaracion de una liga no la elimines
         type: Date,
         required: true
     },
 
-    esActual: {
+    esActual: { // no la elimines
         type: Boolean,
         required: true 
     },
@@ -49,4 +44,4 @@ EstadisticasJugadorSchema.method('toJSON', function () {
 });
 
 
-module.exports = model( 'EstadisticaJugador', EstadisticasJugadorSchema );
+module.exports = model( 'EstadisticaEquipo', EstadisticasEquipoSchema );
