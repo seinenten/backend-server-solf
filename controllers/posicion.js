@@ -2,7 +2,7 @@ const { response } = require('express');
 const Posicion = require('../models/posicion');
 const Resultado = require('../models/resultados');
 const Liga = require('../models/liga');
-
+const Enfrentamiento = require('../models/enfrentamiento');
 const getPosiciones = async (req, res = response) => {
   const { ligaId } = req.params;
   try {
@@ -50,10 +50,10 @@ const getPosicionesPorId = async (req, res = response) => {
 
   try {
     // Busca los resultados por el ID de la liga
-    const resultados = await Resultado.find({ liga: ligaId });
+    const enfrentamiento = await Enfrentamiento.find({ liga: ligaId });
 
     // genera una tabla por liga
-    const tablaPosiciones = generarTablaPosiciones(resultados);
+    const tablaPosiciones = generarTablaPosiciones(enfrentamiento);
 
     const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
       { liga: ligaId },
@@ -147,16 +147,16 @@ const getPosicionesPornombre = async (req, res = response) => {
   }
 };
 
-const generarTablaPosiciones = (resultados) => {
+const generarTablaPosiciones = (enfrentamientos) => {
   // Crear un objeto para almacenar las estadísticas de cada equipo
   const estadisticasEquipos = {};
 
   // Iterar sobre los resultados y actualizar las estadísticas de cada equipo
-  resultados.forEach((resultado) => {
-    const equipoLocal = resultado.equipoLocal;
-    const equipoVisitante = resultado.equipoVisitante;
-    const golesLocal = resultado.golesLocal;
-    const golesVisitante = resultado.golesVisitante;
+  enfrentamientos.forEach((EstadisticasEnfrentamiento) => {
+    const equipoLocal = EstadisticasEnfrentamiento.equipoLocal;
+    const equipoVisitante = EstadisticasEnfrentamiento.equipoVisitante;
+    const golesLocal = EstadisticasEnfrentamiento.totalGolesLocal;
+    const golesVisitante = EstadisticasEnfrentamiento.totalGolesVisitante;
 
     // Actualizar las estadísticas del equipo local
     if (!estadisticasEquipos[equipoLocal]) {

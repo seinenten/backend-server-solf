@@ -5,7 +5,8 @@ const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 const { 
     GenerarstadisticasJugadorPorEnfrentamientos,
     getEstadisticasPorLiga,
-    getEstadisticasPorLigaTemp
+    getEstadisticasPorLigaTemp,
+    obtenerTablaDePosiciones
 } = require('../controllers/estadisticasJugadores')
 
 const router = Router();
@@ -19,5 +20,7 @@ router.get('/verEstadisticasLigaTemp/:temp/:id', getEstadisticasPorLigaTemp );
 // router.get('/generarEstadisticas/:fecha/:id', );
 
 // router.get('/generarEstadisticas/:fecha/:id', );
+
+router.get('/tablaPos/:idLiga', obtenerTablaDePosiciones);
 
 module.exports = router;
