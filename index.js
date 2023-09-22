@@ -41,6 +41,8 @@ app.use('/api/enfrentamientos', require('./routes/enfrentamientos'))
 app.use('/api/estadisticas', require('./routes/estadisticasJugadores.js'))
 app.use('/api/estadisticasEquipos/', require('./routes/estadisticasEquipos.js'))
 
+app.use('/api/tablaPosiciones/', require('./routes/tablaPosiciones.js'))
+
 
 //ruta carrusel 
 app.use('/api/carruseles', require('./routes/carruseles'));

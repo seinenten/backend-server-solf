@@ -3,7 +3,7 @@ const { Router } = require('express');
 const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 
 const { 
-    obtenerTablaDePosiciones,
+    
     obtenerEstadisticasPorEquipo,
     obtenerEstadisticasPorLiga,
     obtenerEstadisticasPorLigaYTemporada,
@@ -14,7 +14,7 @@ const {
 
 const router = Router();
 
-router.post('/estadisticas/:idLiga', obtenerTablaDePosiciones);
+
 
 router.get('/estadisticasEquiposLiga/:idLiga', obtenerEstadisticasPorLiga);
 
