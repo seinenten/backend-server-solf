@@ -20,7 +20,7 @@ router.get('/estadisticasEquiposLiga/:idLiga', obtenerEstadisticasPorLiga);
 
 router.get('/estadisticasEquipo/:idEquipo', obtenerEstadisticasPorEquipo);
 
-router.get('/estadisticasPorliga/:idLiga/temp/:temporada', obtenerEstadisticasPorLigaYTemporada);
+router.get('/estadisticasPorliga/:idLiga/:temporada', obtenerEstadisticasPorLigaYTemporada);
 
 router.get('/estadisticasPoresActual/:idLiga', getEstadisticasPorEquipoLigaEsActual);
 

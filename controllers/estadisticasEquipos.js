@@ -249,7 +249,7 @@ const obtenerEstadisticasPorLigaYTemporada = async (req, res) => {
             // Buscar las estadísticas del equipo en la liga y temporada especificadas
             const estadisticasEquipo = await EstadisticaEquipo.findOne({
                 equipo: equipo._id,
-                temporada: new Date(temporada), // Convertir la temporada a objeto de fecha
+                temporada: temporada, // Convertir la temporada a objeto de fecha
                 esActual: true, // Puedes ajustar esto según si son las estadísticas actuales o no
             });
 
