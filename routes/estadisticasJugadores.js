@@ -6,7 +6,7 @@ const {
     GenerarstadisticasJugadorPorEnfrentamientos,
     getEstadisticasPorLiga,
     getEstadisticasPorLigaTemp,
-    obtenerTablaDePosiciones,
+    
     getEstadisticasPorLigaEsActual,
     terminarLasEstadisticasJugadores
 } = require('../controllers/estadisticasJugadores')
@@ -23,7 +23,6 @@ router.get('/verEstadisticasLigaActuales/:id',getEstadisticasPorLigaEsActual );
 
 router.get('/terminarEstadisticasJugadorAc/:temp/:id',terminarLasEstadisticasJugadores );
 
-router.get('/tablaPos/:idLiga', obtenerTablaDePosiciones);
 
 
 module.exports = router;

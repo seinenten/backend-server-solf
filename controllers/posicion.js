@@ -1,315 +1,73 @@
-const { response } = require('express');
+
+const { response } = require("express");
 const Posicion = require('../models/posicion');
-const Resultado = require('../models/resultados');
-const Liga = require('../models/liga');
-const Enfrentamiento = require('../models/enfrentamiento');
-const getPosiciones = async (req, res = response) => {
-  const { ligaId } = req.params;
-  try {
-    //Filtra los equipos por liga
-    const resultados = await Resultado.find({ liga: ligaId })
 
-    const equipos = await Resultado.find({ liga: ligaId })
-      .populate('liga', 'nombre img descripcion')
-      .populate('equipoLocal', 'nombre img descripcion')
-      .populate('equipoVisitante', 'nombre img descripcion')
-    // genera una tabla por liga
-    const tablaPosiciones = generarTablaPosiciones(resultados);
+const obtenerTablaDePosicionesPorLiga = async (req, res = response) => {
+    try {
+        // Obtener el ID de la liga desde la solicitud (por ejemplo, desde los parámetros de la URL)
+        const { idLiga } = req.params;
 
-    const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
-      { liga: ligaId },
-      { posiciones: tablaPosiciones },
-      { upsert: true, new: true }
-    );
+        // Buscar la tabla de posiciones para la liga y temporada actual
+        const tablaDePosiciones = await Posicion.findOne({ liga: idLiga, esActual: true });
 
-    res.status(200).json({
-      ok: true,
-      equipos: equipos,
-      tablaPosiciones: tablaPosiciones
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
+        if (!tablaDePosiciones) {
+            return res.status(404).json({ error: 'Tabla de posiciones no encontrada para esta liga y temporada' });
+        }
 
-const getPosicionesPorId = async (req, res = response) => {
-  const { ligaId } = req.params;
-  const limite = Number(req.query.limite) || 0;
-  const liga = await Liga.findById(ligaId);
-
-  if (!liga) {
-    return res.status(404).json({
-      ok: false,
-      msg: 'Liga no encontrada',
-    });
-  }
-
-  try {
-    // Busca los resultados por el ID de la liga
-    const enfrentamiento = await Enfrentamiento.find({ liga: ligaId });
-
-    // genera una tabla por liga
-    const tablaPosiciones = generarTablaPosiciones(enfrentamiento);
-
-    const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
-      { liga: ligaId },
-      { posiciones: tablaPosiciones },
-      { upsert: true, new: true }
-    ).populate('posiciones.equipo', 'nombre');
-
-    const posicionesConNombreEquipo = tablaPosicionesPorLiga.posiciones.map((posicion) => {
-      return {
-        equipo: posicion.equipo.nombre,
-        PJ: posicion.PJ,
-        PG: posicion.PG,
-        PE: posicion.PE,
-        PP: posicion.PP,
-        GF: posicion.GF,
-        GC: posicion.GC,
-        Puntos: posicion.Puntos,
-      };
-    });
-
-    res.status(200).json({
-      ok: true,
-      tablaPosiciones: posicionesConNombreEquipo,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
-
-const getPosicionesPornombre = async (req, res = response) => {
-  const busqueda = req.params.nombre;
-  const regex = new RegExp(busqueda, 'i');
-  const limite = Number(req.query.limite) || 0;
-  const liga = await Liga.findOne({ nombre: regex });
-
-  if (!liga) {
-    return res.status(404).json({
-      ok: false,
-      msg: 'Liga no encontrada',
-    });
-  }
-  try {
-
-
-    // Busca la liga por su nombre en lugar de su ID
-
-
-    //Filtra los equipos por liga
-
-    const resultados = await Resultado.find({ liga: liga._id })
-
-    // const equipos = await Resultado.find({ liga: liga._id })
-    //   .populate('liga', 'nombre img')
-    //   .populate('equipoLocal', 'nombre img')
-    //   .populate('equipoVisitante', 'nombre img')
-    // genera una tabla por liga
-    const tablaPosiciones = generarTablaPosiciones(resultados);
-
-    const tablaPosicionesPorLiga = await Posicion.findOneAndUpdate(
-      { liga: liga._id },
-      { posiciones: tablaPosiciones },
-      { upsert: true, new: true }
-    ).populate('posiciones.equipo', 'nombre');;
-
-    const posicionesConNombreEquipo = tablaPosicionesPorLiga.posiciones.map((posicion) => {
-      return {
-        equipo: posicion.equipo.nombre,
-        PJ: posicion.PJ,
-        PG: posicion.PG,
-        PE: posicion.PE,
-        PP: posicion.PP,
-        GF: posicion.GF,
-        GC: posicion.GC,
-        Puntos: posicion.Puntos,
-      };
-    });
-    res.status(200).json({
-      ok: true,
-      tablaPosiciones: posicionesConNombreEquipo
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
-
-const generarTablaPosiciones = (enfrentamientos) => {
-  // Crear un objeto para almacenar las estadísticas de cada equipo
-  const estadisticasEquipos = {};
-
-  // Iterar sobre los resultados y actualizar las estadísticas de cada equipo
-  enfrentamientos.forEach((EstadisticasEnfrentamiento) => {
-    const equipoLocal = EstadisticasEnfrentamiento.equipoLocal;
-    const equipoVisitante = EstadisticasEnfrentamiento.equipoVisitante;
-    const golesLocal = EstadisticasEnfrentamiento.totalGolesLocal;
-    const golesVisitante = EstadisticasEnfrentamiento.totalGolesVisitante;
-
-    // Actualizar las estadísticas del equipo local
-    if (!estadisticasEquipos[equipoLocal]) {
-      estadisticasEquipos[equipoLocal] = {
-        PJ: 0,
-        PG: 0,
-        PE: 0,
-        PP: 0,
-        GF: 0,
-        GC: 0,
-        Puntos: 0,
-      };
+        // Devolver la tabla de posiciones como respuesta JSON
+        res.status(200).json(tablaDePosiciones);
+    } catch (error) {
+        console.error('Error al obtener la tabla de posiciones por liga:', error);
+        // Manejar el error según sea necesario
+        res.status(500).json({ error: 'Error al obtener la tabla de posiciones por liga' });
     }
-    estadisticasEquipos[equipoLocal].PJ++;
-    estadisticasEquipos[equipoLocal].GF += golesLocal;
-    estadisticasEquipos[equipoLocal].GC += golesVisitante;
-    if (golesLocal > golesVisitante) {
-      estadisticasEquipos[equipoLocal].PG++;
-      estadisticasEquipos[equipoLocal].Puntos += 3;
-    } else if (golesLocal === golesVisitante) {
-      estadisticasEquipos[equipoLocal].PE++;
-      estadisticasEquipos[equipoLocal].Puntos += 1;
-    } else {
-      estadisticasEquipos[equipoLocal].PP++;
+};
+
+const obtenerTablaDePosicionesPorLigaYTemporada = async (req, res = response) => {
+    try {
+        // Obtener el ID de la liga y la temporada desde la solicitud
+        const { idLiga, temporada } = req.params;
+
+        // Buscar la tabla de posiciones para la liga y temporada especificadas
+        const tablaDePosiciones = await Posicion.findOne({ liga: idLiga, temporada });
+
+        if (!tablaDePosiciones) {
+            return res.status(404).json({ error: 'Tabla de posiciones no encontrada para esta liga y temporada' });
+        }
+
+        // Devolver la tabla de posiciones como respuesta JSON
+        res.status(200).json(tablaDePosiciones);
+    } catch (error) {
+        console.error('Error al obtener la tabla de posiciones por liga y temporada:', error);
+        // Manejar el error según sea necesario
+        res.status(500).json({ error: 'Error al obtener la tabla de posiciones por liga y temporada' });
     }
+};
+const obtenerTablaDePosicionesActualPorLiga = async (req, res = response) => {
+    try {
+        // Obtener el ID de la liga desde la solicitud (por ejemplo, desde los parámetros de la URL)
+        const { idLiga } = req.params;
 
-    // Actualizar las estadísticas del equipo visitante
-    if (!estadisticasEquipos[equipoVisitante]) {
-      estadisticasEquipos[equipoVisitante] = {
-        PJ: 0,
-        PG: 0,
-        PE: 0,
-        PP: 0,
-        GF: 0,
-        GC: 0,
-        Puntos: 0,
-      };
+        // Buscar la posición actual por liga
+        const posicionActual = await Posicion.findOne({ liga: idLiga, esActual: true });
+
+        if (!posicionActual) {
+            return res.status(404).json({ error: 'No se encontró la tabla de posiciones actual para esta liga.' });
+        }
+
+        res.status(200).json(posicionActual);
+    } catch (error) {
+        console.error('Error al obtener la tabla de posiciones actual por liga:', error);
+        // Manejar el error según sea necesario
+        res.status(500).json({ error: 'Error al obtener la tabla de posiciones actual por liga' });
     }
-    estadisticasEquipos[equipoVisitante].PJ++;
-    estadisticasEquipos[equipoVisitante].GF += golesVisitante;
-    estadisticasEquipos[equipoVisitante].GC += golesLocal;
-    if (golesVisitante > golesLocal) {
-      estadisticasEquipos[equipoVisitante].PG++;
-      estadisticasEquipos[equipoVisitante].Puntos += 3;
-    } else if (golesVisitante === golesLocal) {
-      estadisticasEquipos[equipoVisitante].PE++;
-      estadisticasEquipos[equipoVisitante].Puntos += 1;
-    } else {
-      estadisticasEquipos[equipoVisitante].PP++;
-    }
-  });
-
-  // Convertir el objeto de estadísticas en un array de posiciones
-  const tablaPosiciones = Object.entries(estadisticasEquipos).map(([equipo, estadisticas]) => ({
-    equipo,
-    ...estadisticas,
-  }));
-
-  // Ordenar la tabla de posiciones por puntos y diferencia de goles
-  tablaPosiciones.sort((a, b) => {
-    if (a.Puntos !== b.Puntos) {
-      return b.Puntos - a.Puntos; // Orden descendente por puntos
-    }
-    return b.GF - b.GC - (a.GF - a.GC); // Orden descendente por diferencia de goles
-  });
-
-
-  return tablaPosiciones;
 };
 
-
-
-
-const getPosicionPorId = async (req, res = response) => {
-  const id = req.params.id;
-
-  try {
-    const posicion = await Posicion.findById(id)
-      .populate('equipo', 'nombre descripcion img')
-      .select('equipo PJ PG PE PP GF GC DIF EF');
-
-    res.status(200).json({
-      ok: true,
-      posicion: posicion,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
-
-
-const crearPosicion = async (req, res = response) => {
-  const posicion = new Posicion(req.body);
-  try {
-    const posicionDB = await posicion.save();
-    res.status(200).json({
-      ok: true,
-      posicion: posicionDB,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
-
-const actualizarPosicion = async (req, res = response) => {
-  const id = req.params.id;
-  try {
-    const posicion = await Posicion.findByIdAndUpdate(id, req.body, { new: true });
-    res.status(200).json({
-      ok: true,
-      posicion: posicion,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
-
-const eliminarPosicion = async (req, res = response) => {
-  const id = req.params.id;
-  try {
-    await Posicion.findByIdAndDelete(id);
-    res.status(200).json({
-      ok: true,
-      msg: 'Posición eliminada',
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Hable con el administrador',
-    });
-  }
-};
 
 module.exports = {
-  getPosiciones,
-  getPosicionesPorId,
-  getPosicionesPornombre,
-  getPosicionPorId,
-  generarTablaPosiciones,
-  crearPosicion,
-  actualizarPosicion,
-  eliminarPosicion,
+    obtenerTablaDePosicionesPorLiga,
+    obtenerTablaDePosicionesPorLigaYTemporada,
+    obtenerTablaDePosicionesActualPorLiga
 };
+
+

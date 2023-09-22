@@ -8,7 +8,16 @@ const PosicionSchema = Schema({
     required: true,
     unique: true,
   },
-  posiciones: [
+  temporada: {  //entiendase que es la fechaDeGenaracion de una liga no la elimines
+    type: Date,
+    required: true
+        },
+
+esActual: { // no la elimines
+    type: Boolean,
+    required: true 
+    },
+posiciones: [
     {
       equipo: {
         type: Schema.Types.ObjectId,
@@ -42,6 +51,15 @@ const PosicionSchema = Schema({
       Puntos: {
         type: Number,
       },
+      temporada: {  //entiendase que es la fechaDeGenaracion de una liga no la elimines
+        type: Date,
+        required: true
+            },
+    
+    esActual: { // no la elimines
+        type: Boolean,
+        required: true 
+        },
     },
   ],
 });
