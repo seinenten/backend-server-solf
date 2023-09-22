@@ -14,6 +14,12 @@ const EstadisticasJugadorSchema = Schema({
         required: true
     },
 
+    liga: {
+        type: Schema.Types.ObjectId,
+        ref: 'Liga',
+        required: true
+    },
+
     goles: {
         type: Number,
         default: 0
