@@ -53,7 +53,11 @@ const obtenerEstadisticasPorEquipo = async (req, res) => {
             equipo: idEquipo,
             temporada: { $lte: new Date() }, // Puedes ajustar esto para la temporada actual
             esActual: true, // Puedes ajustar esto según si son las estadísticas actuales o no
-        });
+        })
+        .populate('equipo','nombre img')
+                        
+        .populate('liga', 'nombre img')
+         ;
 
         if (estadisticasEquipo) {
             // Enviar las estadísticas del equipo como respuesta JSON
