@@ -46,7 +46,7 @@ const EstadisticasJugadorSchema = Schema({
     },
 
 
-});
+}, { collection: 'estadisticasJugadores' });
 
 EstadisticasJugadorSchema.method('toJSON', function () {
     const { __v , ...object } = this.toObject();

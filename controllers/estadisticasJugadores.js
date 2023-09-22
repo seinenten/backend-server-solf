@@ -57,7 +57,7 @@ const GenerarstadisticasJugadorPorEnfrentamientos = async (req, res) => {
 
         // 4. Devolver los datos requeridos
         const estadisticasJugadoresArray  = Object.values(estadisticasJugadores);
-        const estadisticasGuardadas = await Estadistica.create(estadisticasJugadoresArray);
+        await Estadistica.create(estadisticasJugadoresArray);
         res.status(200).json({
             ok: true,
             msg: 'Se han generado las estadisticas'
@@ -88,12 +88,12 @@ const getEstadisticasPorLiga  = async (req, res = response) => {
 
     res.status(200).json({
         ok: true,
-        equipos: estadisticas
+        estadisticas: estadisticas
     })
 
 }
 
-const getEstadisticasPorLigaTemp  = async (req, res) => {
+const getEstadisticasPorLigaTemp  = async (req, res = response) => {
 
     const idLiga = req.params.id;
     const temp =  req.params.temp;
@@ -112,19 +112,63 @@ const getEstadisticasPorLigaTemp  = async (req, res) => {
 
     res.status(200).json({
         ok: true,
-        equipos: estadisticas
+        estadisticas: estadisticas
     })
 
 }
 
-const getEstadisticasPorLigaEsActual = async (req, res) => { 
+const getEstadisticasPorLigaEsActual = async (req, res = response) => { 
+    const idLiga = req.params.id;
+
+    //estadisticas/verEstadisticasLigaActuales/<idliga>?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const estadisticas = await Estadistica.find({"liga": idLiga, "esActual":true})
+                        .populate('equipo','nombre img')
+                        .populate('jugador','nombre img')
+                        .populate('liga', 'nombre img')
+                        .sort({ goles: -1 })
+                        .skip( desde )
+                        .limit( limite );
+
+    res.status(200).json({
+        ok: true,
+        estadisticas: estadisticas
+    })
 
 } 
 
-const getMejoresEstadisticasPorLigaEsActual = async (req, res) => { 
+const terminarLasEstadisticasJugadores = async (req, res = response) => {
+    try {
+        const temp = req.params.temp;
+        const idLiga = req.params.id;
     
-} 
+    
+        const resultado = await Estadistica.updateMany(
+            { "temporada": temp, "liga":idLiga  },
+            { $set: { "esActual": false } }
+        );
 
+        if (resultado.nModified > 0) {
+            res.status(200).json({
+                ok: true,
+                msg: 'Se han inactivado las estadisticas de los jugadores'
+            });
+        } else {
+            res.status(404).json({
+                ok: false,
+                msg: 'A ocurrido un error al intentar inactivar las estadisticas. Por favor hable con el administrador.'
+            });
+        }
+    } catch (error) {
+        res.status(500).json({ 
+            ok: false,
+            msg: 'Error hablar con el administrador' 
+        });
+    }
+};
 
 
 const obtenerTablaDePosiciones = async (req, res) => {
@@ -214,13 +258,11 @@ const obtenerTablaDePosiciones = async (req, res) => {
     }
 };
 
-
-
 module.exports = {
     GenerarstadisticasJugadorPorEnfrentamientos,
     getEstadisticasPorLiga,
     getEstadisticasPorLigaTemp,
     getEstadisticasPorLigaEsActual,
-    getMejoresEstadisticasPorLigaEsActual,
-    obtenerTablaDePosiciones
+    obtenerTablaDePosiciones,
+    terminarLasEstadisticasJugadores
 }
