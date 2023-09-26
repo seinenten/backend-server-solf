@@ -22,6 +22,7 @@ const obtenerEstadisticasPorLiga = async (req, res) => {
             const estadisticasEquipo = await EstadisticaEquipo.findOne({
                 equipo: equipo._id,
                 temporada: { $lte: new Date() }, // Puedes ajustar esto para la temporada actual
+              
                 esActual: true, // Puedes ajustar esto según si son las estadísticas actuales o no
             });
 
@@ -29,6 +30,7 @@ const obtenerEstadisticasPorLiga = async (req, res) => {
                 // Agregar las estadísticas del equipo al objeto de estadísticas por liga
                 estadisticasPorLiga[equipo._id] = {
                     equipo: equipo._id,
+                    
                     nombreEquipo: equipo.nombre,
                     ...estadisticasEquipo.toObject(),
                 };
