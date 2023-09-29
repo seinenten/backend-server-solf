@@ -12,7 +12,8 @@ const {
     obtenerPartidosDeEquipoActuales,
     obtenerPartidosDeEquipo,
     getJornadasPorFechaDeGeneracion,
-    buscarPorFechaDeGeneracion
+    buscarPorFechaDeGeneracion,
+    getJornadasPorFechaDeGeneracionYLiga
 } = require('../controllers/enfrentamientos')
 
 
@@ -33,6 +34,8 @@ router.get('/partidosEquipoActuales/:id', obtenerPartidosDeEquipoActuales);
 router.get('/partidosEquipo/:id', obtenerPartidosDeEquipo);
 
 router.get('/buscar/:fecha/:id', buscarPorFechaDeGeneracion);
+
+router.get('/buscarTempLiga/:temp/:id', getJornadasPorFechaDeGeneracionYLiga);
 
 
 router.patch('/:id',[
