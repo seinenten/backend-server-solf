@@ -27,10 +27,10 @@ const obtenerTablaDePosiciones = async (req, res = response) => {
 
             // Verificar si los equipos ya existen en el objeto de estadísticas
             if (!estadisticasEquipos[equipoLocalId]) {
-                estadisticasEquipos[equipoLocalId] = { equipo: equipoLocalId, puntos: 0, goles: 0, PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GE: 0 };
+                estadisticasEquipos[equipoLocalId] = { equipo: equipoLocalId, Puntos: 0, goles: 0, PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GE: 0 };
             }
             if (!estadisticasEquipos[equipoVisitanteId]) {
-                estadisticasEquipos[equipoVisitanteId] = { equipo: equipoVisitanteId, puntos: 0, goles: 0, PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GE: 0 };
+                estadisticasEquipos[equipoVisitanteId] = { equipo: equipoVisitanteId, Puntos: 0, goles: 0, PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GE: 0 };
             }
 
             // Calcular los puntos y goles para cada enfrentamiento
@@ -38,16 +38,16 @@ const obtenerTablaDePosiciones = async (req, res = response) => {
             const golesVisitante = enfrentamiento.estadisticas.totalGolesVisitante;
 
             if (golesLocal > golesVisitante) {
-                estadisticasEquipos[equipoLocalId].puntos += 3; // Ganador
+                estadisticasEquipos[equipoLocalId].Puntos += 3; // Ganador
                 estadisticasEquipos[equipoLocalId].PG += 1;
                 estadisticasEquipos[equipoVisitanteId].PP += 1;
             } else if (golesLocal < golesVisitante) {
-                estadisticasEquipos[equipoVisitanteId].puntos += 3; // Ganador
+                estadisticasEquipos[equipoVisitanteId].Puntos += 3; // Ganador
                 estadisticasEquipos[equipoVisitanteId].PG += 1;
                 estadisticasEquipos[equipoLocalId].PP += 1;
             } else {
-                estadisticasEquipos[equipoLocalId].puntos += 1; // Empate
-                estadisticasEquipos[equipoVisitanteId].puntos += 1; // Empate
+                estadisticasEquipos[equipoLocalId].Puntos += 1; // Empate
+                estadisticasEquipos[equipoVisitanteId].Puntos += 1; // Empate
                 estadisticasEquipos[equipoLocalId].PE += 1;
                 estadisticasEquipos[equipoVisitanteId].PE += 1;
             }
@@ -75,6 +75,7 @@ const obtenerTablaDePosiciones = async (req, res = response) => {
             return {
                 ...equipo,
                 nombreEquipo: equipoInfo ? equipoInfo.nombre : 'Equipo Desconocido',
+            
                 temporada: fechaGeneracionEnfrentamientos, // Usar la fecha de generación de enfrentamientos
                 esActual: true, // Establecer esActual en true
             };
@@ -82,8 +83,8 @@ const obtenerTablaDePosiciones = async (req, res = response) => {
 
         // Ordenar la tabla de posiciones por puntos y goles (puedes personalizar esto según tus reglas)
         tablaDePosiciones.sort((a, b) => {
-            if (b.puntos !== a.puntos) {
-                return b.puntos - a.puntos;
+            if (b.puntos !== a.Puntos) {
+                return b.puntos - a.Puntos;
             } else {
                 return b.goles - a.goles;
             }
@@ -97,6 +98,7 @@ const obtenerTablaDePosiciones = async (req, res = response) => {
                 equipo,
                 temporada: estadisticaEquipo.temporada,
                 esActual: estadisticaEquipo.esActual,
+               
                 ...estadisticas,
             });
         }
@@ -136,8 +138,8 @@ const guardarTablaDePosicionesEnPosicion = async (idLiga, temporada, tablaDePosi
             PE: equipo.PE,
             PP: equipo.PP,
             GF: equipo.GF,
-            GC: equipo.GE, // Cambiar GC a GE para evitar errores
-            Puntos: equipo.puntos,
+            GC: equipo.GC, // Cambiar GC a GE para evitar errores
+            Puntos: equipo.Puntos,
         }));
 
         // Guardar el documento de Posicion en la base de datos

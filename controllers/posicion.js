@@ -8,14 +8,25 @@ const obtenerTablaDePosicionesPorLiga = async (req, res = response) => {
         const { idLiga } = req.params;
 
         // Buscar la tabla de posiciones para la liga y temporada actual
-        const tablaDePosiciones = await Posicion.findOne({ liga: idLiga, esActual: true });
+        const tablaDePosiciones = await Posicion.findOne({ liga: idLiga, esActual: true }, 'posiciones')
+            .populate({
+                path: 'posiciones.equipo',
+                model: 'Equipo',
+                select: 'nombre' // Aquí seleccionamos solo el campo 'nombre' del equipo
+            });
 
         if (!tablaDePosiciones) {
             return res.status(404).json({ error: 'Tabla de posiciones no encontrada para esta liga y temporada' });
         }
 
-        // Devolver la tabla de posiciones como respuesta JSON
-        res.status(200).json(tablaDePosiciones);
+        // Ordenar las posiciones de mayor a menor puntos
+        tablaDePosiciones.posiciones.sort((a, b) => b.Puntos - a.Puntos);
+
+        // Devolver solo el arreglo de posiciones ordenadas como respuesta JSON
+        res.status(200).json({
+            ok: true,
+            posiciones: tablaDePosiciones.posiciones
+        });
     } catch (error) {
         console.error('Error al obtener la tabla de posiciones por liga:', error);
         // Manejar el error según sea necesario
@@ -36,7 +47,9 @@ const obtenerTablaDePosicionesPorLigaYTemporada = async (req, res = response) =>
         }
 
         // Devolver la tabla de posiciones como respuesta JSON
-        res.status(200).json(tablaDePosiciones);
+        res.status(200).json({
+            ok: true,
+            posiciones: tablaDePosiciones});
     } catch (error) {
         console.error('Error al obtener la tabla de posiciones por liga y temporada:', error);
         // Manejar el error según sea necesario
@@ -55,7 +68,10 @@ const obtenerTablaDePosicionesActualPorLiga = async (req, res = response) => {
             return res.status(404).json({ error: 'No se encontró la tabla de posiciones actual para esta liga.' });
         }
 
-        res.status(200).json(posicionActual);
+        res.status(200).json({
+            ok: true,
+            TabPosiciones: posicionActual
+        });
     } catch (error) {
         console.error('Error al obtener la tabla de posiciones actual por liga:', error);
         // Manejar el error según sea necesario
