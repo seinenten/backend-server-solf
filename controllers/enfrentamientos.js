@@ -118,6 +118,16 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
     }
 };
 
+const generarEnfrentamientosPorTorneDeLiga= async(req, res) => {
+
+    // Obtener el ID de la liga desde la solicitud (por ejemplo, desde los parámetros de la URL)
+    const { idLiga } = req.params;
+
+    // Buscar la posición actual por liga
+    const posicionActual = await Posicion.findOne({ liga: idLiga, esActual: true });
+
+
+}
 
 
 const getEnfrentamientosPorLiga = async(req, res = response) => {
@@ -189,6 +199,35 @@ const getEnfrentamientosPorLigaActuales = async(req, res = response) => {
     res.status(200).json({
         ok: true,
         enfrentamientos: enfrentamientos
+    })
+}
+
+const getEnfrentamientoPorId = async(req,res = response) => {
+    const id = req.params.id;
+
+    const enfrentamiento = await Enfrentamiento.findById(id)
+                    .populate('liga', 'nombre')
+                    .populate('equipoLocal', 'nombre img')
+                    .populate('equipoVisitante', 'nombre img')
+                    .populate('estadio', 'nombre img')
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.jugador',
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorEntra', // Poblaciona jugadorEntra
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorSale', // Poblaciona jugadorSale
+                        select: 'nombre img',
+                    })
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        enfrentamiento: enfrentamiento
     })
 }
 
@@ -380,4 +419,5 @@ module.exports = {
     obtenerPartidosDeEquipo,
     getJornadasPorFechaDeGeneracion,
     buscarPorFechaDeGeneracion,
+    getEnfrentamientoPorId
 }
