@@ -334,6 +334,43 @@ const obtenerPartidosDeEquipo = async (req, res = response) => {
 
 };
 
+const getJornadasPorFechaDeGeneracionYLiga = async (req, res = response) => {
+    const id = req.params.id;
+    const temp = req.params.temp;
+    
+
+    //enfrentamientos?desde=10&limite=3
+
+    const desde =  Number(req.query.desde)  || 0;
+    const limite = Number(req.query.limite) || 0;
+
+    const enfrentamientos = await Enfrentamiento.find({"liga":id, "fechaDeGeneracion":temp})
+                    .populate('liga', 'nombre')
+                    .populate('equipoLocal', 'nombre img')
+                    .populate('equipoVisitante', 'nombre img')
+                    .populate('estadio', 'nombre img')
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.jugador',
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorEntra', // Poblaciona jugadorEntra
+                        select: 'nombre img',
+                    })
+                    .populate({
+                        path: 'estadisticas.estadisticasJugadores.cambios.jugadorSale', // Poblaciona jugadorSale
+                        select: 'nombre img',
+                    })
+                    .skip( desde )
+                    .limit( limite );
+                                
+                                
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
+}
 
 
 const getJornadasPorFechaDeGeneracion = async (req, res) => {
@@ -419,5 +456,6 @@ module.exports = {
     obtenerPartidosDeEquipo,
     getJornadasPorFechaDeGeneracion,
     buscarPorFechaDeGeneracion,
-    getEnfrentamientoPorId
+    getEnfrentamientoPorId,
+    getJornadasPorFechaDeGeneracionYLiga
 }
