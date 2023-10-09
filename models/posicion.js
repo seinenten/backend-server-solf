@@ -51,15 +51,7 @@ posiciones: [
       Puntos: {
         type: Number,
       },
-      temporada: {  //entiendase que es la fechaDeGenaracion de una liga no la elimines
-        type: Date,
-        required: true
-            },
-    
-    esActual: { // no la elimines
-        type: Boolean,
-        required: true 
-        },
+     
     },
   ],
 });
