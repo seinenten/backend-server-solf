@@ -14,7 +14,14 @@ const {
     getJornadasPorFechaDeGeneracion,
     buscarPorFechaDeGeneracion,
     getEnfrentamientoPorId,
-    getJornadasPorFechaDeGeneracionYLiga
+    getJornadasPorFechaDeGeneracionYLiga,
+    generarEnfrentamientosPorTorneoDeLiga,
+    generarEnfrentamientosPorTorneoDeLigaFase2,
+    generarEnfrentamientosPorTorneoDeLigaFase3,
+    buscarEnfretamientosPorTorenosDeLigaFase1,
+    buscarEnfretamientosPorTorenosDeLigaFase2,
+    buscarEnfretamientosPorTorenosDeLigaFase3,
+    insertarEstorneoFalse
 } = require('../controllers/enfrentamientos')
 
 
@@ -39,6 +46,12 @@ router.get('/buscar/:fecha/:id', buscarPorFechaDeGeneracion);
 router.get('/enfrentamiento/:id', getEnfrentamientoPorId);
 
 router.get('/buscarTempLiga/:temp/:id', getJornadasPorFechaDeGeneracionYLiga);
+
+//? TORNEO
+
+router.get('/torneo/generarTorneo/:idLiga', generarEnfrentamientosPorTorneoDeLiga);
+
+router.get('/torneo/falsearTodo', insertarEstorneoFalse);
 
 
 router.patch('/:id',[

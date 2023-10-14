@@ -114,6 +114,11 @@ const EnfrentamientoSchema = Schema({
         default: true // Los nuevos enfrentamientos son considerados como actuales por defecto
     },
 
+    esTorneo: {
+        type: Boolean,
+        default: false // Los nuevos enfrentamientos son considerados como actuales por defecto
+    },
+
     fechaDeEnfrentamiento: {
         type: Date
     },

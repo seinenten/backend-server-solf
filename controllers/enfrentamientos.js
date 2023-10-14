@@ -2,12 +2,32 @@ const { response } = require("express");
 
 const Enfrentamiento = require('../models/enfrentamiento');
 const Equipo = require('../models/equipo');
+const Posicion = require('../models/posicion');
 
-const generarEnfrentamientosPorLiga = async (req, res) => {
+const insertarEstorneoFalse = async (req,res = response) => {
+    try {
+        // Utiliza el método updateMany para actualizar todos los documentos
+        // estableciendo la propiedad esTorneo en false
+        const result = await Enfrentamiento.updateMany({}, { $set: { esTorneo: false } });
+
+        return res.json({
+            ok: true,
+            message: `${result.nModified} documentos actualizados con éxito`,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            ok: false,
+            message: 'Error al actualizar los documentos',
+        });
+    }
+};
+
+const generarEnfrentamientosPorLiga = async (req, res = response) => {
     const ligaId = req.params.ligaId;
 
     // Obtener la fecha actual y establecer la hora a las 06:00:00.000
-    const fechaActual = new Date();
+    const fechaActual = new Date(); 
     fechaActual.setUTCHours(6, 0, 0, 0);
 
     //Verificar si ya existen enfrentamientos con la misma fecha
@@ -118,15 +138,102 @@ const generarEnfrentamientosPorLiga = async (req, res) => {
     }
 };
 
-const generarEnfrentamientosPorTorneDeLiga= async(req, res) => {
+const generarEnfrentamientosPorTorneoDeLiga= async(req, res = response) => {
 
-    // Obtener el ID de la liga desde la solicitud (por ejemplo, desde los parámetros de la URL)
     const { idLiga } = req.params;
 
-    // Buscar la posición actual por liga
+    // Buscar la posiciónes actuales por liga
     const posicionActual = await Posicion.findOne({ liga: idLiga, esActual: true });
 
+    if (!posicionActual) {
+        return res.status(404).json({
+            ok: false,
+            msg: 'No se encontró la tabla de posiciones actual para la liga especificada.',
+        });
+    }
 
+    // Seleccionar los 8 mejores equipos para la liguilla
+    const equiposLiguilla = posicionActual.posiciones.slice(0, 8);
+
+    // Verificar si hay al menos 8 equipos en la liga
+    if (equiposLiguilla.length < 8) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'La liga no tiene suficientes equipos para la liguilla (se requieren al menos 8 equipos).',
+        });
+    }
+    //obtenla temporada para la fechadegeneracion
+    const temporadaLiguilla = posicionActual.temporada;
+
+    // Crear enfrentamientos para la liguilla
+    const enfrentamientosLiguilla = [];
+    for (let i = 0; i < equiposLiguilla.length; i += 2) {
+        const equipoLocal = equiposLiguilla[i].equipo;
+        const equipoVisitante = equiposLiguilla[i + 1].equipo;
+
+        // Puedes personalizar la lógica para determinar el estadio, la fecha, etc.
+        const nuevoEnfrentamiento = new Enfrentamiento({
+            liga: idLiga,
+            jornada: 1, // Puedes ajustar esto según tus necesidades
+            equipoLocal,
+            equipoVisitante,
+            fechaDeGeneracion: temporadaLiguilla,
+            esActual: true, // Puedes ajustar esto según tus necesidades
+            esTorneo: true, // Puedes ajustar esto según tus necesidades
+        });
+
+        enfrentamientosLiguilla.push(nuevoEnfrentamiento);
+    }
+
+    // Guardar los enfrentamientos de la liguilla en la base de datos
+    await Enfrentamiento.insertMany(enfrentamientosLiguilla);
+
+    res.status(200).json({
+        ok: true,
+        msg: 'Se han generado los enfrentamientos para el torneo.',
+        enfrentamientosLiguilla,
+    });
+}
+
+const generarEnfrentamientosPorTorneoDeLigaFase2 = async(req, res = response) => {
+
+}
+
+const generarEnfrentamientosPorTorneoDeLigaFase3 = async(req, res = response) => {
+    
+}
+
+const buscarEnfretamientosPorTorneosDeLigaFase1 = async(req, res = response) => {
+    
+    const id = req.params.id;
+
+    const enfrentamientos = await Enfrentamiento.find({"liga": id, "esTorneo": true, "jornada": 1, "esActual": true})
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
+
+}
+
+const buscarEnfretamientosPorTorneosDeLigaFase2 = async(req, res = response) => {
+    const id = req.params.id;
+    const enfrentamientos = await Enfrentamiento.find({"liga": id, "esTorneo": true, "jornada": 2, "esActual": true})
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
+}
+
+const buscarEnfretamientosPorTorneosDeLigaFase3 = async(req, res = response) => {
+    const id = req.params.id;
+    const enfrentamientos = await Enfrentamiento.find({"liga": id, "esTorneo": true, "jornada": 3, "esActual": true})
+
+    res.status(200).json({
+        ok: true,
+        enfrentamientos: enfrentamientos
+    })
 }
 
 
@@ -457,5 +564,12 @@ module.exports = {
     getJornadasPorFechaDeGeneracion,
     buscarPorFechaDeGeneracion,
     getEnfrentamientoPorId,
-    getJornadasPorFechaDeGeneracionYLiga
+    getJornadasPorFechaDeGeneracionYLiga,
+    generarEnfrentamientosPorTorneoDeLiga,
+    generarEnfrentamientosPorTorneoDeLigaFase2,
+    generarEnfrentamientosPorTorneoDeLigaFase3,
+    buscarEnfretamientosPorTorneosDeLigaFase1,
+    buscarEnfretamientosPorTorneosDeLigaFase2,
+    buscarEnfretamientosPorTorneosDeLigaFase3,
+    insertarEstorneoFalse
 }

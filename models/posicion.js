@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const Equipo = require('./equipo');
 
 const PosicionSchema = Schema({
   liga: {
