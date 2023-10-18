@@ -1,17 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const CambioJugadorSchema = Schema({
-    jugadorEntra: {
-        type: Schema.Types.ObjectId,
-        ref: 'Jugador',
-        required: true
-    },
-    jugadorSale: {
-        type: Schema.Types.ObjectId,
-        ref: 'Jugador',
-        required: true
-    },
-});
+
 
 const EstadisticasJugadorSchema = Schema({
     jugador: {
@@ -31,7 +20,7 @@ const EstadisticasJugadorSchema = Schema({
         type: Boolean,
         default: false // true si el jugador fue expulsado durante el partido, false en caso contrario
     },
-    cambios: [CambioJugadorSchema]
+       
     // Puedes agregar más campos de estadísticas según tus necesidades
 });
 
