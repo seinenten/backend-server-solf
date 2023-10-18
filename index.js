@@ -36,7 +36,7 @@ app.use('/api/todo', require('./routes/busquedas'));
 app.use('/api/upload', require('./routes/uploads'));
 app.use('/api/posiciones', require('./routes/posicion'));
 app.use('/api/resultados', require('./routes/resultados'))
-app.use('/api/estadios', require('./routes/estadios'))
+app.use('/api/estadios', require(   './routes/estadios'))
 app.use('/api/enfrentamientos', require('./routes/enfrentamientos'))
 app.use('/api/estadisticas', require('./routes/estadisticasJugadores.js'))
 app.use('/api/estadisticasEquipos/', require('./routes/estadisticasEquipos.js'))
