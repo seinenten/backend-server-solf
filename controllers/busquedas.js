@@ -4,7 +4,7 @@ const Usuario = require('../models/usuario');
 const Liga = require('../models/liga');
 const Equipo = require('../models/equipo');
 const Jugador = require('../models/jugador');
-
+const Producto = require('../models/productos');
 
 
 const busquedaTotal = async(req, res = response) => {
@@ -13,12 +13,13 @@ const busquedaTotal = async(req, res = response) => {
     const regex = new RegExp( busqueda, 'i' );
 
     
-    const [ usuarios, ligas, equipos, jugadores ] = await Promise.all([
+    const [ usuarios, ligas, equipos, jugadores, productos ] = await Promise.all([
         
         Usuario.find({ nombre: regex }),
         Liga.find({ nombre: regex }),
         Equipo.find({ nombre: regex }),
         Jugador.find({ nombre: regex }),
+        Producto.find({ nombre: regex }),
     ]);
 
     res.json( {
@@ -26,7 +27,8 @@ const busquedaTotal = async(req, res = response) => {
         usuarios,
         ligas,
         equipos,
-        jugadores
+        jugadores,
+        productos
     });
 
 }
