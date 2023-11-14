@@ -6,6 +6,7 @@ const { validarJWT, validarADMIN_ROLE } = require('../middlewares/validar-jwt');
 const {
     
     obtenerTablaDePosicionesPorLiga,
+    obtenerTablaDePosicionesPorEquipo,
     obtenerTablaDePosicionesPorLigaYTemporada,
     obtenerTablaDePosicionesActualPorLiga
    
@@ -21,6 +22,8 @@ const router = Router();
 // Obtener todas las posiciones
 router.get('/:idLiga', obtenerTablaDePosicionesPorLiga);
 
+router.get('/Equipo/:idEquipo', obtenerTablaDePosicionesPorEquipo);
+ 
 router.get('/:idLiga/:temporada', obtenerTablaDePosicionesPorLigaYTemporada);
 
 

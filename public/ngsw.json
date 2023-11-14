@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1697656474121,
+  "timestamp": 1698100847555,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,15 +14,15 @@
         "/226.134a7d4282c54dd7.js",
         "/236.f2a3b38fc6f48230.js",
         "/345.6d9ad5d0f53be193.js",
-        "/727.3bd85fdb06cc8b31.js",
+        "/727.6825f7f430025eda.js",
         "/86.e82867942e41b962.js",
         "/common.7c7efb5ce44b3d61.js",
         "/favicon.ico",
         "/index.html",
-        "/main.a049b2f6e8f10322.js",
+        "/main.1c6811929c50bcb3.js",
         "/manifest.webmanifest",
         "/polyfills.bf0c5b7deae64623.js",
-        "/runtime.624884a7c52b8ac4.js",
+        "/runtime.57e7999851fa95b8.js",
         "/styles.469e11fb52be0d00.css"
       ],
       "patterns": [
@@ -4031,7 +4031,7 @@
     "/226.134a7d4282c54dd7.js": "1fe5ea5c1ca7c82837b1c012373a99bfc5703d3c",
     "/236.f2a3b38fc6f48230.js": "96415b8a2986bd29ef7f9e615429f2766fda2375",
     "/345.6d9ad5d0f53be193.js": "d7a6cd2e5caf136de63e953599129a6442742ba0",
-    "/727.3bd85fdb06cc8b31.js": "369a68d190d060b064e7741756aac1f4884f01df",
+    "/727.6825f7f430025eda.js": "0944f4bce5bac9619d63da138b9894bf4c709745",
     "/86.e82867942e41b962.js": "e0fbf2913b31e1db156c62ee8b607757df5368f2",
     "/assets/Ligas/equipos/jugadores/no-image-jugador.png": "e6b2d32a87025fb9022a8983e7416dd2500a40bb",
     "/assets/Ligas/equipos/no-image-equipo.png": "1a42f30b5089e19c78eadb321432c7c984fa2cbc",
@@ -7892,11 +7892,11 @@
     "/assets/mensajeerror.png": "749edb0b321659ff2153d2013379932c4813fb4c",
     "/common.7c7efb5ce44b3d61.js": "917383bd27fc90e5173c8d615491a0a3f0936b39",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "675db65ab774d9d97aed7e2a63ec73a9dd75c7ce",
-    "/main.a049b2f6e8f10322.js": "d66d4678fab5fe5eefebdf4f3a732ff9265eadec",
-    "/manifest.webmanifest": "7f2de821b4c70db5e4c4b7288b0deeda0ef65079",
+    "/index.html": "770497f0735689f7212fad1426d229ae46406ee6",
+    "/main.1c6811929c50bcb3.js": "b2dfa54eb095b1c0544a42fb16b29b4009eb063c",
+    "/manifest.webmanifest": "cd457844cdd7ae306a9a1b606d9eaa850a5ffb43",
     "/polyfills.bf0c5b7deae64623.js": "86404465ab6cb45c94d45c6413d207396cc66f30",
-    "/runtime.624884a7c52b8ac4.js": "36a305c917551a370d93adcd4003c8bc175dd4e5",
+    "/runtime.57e7999851fa95b8.js": "a564c44cd96b739b3fb75ca3cb185da6ac45dfeb",
     "/styles.469e11fb52be0d00.css": "cb1d524be7e717c7cfd8d3dcdd78374f8fa73260"
   },
   "navigationUrls": [
