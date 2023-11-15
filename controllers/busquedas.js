@@ -64,6 +64,9 @@ const getDocumentosColeccion = async(req, res = response) => {
         case 'usuarios':
             data = await Usuario.find({ nombre: regex })
 
+        case 'productos':
+                data = await Producto.find({ nombre: regex })
+    
         break;
 
         default: 
