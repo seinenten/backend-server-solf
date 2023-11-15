@@ -11,7 +11,7 @@ const router = Router();
 
 router.get( '/:busqueda', validarJWT , busquedaTotal );
 
-router.get( '/coleccion/:tabla/:busqueda', validarJWT  ,  getDocumentosColeccion );
+router.get( '/coleccion/:tabla/:busqueda'  ,  getDocumentosColeccion );
 
 
 module.exports = router;
