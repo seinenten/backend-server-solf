@@ -43,6 +43,8 @@ app.use('/api/estadisticasEquipos/', require('./routes/estadisticasEquipos.js'))
 app.use('/api/productos', require('./routes/productos.js'));
 app.use('/api/tablaPosiciones/', require('./routes/tablaPosiciones.js'))
 
+//Cursos 
+app.use('/api/cursos', require('./routes/cursos.js'));
 
 //ruta carrusel 
 app.use('/api/carruseles', require('./routes/carruseles'));

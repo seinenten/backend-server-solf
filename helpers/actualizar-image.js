@@ -8,6 +8,7 @@ const Equipo = require('../models/equipo');
 const Liga = require('../models/liga');
 const Carrusel = require('../models/carrusel');
 const Jugador = require('../models/jugador');
+const Curso = require('../models/curso');
 
 const borrarImagen = ( ) => {
     
@@ -134,6 +135,25 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
             await carrusel.save();
             return true;
         
+        break;
+
+        case 'cursos': 
+            const curso = await Curso.findById(id);
+            if(curso.img){
+                const nombreArr = curso.img.split('/');
+                const nombre = nombreArr[ nombreArr.length - 1 ];
+                const [ public_id ] = nombre.split('.');
+                cloudinary.uploader.destroy(public_id);
+            }
+            if( !curso ){
+                console.log('No es un curso por id');
+                return false;
+            }
+
+            curso.img = nombreArchivo;
+            await curso.save();
+            return true;
+
         break;
 
         default:

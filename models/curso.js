@@ -13,7 +13,15 @@ const cursoSchema = Schema({
     precio: {
         type: Number,
         required: true
-    }
+    },
+    img: {
+        type: string
+    },
+    usuario: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
+    },
 
 
 }, { collection: 'cursos'});
