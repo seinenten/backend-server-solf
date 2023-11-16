@@ -116,6 +116,7 @@ const actualizarImagen = async( tipo, id,nombreArchivo) => {
             return true;
         
         break;
+        
         case 'carruseles':
             const carrusel = await Carrusel.findById(id);
             if(carrusel.img){

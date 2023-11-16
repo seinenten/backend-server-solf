@@ -15,7 +15,7 @@ const cursoSchema = Schema({
         required: true
     },
     img: {
-        type: string
+        type: String
     },
     usuario: {
         type: Schema.Types.ObjectId,
