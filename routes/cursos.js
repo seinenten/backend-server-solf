@@ -11,7 +11,8 @@ const {
     crearCurso,
     eliminarCurso,
     getCursos,
-    getCursosPorNombre
+    getCursosPorNombre,
+    getCursoPorId
 } = require('../controllers/cursos')
 
 const router = Router();
@@ -20,6 +21,8 @@ const router = Router();
 router.get('/', getCursos);
 
 router.get('/nombre/:nombre', getCursosPorNombre);
+
+router.get( '/:id'  , getCursoPorId );
 
 router.post('/',
     [

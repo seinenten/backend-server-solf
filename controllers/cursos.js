@@ -19,6 +19,30 @@ const getCursos = async (req, res = response) => {
 
 }
 
+const getCursoPorId = async(req, res = response) => {
+
+    const id = req.params.id;
+
+    try {
+        const curso = await Curso.findById(id)
+                    //obtener el nombre del usuario que creo el equipo, y sus otras propiedades
+                    .populate('usuario', 'nombre apellidoP apellidoM img');
+
+        res.status(200).json({
+            ok: true,
+            curso: curso
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+        
+    }
+}
+
 const getCursosPorNombre = async (req, res = response) => {
     const busqueda = req.params.nombre;
     const regex = new RegExp(busqueda, 'i');
@@ -135,6 +159,7 @@ const eliminarCurso = async(req, res = response) => {
 module.exports = {
     getCursos,
     getCursosPorNombre,
+    getCursoPorId,
     crearCurso,
     actualizarCurso,
     eliminarCurso
