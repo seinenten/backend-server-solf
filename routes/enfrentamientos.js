@@ -49,8 +49,7 @@ router.get('/buscarTempLiga/:temp/:id', getJornadasPorFechaDeGeneracionYLiga);
 
 //? TORNEO
 
-router.get('/torneo/generarTorneo/:idLiga', generarEnfrentamientosPorTorneoDeLiga);
-
+router.get('/torneo/generarTorneo/:idLiga', generarEnfrentamientosPorTorneoDeLiga)
 router.get('/torneo/falsearTodo', insertarEstorneoFalse);
 
 
