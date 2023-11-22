@@ -6,7 +6,7 @@ const EstadisticasJugadorSchema = Schema({
     jugador: {
         type: Schema.Types.ObjectId,
         ref: 'Jugador',
-        required: true
+        
     },
     faltas: {
         type: Number,
