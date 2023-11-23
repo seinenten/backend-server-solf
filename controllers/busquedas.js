@@ -5,6 +5,7 @@ const Liga = require('../models/liga');
 const Equipo = require('../models/equipo');
 const Jugador = require('../models/jugador');
 const Producto = require('../models/productos');
+const Curso = require('../models/curso');
 
 
 const busquedaTotal = async(req, res = response) => {
@@ -13,13 +14,14 @@ const busquedaTotal = async(req, res = response) => {
     const regex = new RegExp( busqueda, 'i' );
 
     
-    const [ usuarios, ligas, equipos, jugadores, productos ] = await Promise.all([
+    const [ usuarios, ligas, equipos, jugadores, productos, cursos ] = await Promise.all([
         
         Usuario.find({ nombre: regex }),
         Liga.find({ nombre: regex }),
         Equipo.find({ nombre: regex }),
         Jugador.find({ nombre: regex }),
         Producto.find({ nombre: regex }),
+        Curso.find({nombre: regex })
     ]);
 
     res.json( {
@@ -28,7 +30,8 @@ const busquedaTotal = async(req, res = response) => {
         ligas,
         equipos,
         jugadores,
-        productos
+        productos,
+        cursos
     });
 
 }
@@ -69,11 +72,17 @@ const getDocumentosColeccion = async(req, res = response) => {
     
         break;
 
+        case 'cursos':
+                data = await Curso.find({ nombre: regex })
+    
+        break;
+
+
         default: 
 
             return res.status(400).json({
                 ok: false,
-                msg: 'La tabla tiene que ser usuarios/ligas/equipos/jugadores'
+                msg: 'La tabla tiene que ser usuarios/ligas/equipos/jugadores/cursos'
             });
         
     }
