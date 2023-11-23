@@ -42,7 +42,7 @@ app.use('/api/estadisticas', require('./routes/estadisticasJugadores.js'))
 app.use('/api/estadisticasEquipos/', require('./routes/estadisticasEquipos.js'))
 app.use('/api/productos', require('./routes/productos.js'));
 app.use('/api/tablaPosiciones/', require('./routes/tablaPosiciones.js'))
-
+app.use('/api/comentarios', require('./routes/comentario.js'));
 //Cursos 
 app.use('/api/cursos', require('./routes/cursos.js'));
 
