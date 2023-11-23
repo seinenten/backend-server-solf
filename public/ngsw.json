@@ -1,0 +1,118 @@
+{
+  "configVersion": 1,
+  "timestamp": 1700724726840,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/397.d948b800ac889152.js",
+        "/518.7e54d867f155062e.js",
+        "/861.e491953486e9113e.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.37d3138ca37b382f.js",
+        "/manifest.webmanifest",
+        "/polyfills.af51362fe2305549.js",
+        "/runtime.b48815cd852b2646.js",
+        "/styles.ac73aa37074bcbe0.css"
+      ],
+      "patterns": [
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/bootstrap@5\\.0\\.2\\/dist\\/css\\/bootstrap\\.min\\.css",
+        "https:\\/\\/cdnjs\\.cloudflare\\.com\\/ajax\\/libs\\/font-awesome\\/6\\.4\\.2\\/css\\/all\\.min\\.css",
+        "https:\\/\\/fonts\\.googleapis\\.com",
+        "https:\\/\\/fonts\\.gstatic\\.com",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/css2\\?family=Poppins&amp;display=swap",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/css2\\?family=Roboto:wght@300;400;500&amp;display=swap",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/icon\\?family=Material\\+Icons",
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/bootstrap@5\\.0\\.2\\/dist\\/js\\/bootstrap\\.bundle\\.min\\.js"
+      ]
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/imagenes/abuelos.jpg",
+        "/assets/imagenes/awes.png",
+        "/assets/imagenes/jovenes.jpg",
+        "/assets/imagenes/logo club.png",
+        "/assets/imagenes/nadanding.png",
+        "/assets/imagenes/natacion1.png",
+        "/assets/imagenes/natacion2.jpg",
+        "/assets/imagenes/nina.png",
+        "/assets/imagenes/niños.jpg",
+        "/assets/imagenes/senos.png",
+        "/nadanding.e739e1c2bf5047a6.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/397.d948b800ac889152.js": "9531576192539aa547165516c4827754ec18f69b",
+    "/518.7e54d867f155062e.js": "73d10cf31ac17be18fa26eacc8d0ed3def04f285",
+    "/861.e491953486e9113e.js": "67410b8af10a1ded541c6b677d1647b3f50735b9",
+    "/assets/icons/icon-128x128.png": "b1f06c7d714abb4a0cc4d1f7c954feb26826e4c4",
+    "/assets/icons/icon-144x144.png": "96a0d629765c1bc85d9263c6bc83094ca776d267",
+    "/assets/icons/icon-152x152.png": "b1fbbee3902eb96a7658e3bb006f31f78ca5a44c",
+    "/assets/icons/icon-192x192.png": "e4211163bf0911688fbfb80278d8ff4d2f77691d",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "279825a1ac4377032ae996a1832c641e33ccf1b6",
+    "/assets/icons/icon-96x96.png": "592885efcbfee27e5e20be4fa3043589390d2740",
+    "/assets/imagenes/abuelos.jpg": "c19f08c2f67b34e9487822188101af9dd8a5c3aa",
+    "/assets/imagenes/awes.png": "bd490b3b8f64d25057603ba5f5c38e62700c189a",
+    "/assets/imagenes/jovenes.jpg": "12440d9d344186146974bdacbb6afc9907bdd758",
+    "/assets/imagenes/logo club.png": "4600988c3913757ff1769842b92359680a142958",
+    "/assets/imagenes/nadanding.png": "3bb1d9e8625432f8096a08a024daaa9315379b47",
+    "/assets/imagenes/natacion1.png": "9ac8ed50ca118a9f66cd866637119bd01ad359bf",
+    "/assets/imagenes/natacion2.jpg": "c008b4d65bcfa5f35ce6f6e2ecd3d384a5b97569",
+    "/assets/imagenes/nina.png": "89a383eb020689cd2d703fa276ff66977973fcc2",
+    "/assets/imagenes/niños.jpg": "a6df1c5e061ddd8e86a4ac42641355c48a2553fd",
+    "/assets/imagenes/senos.png": "3bb9336b6a20076387b8049622ee27fda8092605",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "11a809d44d51f50f7a9be1c7a15a50bc63391f96",
+    "/main.37d3138ca37b382f.js": "977c44d649799cfdaab35bf08e9ef9c71a1d6253",
+    "/manifest.webmanifest": "838d68ab758f81a8bfff87d0eb0cc731da0c104b",
+    "/nadanding.e739e1c2bf5047a6.png": "3bb1d9e8625432f8096a08a024daaa9315379b47",
+    "/polyfills.af51362fe2305549.js": "2c9f580c6318853c7f81f06afeb0a41493ee3174",
+    "/runtime.b48815cd852b2646.js": "bd67dfb58824a359b7cd6b742542d52c7536361d",
+    "/styles.ac73aa37074bcbe0.css": "de3dabc70aaa0c38b15105310c5267621becdd86"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
