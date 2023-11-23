@@ -6,7 +6,7 @@ const EstadisticasJugadorSchema = Schema({
     jugador: {
         type: Schema.Types.ObjectId,
         ref: 'Jugador',
-        required: true
+        
     },
     faltas: {
         type: Number,
@@ -34,32 +34,19 @@ const EstadisticasEnfrentamientoSchema = Schema({
         type: Number,
         default: 0
     },
-    totalAutogolesLocal: {
-        type: Number,
-        default: 0
-    },
+   
     totalFaltasLocal: {
         type: Number,
         default: 0
     },
-    malUniformadosLocal: {
-        type: Number,
-        default: 0
-    },
+    
     totalGolesVisitante: {
         type: Number,
         default: 0
     },
-    totalAutogolesVisitante: {
-        type: Number,
-        default: 0
-    },
+  
     totalFaltasVisitante: {
         type: Number,
-        default: 0
-    },
-    malUniformadosVisitante: {
-    type: Number,
         default: 0
     },
     
