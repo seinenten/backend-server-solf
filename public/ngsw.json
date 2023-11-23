@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1700763451284,
+  "timestamp": 1700769031025,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,7 +14,7 @@
         "/788.557c436f7d700876.js",
         "/favicon.ico",
         "/index.html",
-        "/main.496e7c8a6e4a6648.js",
+        "/main.b646fb4126ec4271.js",
         "/manifest.webmanifest",
         "/polyfills.1044b990e1086448.js",
         "/runtime.562b58ef8ff4370b.js",
@@ -86,9 +86,9 @@
     "/assets/servicios/casa-de-empeno.png": "18926fa8238758dcbbc8e4b7d375f500dfdb5799",
     "/assets/servicios/metodo-de-pago.png": "c38a672bdbf7c32505d4e17f3364424c9923a909",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/index.html": "693aba7f92ae11a28b997bb394e8b61c0d3c4e08",
-    "/main.496e7c8a6e4a6648.js": "434f2f054923fd86c69826142001309d80e94e45",
-    "/manifest.webmanifest": "73af1e2fdd08366bfe7cf9b25ba09b066d724d4c",
+    "/index.html": "17237396b23785f592134ba9eba17c376a054d77",
+    "/main.b646fb4126ec4271.js": "60fb0625387fe6c3d361b534c5d2ca9b3e4c5498",
+    "/manifest.webmanifest": "f49be5b30bd61341faa4ce4680f939019dcd835a",
     "/polyfills.1044b990e1086448.js": "f16b968e3035dffcda11b387ed842205ac6658f0",
     "/runtime.562b58ef8ff4370b.js": "3e58f26faee45276fadfa1b052f6991e262d9bc9",
     "/styles.2e9775ba5eab5716.css": "f8de8a576062491c9379be2d5e2dd5d894d7dee1"
