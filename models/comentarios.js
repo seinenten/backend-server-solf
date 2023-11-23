@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose');
 const ComentarioSchema = Schema({
 
     id: {
-        type: number,
+        type: String,
         
     },
     autor: {

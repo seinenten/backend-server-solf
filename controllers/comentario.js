@@ -1,7 +1,7 @@
 const { response } = require("express");
 
 const Comentario = require('../models/comentarios');
-const comentarios = require("../models/comentarios");
+
 
 const getComentarios = async(req, res = response) => {
 
@@ -27,9 +27,9 @@ const getComentarios = async(req, res = response) => {
 }
 
 
-const crearComentario = async(req, res = response) => {
+const crearComentarios = async(req, res = response) => {
 
-    const uid = req.uid;
+
 
     const comentario = new Comentario({
        
@@ -62,8 +62,8 @@ const crearComentario = async(req, res = response) => {
 
 module.exports = {
     
-    crearComentario,
     getComentarios,
+    crearComentarios,
     
 }
 
