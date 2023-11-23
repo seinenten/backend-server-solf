@@ -16,9 +16,7 @@ const ComentarioSchema = Schema({
         required: true,
     },
      
-    fecha: {
-        type: Date
-    },
+    
    
 });
 

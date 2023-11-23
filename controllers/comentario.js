@@ -10,7 +10,7 @@ const getComentarios = async(req, res = response) => {
     const desde =  Number(req.query.desde)  || 0;
     const limite = Number(req.query.limite) || 0;
 
-    const productos = await Comentario.find()
+    const comentarios = await Comentario.find()
                     //obtener el nombre del usuario que creo el estadio, y sus otras propiedades
                    
                     .skip( desde )
@@ -43,7 +43,7 @@ const crearComentarios = async(req, res = response) => {
         
         res.status(200).json({
             ok: true,
-            producto: comentarioDB
+            comentario: comentarioDB
         });
 
         
