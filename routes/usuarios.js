@@ -8,7 +8,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT, validarADMIN_ROLE, validarADMIN_ROLE_o_MismoUsuario } = require('../middlewares/validar-jwt');
 
 
-const { getUsuarios,getUsuariosporStatusFalse, getUsuariosporStatusTrue,crearUsuario, actualizarUsuario, eliminarUsuario, getEmails } = require('../controllers/usuarios');
+const { getUsuarios,getUsuariosporStatusFalse, getUsuariosporStatusTrue,crearUsuario, actualizarUsuario, eliminarUsuario, getEmails, insertasLigasDisp } = require('../controllers/usuarios');
 
 const { enviarCorreo, verificarEmail } = require('../controllers/recuperarPassword');
 const { preguntaSecreta } = require('../controllers/recuperarPassword');
@@ -19,6 +19,8 @@ const router = Router();
 router.get( '/' , validarJWT , getUsuarios );
 
 router.get( '/:email'  , getEmails );
+
+router.get( '/insert/insertarLigaDisp', insertasLigasDisp );
 
 
 router.get( '/statusfalse', validarJWT  , getUsuariosporStatusFalse );

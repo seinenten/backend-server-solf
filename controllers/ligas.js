@@ -126,27 +126,36 @@ const getLigasPorNombre = async(req, res) => {
 const CrearLiga = async(req, res = response) => {
 
     const uid = req.uid;
-    const liga = new Liga({
-        usuario: uid,
-        ...req.body
-    } );
-   
 
     try {
 
-   const user=  await usuario.findById(uid)
+        const user=  await usuario.findById(uid)
                                     .populate('usuario', 'nombre apellidoP apellidoM');
-            const ligaDB= await liga.save();
+        
+        //ToDos Verificar si el usuario tiene ligas disponibles
+        if (!user || user.ligasDisp <= 0) {
+            return res.status(500).json({
+                ok: false,
+                msg: 'No tiene ligas disponibles'
+            });
+        }
+
+        //ToDos Restar 1 a ligasDisp
+        user.ligasDisp -= 1;
+        await user.save();
+
+        const liga = new Liga({
+            usuario: uid,
+            ...req.body
+        } );
+
+        const ligaDB= await liga.save();
         
         res.status(200).json({
             ok: true,
             liga: ligaDB,
             nombreUsuario:user.nombre,
             apellido:user.apellidoP
-
-         
-
-        
         });
         
     } catch (error) {

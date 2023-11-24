@@ -47,7 +47,10 @@ const UsuarioSchema = Schema({
         type: Boolean,
         default: false
     },
-
+    ligasDisp:{
+        type: Number,
+        default: 1    
+    }
 });
 
 UsuarioSchema.method('toJSON', function () {

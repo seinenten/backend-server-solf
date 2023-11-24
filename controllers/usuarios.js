@@ -261,6 +261,23 @@ const eliminarUsuario = async( req, res = response ) => {
 
 }
 
+const insertasLigasDisp = async( req, res = response ) => {
+
+    try{
+
+        const resultado = await Usuario.updateMany({}, { $set: { ligasDisp: 1 } });
+
+        if (resultado.ok === 1) {
+            return res.json({ mensaje: 'Propiedad ligasDisp agregada a todos los usuarios.' });
+        } else {
+            return res.status(500).json({ mensaje: 'Error al actualizar los usuarios.' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ mensaje: 'Error interno del servidor.' });
+    }
+
+}
 
 
 
@@ -271,5 +288,6 @@ module.exports = {
     eliminarUsuario,
     getUsuariosporStatusFalse,
     getUsuariosporStatusTrue,
-    getEmails
+    getEmails,
+    insertasLigasDisp
 }
