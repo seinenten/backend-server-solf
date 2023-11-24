@@ -1,0 +1,115 @@
+{
+  "configVersion": 1,
+  "timestamp": 1700786232020,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/788.557c436f7d700876.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.16aa2eb1ab945388.js",
+        "/manifest.webmanifest",
+        "/polyfills.1044b990e1086448.js",
+        "/runtime.562b58ef8ff4370b.js",
+        "/styles.2e9775ba5eab5716.css"
+      ],
+      "patterns": [
+        "https:\\/\\/kit\\.fontawesome\\.com\\/eb496ab1a0\\.js",
+        "https:\\/\\/fonts\\.gstatic\\.com",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/css2\\?family=Roboto:wght@300;400;500&amp;display=swap",
+        "https:\\/\\/fonts\\.googleapis\\.com\\/icon\\?family=Material\\+Icons",
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/bootstrap@5\\.3\\.2\\/dist\\/css\\/bootstrap\\.min\\.css",
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/bootstrap@5\\.3\\.2\\/dist\\/js\\/bootstrap\\.bundle\\.min\\.js",
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/sweetalert2@11",
+        "https:\\/\\/casadeldinero\\.onrender\\.com\\/inicio"
+      ]
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/casadeldinero.png",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/servicios/carrito-de-compras.png",
+        "/assets/servicios/casa-de-empeno.png",
+        "/assets/servicios/metodo-de-pago.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "TiendaUser",
+      "patterns": [
+        "https:\\/\\/casadinerofva\\.000webhostapp\\.com\\/backcasadeempeno\\/tienda\\/tienda\\.php"
+      ],
+      "strategy": "freshness",
+      "maxSize": 3,
+      "maxAge": 86400000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/788.557c436f7d700876.js": "f3848a02d9ee6c170ac80cc909a7a42e71edc49d",
+    "/assets/casadeldinero.png": "b39028e1224b4a8ab1909219f077cde02651cb93",
+    "/assets/icons/icon-128x128.png": "64265a04df44593dab26d6654d47cbc58f9a341c",
+    "/assets/icons/icon-144x144.png": "b1584f0185f3b6b5524359be87ae07334a617081",
+    "/assets/icons/icon-152x152.png": "b9543bb20e35a8df458d58c6db30b56bebc27636",
+    "/assets/icons/icon-192x192.png": "5059d26163b344cef91bd145a15b9f976d77f492",
+    "/assets/icons/icon-384x384.png": "d21b0677910756a2fda13a53171ee570b7f25142",
+    "/assets/icons/icon-512x512.png": "9e6fc39d62debfb2dbc1bcd621806bc462034624",
+    "/assets/icons/icon-72x72.png": "2dc66add85844409d56666916e5da72852c09528",
+    "/assets/icons/icon-96x96.png": "32e44c072ee8d6885a3d26ffc6180604aa224b4f",
+    "/assets/servicios/carrito-de-compras.png": "43eb354552b7f92686dacdab43b17002d597b8d2",
+    "/assets/servicios/casa-de-empeno.png": "18926fa8238758dcbbc8e4b7d375f500dfdb5799",
+    "/assets/servicios/metodo-de-pago.png": "c38a672bdbf7c32505d4e17f3364424c9923a909",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "1af14a9a498942edc08c2e1eb08bf369dec12687",
+    "/main.16aa2eb1ab945388.js": "a2405c66d9a6dac55d2882fec8a897a1776fba0a",
+    "/manifest.webmanifest": "39d09b285d86c82d5aa3f888c2a2c94535db9f87",
+    "/polyfills.1044b990e1086448.js": "f16b968e3035dffcda11b387ed842205ac6658f0",
+    "/runtime.562b58ef8ff4370b.js": "3e58f26faee45276fadfa1b052f6991e262d9bc9",
+    "/styles.2e9775ba5eab5716.css": "f8de8a576062491c9379be2d5e2dd5d894d7dee1"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
