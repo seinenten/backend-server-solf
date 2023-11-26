@@ -5,7 +5,7 @@ const PosicionSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'Liga',
     required: true,
-    unique: true,
+    
   },
   temporada: {  //entiendase que es la fechaDeGenaracion de una liga no la elimines
     type: Date,
