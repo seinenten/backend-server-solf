@@ -55,8 +55,7 @@ router.get('/torneo/falsearTodo', insertarEstorneoFalse);
 
 router.patch('/:id',[
     validarJWT,
-    check('fechaDeGeneracion', 'la fecha es necesaria').not().isEmpty(),
-    check('estadio', 'el estadio es necesario').not().isEmpty(),
+  
 ],  ActualizarEnfrentamientos);
 
 
