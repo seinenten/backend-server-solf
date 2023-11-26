@@ -44,6 +44,7 @@ app.use('/api/productos', require('./routes/productos.js'));
 app.use('/api/tablaPosiciones/', require('./routes/tablaPosiciones.js'))
 app.use('/api/comentarios', require('./routes/comentario.js'));
 app.use('/api/payments', require('./routes/payments'));
+app.use('/api/cuestionario', require('./routes/cuestionario.js'));
 //Cursos 
 app.use('/api/cursos', require('./routes/cursos.js'));
 
