@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "actualizar": "npm install"
+    "actualizar": "npm install --force"
   },
   "keywords": [],
   "author": "",
